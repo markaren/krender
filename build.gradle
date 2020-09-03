@@ -1,0 +1,23 @@
+plugins {
+    id 'base'
+    id 'java-library'
+    id 'org.jetbrains.kotlin.jvm' version '1.4.0' apply(false)
+}
+
+group 'org.example'
+version '1.0-SNAPSHOT'
+
+subprojects {
+
+    apply plugin: 'java-library'
+
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        implementation "org.jetbrains.kotlin:kotlin-stdlib"
+        testCompile group: 'junit', name: 'junit', version: '4.12'
+    }
+
+}

@@ -1,0 +1,4 @@
+rootProject.name = 'KRender'
+
+include 'render-api'
+
