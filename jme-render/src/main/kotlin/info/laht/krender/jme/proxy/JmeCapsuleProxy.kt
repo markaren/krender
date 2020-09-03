@@ -7,13 +7,13 @@ import org.joml.Matrix4dc
 
 class JmeCapsuleProxy(
     ctx: JmeContext,
-    radius: Double,
-    height: Double,
+    radius: Float,
+    height: Float,
     offset: Matrix4dc?
 ) : JmeProxy("capsule", ctx, offset), CapsuleProxy {
 
-    private var originalRadius = 0.0
-    private var originalHeight = 0.0
+    private var originalRadius = 0f
+    private var originalHeight = 0f
 
     init {
         attachChild(
@@ -22,18 +22,19 @@ class JmeCapsuleProxy(
                 32,
                 32,
                 32,
-                radius.also { originalRadius = it }.toFloat(),
+                radius.also { originalRadius = it },
                 height.also { originalHeight = it }
-                    .toFloat()))
+            )
+        )
     }
 
-    override fun setRadius(radius: Double) {
-        val scale = (radius / originalRadius).toFloat()
+    override fun setRadius(radius: Float) {
+        val scale = (radius / originalRadius)
         scale(scale, scale, 1f)
     }
 
-    override fun setHeight(height: Double) {
-        val scale = (height / originalHeight).toFloat()
+    override fun setHeight(height: Float) {
+        val scale = (height / originalHeight)
         scale(1f, 1f, scale)
     }
 

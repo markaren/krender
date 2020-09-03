@@ -8,14 +8,14 @@ import org.joml.Matrix4dc
 
 class JmeBoxProxy(
     ctx: JmeContext,
-    width: Double,
-    height: Double,
-    depth: Double,
+    width: Float,
+    height: Float,
+    depth: Float,
     offset: Matrix4dc?
 ) : JmeProxy("box", ctx, offset), BoxProxy {
 
     init {
-        attachChild(Geometry("", Box((width * 0.5).toFloat(), (height * 0.5).toFloat(), (depth * 0.5).toFloat())))
+        attachChild(Geometry("", Box((width * 0.5f), (height * 0.5f), (depth * 0.5f))))
     }
 
 }

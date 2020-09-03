@@ -8,8 +8,11 @@ import com.jme3.light.AmbientLight
 import com.jme3.light.DirectionalLight
 import com.jme3.math.ColorRGBA
 import com.jme3.math.Vector3f
+import com.jme3.scene.Node
 import info.laht.krender.RenderEngine
 import info.laht.krender.Trimesh
+import info.laht.krender.jme.extra.RawInputAdapter
+import info.laht.krender.jme.proxy.*
 import info.laht.krender.proxies.*
 import info.laht.krender.util.InputSource
 import org.joml.Matrix4dc
@@ -20,40 +23,76 @@ import kotlin.concurrent.withLock
 
 class JmeRenderEngine : RenderEngine {
 
+    private lateinit var renderer: JmeRenderer
+    private val parent: Node = Node("parent")
+
+    private val ctx: JmeContext
+        get() = renderer.ctx
+
     override fun init() {
-        TODO("Not yet implemented")
+        renderer = JmeRenderer(parent).apply {
+            start()
+        }
+    }
+
+    override fun close() {
+        renderer.stop()
     }
 
     override fun createMesh(mesh: Trimesh): MeshProxy {
         TODO("Not yet implemented")
     }
 
-    override fun createMesh(source: InputSource, scale: Double, offset: Matrix4dc?): MeshProxy? {
+    override fun createMesh(source: InputSource, scale: Double, offset: Matrix4dc?): MeshProxy {
         TODO("Not yet implemented")
     }
 
     override fun createSphere(radius: Double, offset: Matrix4dc?): SphereProxy {
-        TODO("Not yet implemented")
+        return JmeSphereProxy(ctx, radius, offset).also {
+            ctx.invokeLater {
+                parent.attachChild(it)
+            }
+        }
     }
 
     override fun createBox(width: Double, height: Double, depth: Double, offset: Matrix4dc?): BoxProxy {
-        TODO("Not yet implemented")
+        return JmeBoxProxy(ctx, width, height, depth, offset).also {
+            ctx.invokeLater {
+                parent.attachChild(it)
+            }
+        }
     }
 
     override fun createCylinder(radius: Double, height: Double, offset: Matrix4dc?): CylinderProxy {
-        TODO("Not yet implemented")
+        return JmeCylinderProxy(ctx, radius, height, offset).also {
+            ctx.invokeLater {
+                parent.attachChild(it)
+            }
+        }
     }
 
     override fun createCapsule(radius: Double, height: Double, offset: Matrix4dc?): CapsuleProxy {
-        TODO("Not yet implemented")
+        return JmeCapsuleProxy(ctx, radius, height, offset).also {
+            ctx.invokeLater {
+                parent.attachChild(it)
+            }
+        }
     }
 
     override fun createPlane(width: Double, height: Double, offset: Matrix4dc?): PlaneProxy {
-        TODO("Not yet implemented")
+        return JmePlaneProxy(ctx, width, height, offset).also {
+            ctx.invokeLater {
+                parent.attachChild(it)
+            }
+        }
     }
 
     override fun createAxis(size: Double): AxisProxy {
-        TODO("Not yet implemented")
+        return JmeAxisProxy(ctx, size).also {
+            ctx.invokeLater {
+                parent.attachChild(it)
+            }
+        }
     }
 
     override fun createHeightmap(widthSegments: Int, heightSegments: Int, width: Double, height: Double): TerrainProxy {
@@ -72,26 +111,27 @@ class JmeRenderEngine : RenderEngine {
         TODO("Not yet implemented")
     }
 
-    override fun shutdown() {
-        TODO("Not yet implemented")
-    }
 
-    private class JmeRenderer : SimpleApplication() {
+    private class JmeRenderer(
+        private val parent: Node
+    ) : SimpleApplication() {
 
         private val lock = ReentrantLock()
         private var initialized = lock.newCondition()
+
+        lateinit var ctx: JmeContext
 
         override fun start() {
             super.start()
             lock.withLock {
                 initialized.await()
             }
+
         }
 
         override fun simpleInitApp() {
 
             super.setPauseOnLostFocus(false)
-
 
             super.flyCam.isDragToRotate = true
             super.flyCam.moveSpeed = 10f
@@ -107,10 +147,18 @@ class JmeRenderEngine : RenderEngine {
                 }
             })
 
+            rootNode.attachChild(parent)
+
+            ctx = JmeContext(assetManager)
+
             lock.withLock {
                 initialized.signalAll()
             }
 
+        }
+
+        override fun simpleUpdate(tpf: Float) {
+            ctx.invokePendingTasks()
         }
 
         private fun setupLights() {

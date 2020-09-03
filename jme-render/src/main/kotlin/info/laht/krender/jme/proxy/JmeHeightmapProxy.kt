@@ -10,8 +10,8 @@ class JmeHeightmapProxy(
     ctx: JmeContext,
     widthSegments: Int,
     heightSegments: Int,
-    width: Double,
-    height: Double
+    width: Float,
+    height: Float
 ) : JmeProxy("Heightmap", ctx), TerrainProxy {
 
     private var grid: JmeGrid

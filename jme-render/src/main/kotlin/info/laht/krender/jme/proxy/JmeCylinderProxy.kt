@@ -8,13 +8,13 @@ import org.joml.Matrix4dc
 
 class JmeCylinderProxy(
     ctx: JmeContext,
-    private val originalRadius: Double,
-    private val originalHeight: Double,
+    private val originalRadius: Float,
+    private val originalHeight: Float,
     offset: Matrix4dc?
 ) : JmeProxy("cylinder", ctx, offset), CylinderProxy {
 
     init {
-        attachChild(Geometry("", Cylinder(32, 32, originalRadius.toFloat(), originalHeight.toFloat(), true)))
+        attachChild(Geometry("", Cylinder(32, 32, originalRadius, originalHeight, true)))
     }
 
     override fun setRadius(radius: Double) {

@@ -8,17 +8,17 @@ import org.joml.Matrix4dc
 
 class JmeSphereProxy(
     ctx: JmeContext,
-    private val originalRadius: Double,
+    private val originalRadius: Float,
     offset: Matrix4dc?
 ) : JmeProxy("sphere", ctx, offset), SphereProxy {
 
     init {
-        attachChild(Geometry("", Sphere(32, 32, originalRadius.toFloat())))
+        attachChild(Geometry("", Sphere(32, 32, originalRadius)))
     }
 
-    override fun setRadius(radius: Double) {
+    override fun setRadius(radius: Float) {
         val scale = radius / originalRadius
-        scale(scale.toFloat())
+        scale(scale)
     }
 
 }

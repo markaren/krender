@@ -4,14 +4,13 @@ import info.laht.krender.proxies.*
 import info.laht.krender.util.InputSource
 import org.joml.Matrix4dc
 import org.joml.Vector3dc
+import java.io.Closeable
 
-interface RenderEngine {
+interface RenderEngine : Closeable {
 
     fun init()
-    fun shutdown()
-
     fun createMesh(mesh: Trimesh): MeshProxy
-    fun createMesh(source: InputSource, scale: Double, offset: Matrix4dc?): MeshProxy?
+    fun createMesh(source: InputSource, scale: Double, offset: Matrix4dc?): MeshProxy
     fun createSphere(radius: Double, offset: Matrix4dc?): SphereProxy
     fun createBox(width: Double, height: Double, depth: Double, offset: Matrix4dc?): BoxProxy
     fun createCylinder(radius: Double, height: Double, offset: Matrix4dc?): CylinderProxy

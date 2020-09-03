@@ -12,8 +12,8 @@ import com.jme3.scene.VertexBuffer
 class JmeGrid @JvmOverloads constructor(
     private val widthSegments: Int,
     private val heightSegments: Int,
-    private val width: Double,
-    private val height: Double,
+    private val width: Float,
+    private val height: Float,
     heights: FloatArray? = null
 ) : Mesh() {
 

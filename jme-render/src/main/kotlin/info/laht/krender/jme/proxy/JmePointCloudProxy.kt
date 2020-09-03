@@ -6,6 +6,4 @@ import info.laht.krender.proxies.PointCloudProxy
 
 class JmePointCloudProxy(
     private val ctx: JmeContext
-) : Node("pointCloud"), PointCloudProxy {
-
-}
+) : Node("pointCloud"), PointCloudProxy

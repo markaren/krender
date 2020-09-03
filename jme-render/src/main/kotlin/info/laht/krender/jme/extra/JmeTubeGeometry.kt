@@ -76,8 +76,8 @@ class JmeTubeGeometry(
 
         private fun generateSegment(i: Int) {
             val P: Vector3d = path.getPointAt(i.toDouble() / tubularSegments)
-            val N: Vector3d = frames.normals.get(i)
-            val B: Vector3d = frames.binormals.get(i)
+            val N: Vector3d = frames.normals[i]
+            val B: Vector3d = frames.binormals[i]
             for (j in 0..radialSegments) {
                 val v = j.toDouble() / radialSegments * Math.PI * 2
                 val sin = Math.sin(v)

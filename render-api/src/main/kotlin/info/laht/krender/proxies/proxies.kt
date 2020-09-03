@@ -7,18 +7,18 @@ import org.joml.Vector3dc
 import java.awt.Color
 
 interface ArrowProxy : RenderProxy, ColorProxy, SpatialProxy {
-    fun setLength(length: Double)
+    fun setLength(length: Float)
 }
 
 interface AxisProxy : RenderProxy, SpatialProxy {
-    fun setSize(size: Double)
+    fun setSize(size: Float)
 }
 
 interface BoxProxy : RenderProxy, ColorProxy, SpatialProxy, WireframeProxy
 
 interface CapsuleProxy : RenderProxy, ColorProxy, SpatialProxy, WireframeProxy {
-    fun setRadius(radius: Double)
-    fun setHeight(height: Double)
+    fun setRadius(radius: Float)
+    fun setHeight(height: Float)
 }
 
 interface ColorProxy {
@@ -30,8 +30,8 @@ interface CurveProxy : RenderProxy, ColorProxy, WireframeProxy {
 }
 
 interface CylinderProxy : RenderProxy, ColorProxy, SpatialProxy, WireframeProxy, TextureProxy {
-    fun setRadius(radius: Double)
-    fun setHeight(height: Double)
+    fun setRadius(radius: Float)
+    fun setHeight(height: Float)
 }
 
 interface RenderProxy {
@@ -47,7 +47,7 @@ interface SpatialProxy {
 }
 
 interface SphereProxy : RenderProxy, ColorProxy, SpatialProxy, WireframeProxy {
-    fun setRadius(radius: Double)
+    fun setRadius(radius: Float)
 }
 
 interface TerrainProxy : RenderProxy, SpatialProxy, WireframeProxy, ColorProxy, TextureProxy {

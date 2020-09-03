@@ -7,7 +7,10 @@ import info.laht.krender.proxies.PlaneProxy
 import org.joml.Matrix4dc
 
 class JmePlaneProxy(
-    ctx: JmeContext, width: Double, height: Double, offset: Matrix4dc?
+    ctx: JmeContext,
+    width: Float,
+    height: Float,
+    offset: Matrix4dc?
 ) : JmeProxy("plane", ctx, offset), PlaneProxy {
 
     init {

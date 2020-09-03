@@ -8,7 +8,7 @@ class QuadricBezierCurve2(
     private val v2: Vector2d
 ) : Curve2() {
 
-    override fun getPoint(t: Double): Vector2d? {
+    override fun getPoint(t: Double): Vector2d {
         return Vector2d(
             Interpolations.QuadraticBezier(t, v0.x(), v1.x(), v2.x()),
             Interpolations.QuadraticBezier(t, v0.y(), v1.y(), v2.y())

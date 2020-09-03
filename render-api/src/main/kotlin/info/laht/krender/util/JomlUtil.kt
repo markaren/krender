@@ -66,11 +66,7 @@ object JomlUtil {
         return kotlin.math.sqrt(kotlin.math.max(kotlin.math.max(scaleXSq, scaleYSq), scaleZSq))
     }
 
-    fun rowMajor(m: Matrix4dc, dest: FloatArray): FloatArray {
-        var dest = dest
-        if (dest == null) {
-            dest = FloatArray(16)
-        }
+    fun rowMajor(m: Matrix4dc, dest: FloatArray = FloatArray(16)): FloatArray {
         dest[0] = m.m00().toFloat()
         dest[1] = m.m10().toFloat()
         dest[2] = m.m20().toFloat()

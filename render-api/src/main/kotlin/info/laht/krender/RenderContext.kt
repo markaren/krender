@@ -3,17 +3,14 @@ package info.laht.krender
 import info.laht.krender.proxies.*
 import org.joml.Matrix4dc
 import org.joml.Vector3dc
+import java.io.Closeable
 
 
 class RenderContext(
     private val engine: RenderEngine
-) : Iterable<RenderProxy> {
+) : Iterable<RenderProxy>, Closeable {
 
     private val proxies: MutableList<RenderProxy> = mutableListOf()
-
-    fun dispose() {
-        proxies.forEach { obj -> obj.dispose() }
-    }
 
     @JvmOverloads
     fun createSphere(radius: Double, offset: Matrix4dc? = null): SphereProxy {
@@ -99,6 +96,10 @@ class RenderContext(
 
     override fun iterator(): MutableIterator<RenderProxy> {
         return proxies.iterator()
+    }
+
+    override fun close() {
+        proxies.forEach { obj -> obj.dispose() }
     }
 
 }

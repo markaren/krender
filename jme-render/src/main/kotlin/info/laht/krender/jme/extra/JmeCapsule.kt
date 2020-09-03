@@ -10,16 +10,12 @@ class JmeCapsule(
     radialSamples: Int,
     zSamples: Int,
     radialSamples2: Int,
-    radius: Float,
-    height: Float
+    val radius: Float,
+    val height: Float
 ) : Node() {
 
-    val radius: Double
-    val height: Double
-
     init {
-        this.height = height.toDouble()
-        this.radius = radius.toDouble()
+
         val body = Geometry("body", Cylinder(axisSamples, radialSamples, radius, height, false))
         val upperSphere = Geometry("upperSphere", Sphere(zSamples, radialSamples2, radius))
         val lowerSphere = Geometry("lowerSphere", Sphere(zSamples, radialSamples2, radius))

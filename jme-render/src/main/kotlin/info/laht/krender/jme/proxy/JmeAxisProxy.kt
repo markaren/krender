@@ -7,17 +7,16 @@ import info.laht.krender.proxies.AxisProxy
 
 class JmeAxisProxy(
     ctx: JmeContext,
-    size: Double
+    size: Float
 ) : JmeProxy("axis", ctx), AxisProxy {
 
-    private var initialSize = 0.0
-
+    private var initialSize = 0f
 
     init {
         attachChild(JmeAxis(ctx, size.also { initialSize = it }))
     }
 
-    override fun setSize(size: Double) {
+    override fun setSize(size: Float) {
         val scale = size / initialSize
         scale(scale.toFloat())
     }

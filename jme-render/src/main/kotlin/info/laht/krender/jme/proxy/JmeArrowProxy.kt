@@ -6,7 +6,7 @@ import info.laht.krender.proxies.ArrowProxy
 
 class JmeArrowProxy(
     ctx: JmeContext,
-    private val originalLength: Double
+    private val originalLength: Float
 ) : JmeProxy("arrow", ctx), ArrowProxy {
 
     init {
@@ -17,9 +17,9 @@ class JmeArrowProxy(
         ctx.invokeLater { setCullHint(if (visible) CullHint.Never else CullHint.Always) }
     }
 
-    override fun setLength(length: Double) {
+    override fun setLength(length: Float) {
         val scale = length / originalLength
-        scale(scale.toFloat())
+        scale(scale)
     }
 
 }
