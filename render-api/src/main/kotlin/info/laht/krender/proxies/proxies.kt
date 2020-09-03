@@ -1,7 +1,10 @@
 package info.laht.krender.proxies
 
+import info.laht.krender.util.ExternalSource
+import org.joml.Matrix4dc
+import org.joml.Quaterniondc
+import org.joml.Vector3dc
 import java.awt.Color
-import java.io.File
 
 interface ArrowProxy : RenderProxy, ColorProxy, SpatialProxy {
     fun setLength(length: Double)
@@ -23,7 +26,7 @@ interface ColorProxy {
 }
 
 interface CurveProxy : RenderProxy, ColorProxy, WireframeProxy {
-    fun update(points: List<Triple<Float, Float, Float>>)
+    fun update(points: List<Vector3dc>)
 }
 
 interface CylinderProxy : RenderProxy, ColorProxy, SpatialProxy, WireframeProxy, TextureProxy {
@@ -37,10 +40,10 @@ interface RenderProxy {
 }
 
 interface SpatialProxy {
-    fun setTranslate(x: Float, y: Float, z: Float)
-    fun setRotate(x: Float, y: Float, z: Float, w: Float)
-    fun setTransform(m: DoubleArray)
-    fun setOffsetTransform(offset: DoubleArray)
+    fun setTranslate(v: Vector3dc)
+    fun setRotate(q: Quaterniondc)
+    fun setTransform(m: Matrix4dc)
+    fun setOffsetTransform(offset: Matrix4dc)
 }
 
 interface SphereProxy : RenderProxy, ColorProxy, SpatialProxy, WireframeProxy {
@@ -48,15 +51,15 @@ interface SphereProxy : RenderProxy, ColorProxy, SpatialProxy, WireframeProxy {
 }
 
 interface TerrainProxy : RenderProxy, SpatialProxy, WireframeProxy, ColorProxy, TextureProxy {
-    fun setHeights(heights: FloatArray?)
+    fun setHeights(heights: FloatArray)
 }
 
 interface TextureProxy {
-    fun setTexture(source: File)
+    fun setTexture(source: ExternalSource)
 }
 
 interface WaterProxy : RenderProxy, WireframeProxy {
-    fun setTranslate(x: Float, y: Float, z: Float)
+    fun setTranslate(v: Vector3dc)
 }
 
 interface WireframeProxy {

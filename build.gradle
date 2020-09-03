@@ -8,16 +8,30 @@ group 'org.example'
 version '1.0-SNAPSHOT'
 
 subprojects {
-
-    apply plugin: 'java-library'
+    
+    apply plugin: 'kotlin'
 
     repositories {
         mavenCentral()
+        maven { url "https://dl.bintray.com/jmonkeyengine/org.jmonkeyengine" }
     }
 
     dependencies {
         implementation "org.jetbrains.kotlin:kotlin-stdlib"
-        testCompile group: 'junit', name: 'junit', version: '4.12'
+
+        def slf4j_version = '1.7.30'
+        implementation group: 'org.slf4j', name: 'slf4j-api', version: slf4j_version
+        runtimeOnly group: 'org.slf4j', name: 'slf4j-log4j12', version: slf4j_version
+
+        def junit_version = '5.6.2'
+        testImplementation("org.junit.jupiter:junit-jupiter-api:$junit_version")
+        testImplementation("org.junit.jupiter:junit-jupiter-params:$junit_version")
+        testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:$junit_version")
+    }
+
+    test {
+        failFast = true
+        useJUnitPlatform()
     }
 
 }
