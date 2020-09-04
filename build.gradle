@@ -4,8 +4,15 @@ plugins {
     id 'org.jetbrains.kotlin.jvm' version '1.4.0' apply(false)
 }
 
-group 'org.example'
-version '1.0-SNAPSHOT'
+wrapper {
+    distributionType = Wrapper.DistributionType.ALL
+    gradleVersion = '6.6.1'
+}
+
+group 'info.laht.krender'
+version '0.1'
+
+println "Gradle version is ${gradle.getGradleVersion()}"
 
 subprojects {
     

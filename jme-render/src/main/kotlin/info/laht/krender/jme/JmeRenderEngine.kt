@@ -14,6 +14,7 @@ import info.laht.krender.Trimesh
 import info.laht.krender.jme.extra.RawInputAdapter
 import info.laht.krender.jme.proxy.*
 import info.laht.krender.proxies.*
+import info.laht.krender.util.ExternalSource
 import info.laht.krender.util.InputSource
 import org.joml.Matrix4dc
 import org.joml.Vector3dc
@@ -40,14 +41,22 @@ class JmeRenderEngine : RenderEngine {
     }
 
     override fun createMesh(mesh: Trimesh): MeshProxy {
-        TODO("Not yet implemented")
+        return JmeMeshProxy(ctx, mesh).also {
+            ctx.invokeLater {
+                parent.attachChild(it)
+            }
+        }
     }
 
-    override fun createMesh(source: InputSource, scale: Double, offset: Matrix4dc?): MeshProxy {
-        TODO("Not yet implemented")
+    override fun createMesh(source: ExternalSource, scale: Float, offset: Matrix4dc?): MeshProxy {
+        return JmeMeshProxy(ctx, source, scale, offset).also {
+            ctx.invokeLater {
+                parent.attachChild(it)
+            }
+        }
     }
 
-    override fun createSphere(radius: Double, offset: Matrix4dc?): SphereProxy {
+    override fun createSphere(radius: Float, offset: Matrix4dc?): SphereProxy {
         return JmeSphereProxy(ctx, radius, offset).also {
             ctx.invokeLater {
                 parent.attachChild(it)
@@ -55,7 +64,7 @@ class JmeRenderEngine : RenderEngine {
         }
     }
 
-    override fun createBox(width: Double, height: Double, depth: Double, offset: Matrix4dc?): BoxProxy {
+    override fun createBox(width: Float, height: Float, depth: Float, offset: Matrix4dc?): BoxProxy {
         return JmeBoxProxy(ctx, width, height, depth, offset).also {
             ctx.invokeLater {
                 parent.attachChild(it)
@@ -63,7 +72,7 @@ class JmeRenderEngine : RenderEngine {
         }
     }
 
-    override fun createCylinder(radius: Double, height: Double, offset: Matrix4dc?): CylinderProxy {
+    override fun createCylinder(radius: Float, height: Float, offset: Matrix4dc?): CylinderProxy {
         return JmeCylinderProxy(ctx, radius, height, offset).also {
             ctx.invokeLater {
                 parent.attachChild(it)
@@ -71,7 +80,7 @@ class JmeRenderEngine : RenderEngine {
         }
     }
 
-    override fun createCapsule(radius: Double, height: Double, offset: Matrix4dc?): CapsuleProxy {
+    override fun createCapsule(radius: Float, height: Float, offset: Matrix4dc?): CapsuleProxy {
         return JmeCapsuleProxy(ctx, radius, height, offset).also {
             ctx.invokeLater {
                 parent.attachChild(it)
@@ -79,7 +88,7 @@ class JmeRenderEngine : RenderEngine {
         }
     }
 
-    override fun createPlane(width: Double, height: Double, offset: Matrix4dc?): PlaneProxy {
+    override fun createPlane(width: Float, height: Float, offset: Matrix4dc?): PlaneProxy {
         return JmePlaneProxy(ctx, width, height, offset).also {
             ctx.invokeLater {
                 parent.attachChild(it)
@@ -87,7 +96,7 @@ class JmeRenderEngine : RenderEngine {
         }
     }
 
-    override fun createAxis(size: Double): AxisProxy {
+    override fun createAxis(size: Float): AxisProxy {
         return JmeAxisProxy(ctx, size).also {
             ctx.invokeLater {
                 parent.attachChild(it)
@@ -95,19 +104,19 @@ class JmeRenderEngine : RenderEngine {
         }
     }
 
-    override fun createHeightmap(widthSegments: Int, heightSegments: Int, width: Double, height: Double): TerrainProxy {
+    override fun createHeightmap(widthSegments: Int, heightSegments: Int, width: Float, height: Float): TerrainProxy {
         TODO("Not yet implemented")
     }
 
-    override fun createCurve(radius: Double, points: List<Vector3dc>): CurveProxy {
+    override fun createCurve(radius: Float, points: List<Vector3dc>): CurveProxy {
         TODO("Not yet implemented")
     }
 
-    override fun createArrow(length: Double): ArrowProxy {
+    override fun createArrow(length: Float): ArrowProxy {
         TODO("Not yet implemented")
     }
 
-    override fun createPointCloud(pointSize: Double, points: List<Vector3dc>): PointCloudProxy {
+    override fun createPointCloud(pointSize: Float, points: List<Vector3dc>): PointCloudProxy {
         TODO("Not yet implemented")
     }
 

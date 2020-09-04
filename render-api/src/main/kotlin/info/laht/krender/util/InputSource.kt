@@ -21,12 +21,16 @@ abstract class ExternalSource : InputSource {
         get() = fullPath.replace(filename, "")
 
     val filename: String
-        get() = "$baseName.$extension"
-
-    val baseName: String
         get() {
-            val index = filename.lastIndexOf(File.separatorChar)
-            return fullPath.substring(index + 1)
+            val index = fullPath.lastIndexOf(File.separatorChar)
+            return fullPath.substring(index+1)
+        }
+
+    val basename: String
+        get() {
+            val i1 = filename.lastIndexOf(File.separatorChar)
+            val i2 = filename.lastIndexOf('.')
+            return fullPath.substring(i1 + 1, i2)
         }
 
 }
@@ -49,6 +53,10 @@ class FileSource(
         return file.readText()
     }
 
+    override fun toString(): String {
+        return "FileSource(file=$file)"
+    }
+
 }
 
 class URLSource(
@@ -56,7 +64,10 @@ class URLSource(
 ) : ExternalSource() {
 
     override val extension: String
-        get() = TODO("Not yet implemented")
+        get() {
+            val path = fullPath
+            return path.substring(path.lastIndexOf(".")+1)
+        }
 
     override val fullPath: String
         get() = url.toExternalForm()
@@ -67,6 +78,10 @@ class URLSource(
 
     override fun readText(): String {
         return url.openStream().bufferedReader().use { it.readText() }
+    }
+
+    override fun toString(): String {
+        return "URLSource(url=$url)"
     }
 
 }

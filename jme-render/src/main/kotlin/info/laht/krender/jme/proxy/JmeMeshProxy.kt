@@ -19,7 +19,8 @@ class JmeMeshProxy : JmeProxy, MeshProxy {
         attachChild(create(data))
     }
 
-    constructor(ctx: JmeContext, source: ExternalSource, scale: Double, offset: Matrix4dc?) : super("mesh", ctx) {
+    @JvmOverloads
+    constructor(ctx: JmeContext, source: ExternalSource, scale: Float, offset: Matrix4dc? = null) : super("mesh", ctx) {
         attachChild(create(ctx.assetManager, source, scale, offset))
     }
 
@@ -51,8 +52,8 @@ class JmeMeshProxy : JmeProxy, MeshProxy {
         private fun create(
             assetManager: AssetManager,
             source: ExternalSource,
-            scale: Double,
-            offset: Matrix4dc?
+            scale: Float,
+            offset: Matrix4dc? = null
         ): Spatial {
             val extension: String = source.extension
             if (extension != "obj") {
@@ -72,7 +73,7 @@ class JmeMeshProxy : JmeProxy, MeshProxy {
                 }
             }
             val loadModel: Spatial = assetManager.loadModel(source.filename)
-            loadModel.scale(scale.toFloat())
+            loadModel.scale(scale)
             if (offset != null) {
                 loadModel.localTransform = JmeUtils.convertT(offset)
             }

@@ -1,6 +1,7 @@
 package info.laht.krender.loaders
 
 import info.laht.krender.Trimesh
+import info.laht.krender.util.ExternalSource
 import info.laht.krender.util.InputSource
 import java.util.regex.Pattern
 
@@ -10,7 +11,7 @@ class ObjLoader {
     val supportedExtension: String
         get() = "obj"
 
-    fun load(source: InputSource): Trimesh {
+    fun load(source: ExternalSource): Trimesh {
         //MeshLoader.testExtension(supportedExtension, source.extension)
         val parse = load(source.readText())
         parse.source = source

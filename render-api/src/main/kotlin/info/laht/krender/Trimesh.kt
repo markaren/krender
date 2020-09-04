@@ -1,5 +1,6 @@
 package info.laht.krender
 
+import info.laht.krender.util.ExternalSource
 import info.laht.krender.util.InputSource
 import org.joml.Vector3d
 import org.joml.Vector4d
@@ -8,13 +9,14 @@ class Trimesh private constructor(
     builder: Builder
 ) {
 
-    var source: InputSource? = null
-
     val indices: MutableList<Int> = builder.indices
     val vertices: MutableList<Double> = builder.vertices
     val normals: MutableList<Double> = builder.normals
     val colors: MutableList<Float> = builder.colors
     val uvs: MutableList<Double> = builder.uvs
+
+    var source: ExternalSource? = null
+    var scale: Float = 1f
 
     fun hasSource(): Boolean {
         return source != null

@@ -1,8 +1,11 @@
 package info.laht.krender
 
 import info.laht.krender.proxies.*
+import org.joml.Matrix4d
 import org.joml.Matrix4dc
 import org.joml.Vector3dc
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import java.io.Closeable
 
 
@@ -13,86 +16,78 @@ class RenderContext(
     private val proxies: MutableList<RenderProxy> = mutableListOf()
 
     @JvmOverloads
-    fun createSphere(radius: Double, offset: Matrix4dc? = null): SphereProxy {
+    fun createSphere(radius: Float, offset: Matrix4dc? = null): SphereProxy {
         val proxy = engine.createSphere(radius, offset)
         proxies.add(proxy)
         return proxy
     }
 
     @JvmOverloads
-    fun createBox(width: Double, height: Double, depth: Double, offset: Matrix4dc? = null): BoxProxy {
+    fun createBox(width: Float, height: Float, depth: Float, offset: Matrix4dc? = null): BoxProxy {
         val proxy = engine.createBox(width, height, depth, offset)
         proxies.add(proxy)
         return proxy
     }
 
     @JvmOverloads
-    fun createCylinder(radius: Double, height: Double, offset: Matrix4dc? = null): CylinderProxy {
+    fun createCylinder(radius: Float, height: Float, offset: Matrix4dc? = null): CylinderProxy {
         val proxy = engine.createCylinder(radius, height, offset)
         proxies.add(proxy)
         return proxy
     }
 
     @JvmOverloads
-    fun createCapsule(radius: Double, height: Double, offset: Matrix4dc? = null): CapsuleProxy {
+    fun createCapsule(radius: Float, height: Float, offset: Matrix4dc? = null): CapsuleProxy {
         val proxy = engine.createCapsule(radius, height, offset)
         proxies.add(proxy)
         return proxy
     }
 
     @JvmOverloads
-    fun createPlane(height: Double, width: Double, offset: Matrix4dc? = null): PlaneProxy {
+    fun createPlane(height: Float, width: Float, offset: Matrix4dc? = null): PlaneProxy {
         val proxy = engine.createPlane(height, width, offset)
         proxies.add(proxy)
         return proxy
     }
 
-    fun createAxis(size: Double): AxisProxy {
+    fun createAxis(size: Float): AxisProxy {
         val proxy = engine.createAxis(size)
         proxies.add(proxy)
         return proxy
     }
 
-    fun createArrow(length: Double): ArrowProxy {
+    fun createArrow(length: Float): ArrowProxy {
         val proxy = engine.createArrow(length)
         proxies.add(proxy)
         return proxy
     }
 
-    fun createHeightmap(widthSegments: Int, heightSegments: Int, height: Double, width: Double): TerrainProxy {
+    fun createHeightmap(widthSegments: Int, heightSegments: Int, height: Float, width: Float): TerrainProxy {
         val proxy = engine.createHeightmap(widthSegments, heightSegments, height, width)
         proxies.add(proxy)
         return proxy
     }
 
-    fun createCurve(radius: Double, points: List<Vector3dc>): CurveProxy {
+    fun createCurve(radius: Float, points: List<Vector3dc>): CurveProxy {
         val proxy = engine.createCurve(radius, points)
         proxies.add(proxy)
         return proxy
     }
 
-    /*fun createMesh(mesh: Trimesh): MeshProxy? {
+    fun createMesh(mesh: Trimesh): MeshProxy {
         if (mesh.hasSource()) {
             try {
-                val proxy = engine.createMesh(mesh.getSource(), mesh.getScale(), mesh.getOffsetTransform())
-                proxies.add(proxy!!)
-                return proxy
+                return engine.createMesh(mesh.source!!, mesh.scale, Matrix4d()).also {
+                    proxies.add(it)
+                }
             } catch (ex: Exception) {
-                Logger.getLogger(RenderContext::class.java.name).log(Level.SEVERE, null, ex)
+                LOG.warn(ex.message)
             }
         }
-        val proxy = engine.createMesh(
-            MeshData.Builder()
-                .indices(mesh.getIndices())
-                .vertices(mesh.getVertices())
-                .normals(mesh.getNormals())
-                .colors(mesh.getColors())
-                .uvs(mesh.getUvs())
-                .build()
-        )
-        proxies.add(proxy)
-        return proxy
-    }*/
+        return engine.createMesh(mesh).also {
+            proxies.add(it)
+        }
+    }
 
     override fun iterator(): MutableIterator<RenderProxy> {
         return proxies.iterator()
@@ -100,6 +95,10 @@ class RenderContext(
 
     override fun close() {
         proxies.forEach { obj -> obj.dispose() }
+    }
+
+    companion object {
+        val LOG: Logger = LoggerFactory.getLogger(RenderContext::class.java)
     }
 
 }

@@ -1,6 +1,7 @@
 package info.laht.krender
 
 import info.laht.krender.proxies.*
+import info.laht.krender.util.ExternalSource
 import info.laht.krender.util.InputSource
 import org.joml.Matrix4dc
 import org.joml.Vector3dc
@@ -9,18 +10,23 @@ import java.io.Closeable
 interface RenderEngine : Closeable {
 
     fun init()
+
+    fun createAxis(size: Float): AxisProxy
+    fun createArrow(length: Float): ArrowProxy
+
     fun createMesh(mesh: Trimesh): MeshProxy
-    fun createMesh(source: InputSource, scale: Double, offset: Matrix4dc?): MeshProxy
-    fun createSphere(radius: Double, offset: Matrix4dc?): SphereProxy
-    fun createBox(width: Double, height: Double, depth: Double, offset: Matrix4dc?): BoxProxy
-    fun createCylinder(radius: Double, height: Double, offset: Matrix4dc?): CylinderProxy
-    fun createCapsule(radius: Double, height: Double, offset: Matrix4dc?): CapsuleProxy
-    fun createPlane(width: Double, height: Double, offset: Matrix4dc?): PlaneProxy
-    fun createAxis(size: Double): AxisProxy
-    fun createHeightmap(widthSegments: Int, heightSegments: Int, width: Double, height: Double): TerrainProxy
-    fun createCurve(radius: Double, points: List<Vector3dc>): CurveProxy
-    fun createArrow(length: Double): ArrowProxy
-    fun createPointCloud(pointSize: Double, points: List<Vector3dc>): PointCloudProxy
+    fun createMesh(source: ExternalSource, scale: Float = 1f, offset: Matrix4dc? = null): MeshProxy
+
+    fun createSphere(radius: Float, offset: Matrix4dc? = null): SphereProxy
+    fun createPlane(width: Float, height: Float, offset: Matrix4dc? = null): PlaneProxy
+    fun createBox(width: Float, height: Float, depth: Float, offset: Matrix4dc? = null): BoxProxy
+    fun createCylinder(radius: Float, height: Float, offset: Matrix4dc? = null): CylinderProxy
+    fun createCapsule(radius: Float, height: Float, offset: Matrix4dc? = null): CapsuleProxy
+
+    fun createCurve(radius: Float, points: List<Vector3dc>): CurveProxy
+    fun createHeightmap(widthSegments: Int, heightSegments: Int, width: Float, height: Float): TerrainProxy
+
+    fun createPointCloud(pointSize: Float, points: List<Vector3dc>): PointCloudProxy
 
     /*fun registerKeyListener(consumer: KeyConsumer?)
     fun registerClickListener(consumer: ClickConsumer?)*/

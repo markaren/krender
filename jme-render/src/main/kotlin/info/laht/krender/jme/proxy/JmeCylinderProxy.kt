@@ -17,12 +17,12 @@ class JmeCylinderProxy(
         attachChild(Geometry("", Cylinder(32, 32, originalRadius, originalHeight, true)))
     }
 
-    override fun setRadius(radius: Double) {
+    override fun setRadius(radius: Float) {
         val scale = (radius / originalRadius).toFloat()
         scale(scale, scale, 1f)
     }
 
-    override fun setHeight(height: Double) {
+    override fun setHeight(height: Float) {
         val scale = (height / originalHeight).toFloat()
         scale(1f, 1f, scale)
     }
