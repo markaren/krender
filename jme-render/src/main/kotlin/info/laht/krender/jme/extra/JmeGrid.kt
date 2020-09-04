@@ -9,7 +9,7 @@ import com.jme3.scene.Mesh
 import com.jme3.scene.VertexBuffer
 
 
-class JmeGrid @JvmOverloads constructor(
+open class JmeGrid @JvmOverloads constructor(
     private val widthSegments: Int,
     private val heightSegments: Int,
     private val width: Float,
@@ -18,7 +18,6 @@ class JmeGrid @JvmOverloads constructor(
 ) : Mesh() {
 
     private val h: GridHelper
-
 
     init {
         h = GridHelper()

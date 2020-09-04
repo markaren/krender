@@ -29,6 +29,7 @@ object JmeRenderEngineTest {
         Thread.sleep(1000)
 
         sphere.setColor(Color.BLUE)
+        bunny.setWireframe(true)
 
         var stop = false
         Thread {
@@ -46,7 +47,6 @@ object JmeRenderEngineTest {
 
         engine.onClose {
             stop = true
-            println("per")
         }
 
     }

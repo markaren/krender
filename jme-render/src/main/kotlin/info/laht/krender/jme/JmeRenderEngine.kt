@@ -15,7 +15,6 @@ import info.laht.krender.jme.extra.RawInputAdapter
 import info.laht.krender.jme.proxy.*
 import info.laht.krender.proxies.*
 import info.laht.krender.util.ExternalSource
-import info.laht.krender.util.InputSource
 import org.joml.Matrix4dc
 import org.joml.Vector3dc
 import java.util.concurrent.locks.ReentrantLock
@@ -48,78 +47,68 @@ class JmeRenderEngine : RenderEngine {
 
     override fun createMesh(mesh: Trimesh): MeshProxy {
         return JmeMeshProxy(ctx, mesh).also {
-            ctx.invokeLater {
-                parent.attachChild(it)
-            }
+            ctx.invokeLater { parent.attachChild(it) }
         }
     }
 
     override fun createMesh(source: ExternalSource, scale: Float, offset: Matrix4dc?): MeshProxy {
         return JmeMeshProxy(ctx, source, scale, offset).also {
-            ctx.invokeLater {
-                parent.attachChild(it)
-            }
+            ctx.invokeLater { parent.attachChild(it) }
         }
     }
 
     override fun createSphere(radius: Float, offset: Matrix4dc?): SphereProxy {
         return JmeSphereProxy(ctx, radius, offset).also {
-            ctx.invokeLater {
-                parent.attachChild(it)
-            }
+            ctx.invokeLater { parent.attachChild(it) }
         }
     }
 
     override fun createBox(width: Float, height: Float, depth: Float, offset: Matrix4dc?): BoxProxy {
         return JmeBoxProxy(ctx, width, height, depth, offset).also {
-            ctx.invokeLater {
-                parent.attachChild(it)
-            }
+            ctx.invokeLater { parent.attachChild(it) }
         }
     }
 
     override fun createCylinder(radius: Float, height: Float, offset: Matrix4dc?): CylinderProxy {
         return JmeCylinderProxy(ctx, radius, height, offset).also {
-            ctx.invokeLater {
-                parent.attachChild(it)
-            }
+            ctx.invokeLater { parent.attachChild(it) }
         }
     }
 
     override fun createCapsule(radius: Float, height: Float, offset: Matrix4dc?): CapsuleProxy {
         return JmeCapsuleProxy(ctx, radius, height, offset).also {
-            ctx.invokeLater {
-                parent.attachChild(it)
-            }
+            ctx.invokeLater { parent.attachChild(it) }
         }
     }
 
     override fun createPlane(width: Float, height: Float, offset: Matrix4dc?): PlaneProxy {
         return JmePlaneProxy(ctx, width, height, offset).also {
-            ctx.invokeLater {
-                parent.attachChild(it)
-            }
+            ctx.invokeLater { parent.attachChild(it) }
         }
     }
 
     override fun createAxis(size: Float): AxisProxy {
         return JmeAxisProxy(ctx, size).also {
-            ctx.invokeLater {
-                parent.attachChild(it)
-            }
+            ctx.invokeLater { parent.attachChild(it) }
         }
     }
 
     override fun createHeightmap(widthSegments: Int, heightSegments: Int, width: Float, height: Float): TerrainProxy {
-        TODO("Not yet implemented")
+        return JmeHeightmapProxy(ctx, widthSegments, heightSegments, width, height).also {
+            ctx.invokeLater { parent.attachChild(it) }
+        }
     }
 
     override fun createCurve(radius: Float, points: List<Vector3dc>): CurveProxy {
-        TODO("Not yet implemented")
+        return JmeCurveProxy(ctx, radius.toDouble(), points).also {
+            ctx.invokeLater { parent.attachChild(it) }
+        }
     }
 
     override fun createArrow(length: Float): ArrowProxy {
-        TODO("Not yet implemented")
+        return JmeArrowProxy(ctx, length).also {
+            ctx.invokeLater { parent.attachChild(it) }
+        }
     }
 
     override fun createPointCloud(pointSize: Float, points: List<Vector3dc>): PointCloudProxy {
