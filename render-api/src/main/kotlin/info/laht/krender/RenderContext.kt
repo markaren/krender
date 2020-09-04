@@ -1,4 +1,5 @@
 package info.laht.krender
+/*
 
 import info.laht.krender.proxies.*
 import org.joml.Matrix4d
@@ -102,3 +103,4 @@ class RenderContext(
     }
 
 }
+*/

@@ -126,6 +126,9 @@ class JmeRenderEngine : RenderEngine {
         TODO("Not yet implemented")
     }
 
+    override fun createWater(width: Float, height: Float): WaterProxy {
+        TODO("Not yet implemented")
+    }
 
     private inner class JmeRenderer(
         private val parent: Node
