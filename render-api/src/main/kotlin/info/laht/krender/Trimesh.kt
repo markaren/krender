@@ -1,11 +1,11 @@
 package info.laht.krender
 
 import info.laht.krender.util.ExternalSource
-import org.joml.Vector3d
-import org.joml.Vector4d
+import org.joml.*
+
 
 class Trimesh private constructor(
-        builder: Builder
+    builder: Builder
 ) {
 
     val indices: MutableList<Int> = builder.indices
@@ -62,6 +62,61 @@ class Trimesh private constructor(
             }
         }
         return this
+    }
+
+
+    fun rotateX(angle: Number) = apply {
+        return applyMatrix4(Matrix4d().rotate(angle.toDouble(), 1.0, 0.0, 0.0))
+    }
+
+    fun rotateY(angle: Number) = apply {
+        return applyMatrix4(Matrix4d().rotate(angle.toDouble(), 0.0, 1.0, 0.0))
+    }
+
+    fun rotateZ(angle: Number) = apply {
+        return applyMatrix4(Matrix4d().rotate(angle.toDouble(), 0.0, 0.0, 1.0))
+    }
+
+    fun translateX(x: Number) = apply {
+        return applyMatrix4(Matrix4d().setTranslation(x.toDouble(), 0.0, 0.0))
+    }
+
+    fun translateY(y: Number) = apply {
+        return applyMatrix4(Matrix4d().setTranslation(0.0, y.toDouble(), 0.0))
+    }
+
+    fun translateZ(z: Number) = apply {
+        return applyMatrix4(Matrix4d().setTranslation(0.0, 0.0, z.toDouble()))
+    }
+
+    fun translate(x: Number, y: Number, z: Number) = apply {
+        return applyMatrix4(Matrix4d().setTranslation(x.toDouble(), y.toDouble(), z.toDouble()))
+    }
+
+    fun applyMatrix4(m: Matrix4dc) = apply {
+
+        val v = Vector3d()
+        for (i in 0 until vertices.size / 3) {
+            val index = i * 3
+            v[vertices[index + 0], vertices[index + 1]] = vertices[index + 2]
+            v.mulPosition(m)
+            vertices[index + 0] = v.x
+            vertices[index + 1] = v.y
+            vertices[index + 2] = v.z
+        }
+
+        if (hasNormals()) {
+            val normalMatrix = m.normal(Matrix3d())
+            var i = 0
+            while (i < normals.size) {
+                v.set(normals[i], normals[i + 1], normals[i + 2]).mul(normalMatrix)
+                normals[i + 0] = v.x
+                normals[i + 1] = v.y
+                normals[i + 2] = v.z
+                i += 3
+            }
+        }
+
     }
 
     fun computeVertexNormals() = apply {
