@@ -17,18 +17,14 @@ import info.laht.krender.util.URLSource
 import org.joml.*
 import java.awt.Color
 
-object JmeUtils {
+internal object JmeUtils {
 
     fun convert(v: Vector3f): Vector3d {
         return Vector3d(v.x.toDouble(), v.y.toDouble(), v.z.toDouble())
     }
 
     @JvmOverloads
-    fun convert(v: Vector3dc, store: Vector3f? = null): Vector3f {
-        var store = store
-        if (store == null) {
-            store = Vector3f()
-        }
+    fun convert(v: Vector3dc, store: Vector3f = Vector3f()): Vector3f {
         return store.set(v.x().toFloat(), v.y().toFloat(), v.z().toFloat())
     }
 

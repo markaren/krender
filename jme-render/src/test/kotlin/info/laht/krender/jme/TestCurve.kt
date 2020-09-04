@@ -15,6 +15,10 @@ fun main() {
     val renderEngine = JmeRenderEngine().apply { init() }
     val curve = renderEngine.createCurve(0.1f, points)
 
+    val arrow = renderEngine.createArrow(1f).apply {
+        setColor(Color.yellow)
+    }
+
     Thread.sleep(1000)
 
     curve.setColor(Color.blue)

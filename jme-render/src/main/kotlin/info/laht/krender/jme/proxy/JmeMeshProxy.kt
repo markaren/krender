@@ -4,9 +4,9 @@ import com.jme3.asset.AssetManager
 import com.jme3.asset.plugins.FileLocator
 import com.jme3.asset.plugins.UrlLocator
 import com.jme3.scene.*
-import info.laht.krender.Trimesh
 import info.laht.krender.jme.JmeContext
 import info.laht.krender.jme.extra.JmeUtils
+import info.laht.krender.mesh.Trimesh
 import info.laht.krender.proxies.MeshProxy
 import info.laht.krender.util.ExternalSource
 import info.laht.krender.util.FileSource

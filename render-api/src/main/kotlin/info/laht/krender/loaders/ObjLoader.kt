@@ -1,8 +1,7 @@
 package info.laht.krender.loaders
 
-import info.laht.krender.Trimesh
+import info.laht.krender.mesh.Trimesh
 import info.laht.krender.util.ExternalSource
-import info.laht.krender.util.InputSource
 import java.util.regex.Pattern
 
 

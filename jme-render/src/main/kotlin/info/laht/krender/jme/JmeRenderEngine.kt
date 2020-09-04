@@ -10,9 +10,9 @@ import com.jme3.math.ColorRGBA
 import com.jme3.math.Vector3f
 import com.jme3.scene.Node
 import info.laht.krender.RenderEngine
-import info.laht.krender.Trimesh
 import info.laht.krender.jme.extra.RawInputAdapter
 import info.laht.krender.jme.proxy.*
+import info.laht.krender.mesh.Trimesh
 import info.laht.krender.proxies.*
 import info.laht.krender.util.ExternalSource
 import org.joml.Matrix4dc

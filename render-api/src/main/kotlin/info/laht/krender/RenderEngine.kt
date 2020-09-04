@@ -1,8 +1,8 @@
 package info.laht.krender
 
+import info.laht.krender.mesh.Trimesh
 import info.laht.krender.proxies.*
 import info.laht.krender.util.ExternalSource
-import info.laht.krender.util.InputSource
 import org.joml.Matrix4dc
 import org.joml.Vector3dc
 import java.io.Closeable

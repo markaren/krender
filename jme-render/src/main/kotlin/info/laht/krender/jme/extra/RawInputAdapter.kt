@@ -3,7 +3,7 @@ package info.laht.krender.jme.extra
 import com.jme3.input.RawInputListener
 import com.jme3.input.event.*
 
-abstract class RawInputAdapter : RawInputListener {
+internal abstract class RawInputAdapter : RawInputListener {
     override fun beginInput() {}
     override fun endInput() {}
     override fun onJoyAxisEvent(evt: JoyAxisEvent) {}

@@ -1,7 +1,9 @@
-package info.laht.krender
+package info.laht.krender.mesh
 
 import info.laht.krender.util.ExternalSource
+import info.laht.krender.util.JomlUtil.fromArray
 import org.joml.*
+import java.util.*
 
 
 class Trimesh private constructor(
@@ -206,30 +208,35 @@ class Trimesh private constructor(
         }
     }
 
-    private fun Vector3d.fromArray(list: List<Double>, offset: Int) {
-        x = list[offset]
-        y = list[offset + 1]
-        z = list[offset + 2]
+    fun getVolume(): Double {
+        val faces: MutableList<Face> = ArrayList()
+        val vertex: MutableList<Vector3d> = ArrayList()
+
+        var i = 0
+        while (i < vertices.size) {
+            vertex.add(Vector3d(vertices[i], vertices[i + 1], vertices[i + 2]))
+            i += 3
+        }
+
+        i = 0
+        while (i < indices.size) {
+            faces.add(Face(indices[i], indices[i + 1], indices[i + 2]))
+            i += 3
+        }
+
+        return faces.map { f ->
+            signedVolumeOfTriangle(vertex[f.a], vertex[f.b], vertex[f.c])
+        }.sum()
     }
 
-    private fun Vector3d.fromArray(list: DoubleArray, offset: Int) {
-        x = list[offset]
-        y = list[offset + 1]
-        z = list[offset + 2]
-    }
-
-    private fun Vector4d.fromArray(list: List<Double>, offset: Int) {
-        x = list[offset]
-        y = list[offset + 1]
-        z = list[offset + 2]
-        w = list[offset + 3]
-    }
-
-    private fun Vector4d.fromArray(list: DoubleArray, offset: Int) {
-        x = list[offset]
-        y = list[offset + 1]
-        z = list[offset + 2]
-        w = list[offset + 3]
+    private fun signedVolumeOfTriangle(p1: Vector3dc, p2: Vector3dc, p3: Vector3dc): Double {
+        val v321 = p3.x() * p2.y() * p1.z()
+        val v231 = p2.x() * p3.y() * p1.z()
+        val v312 = p3.x() * p1.y() * p2.z()
+        val v132 = p1.x() * p3.y() * p2.z()
+        val v213 = p2.x() * p1.y() * p3.z()
+        val v123 = p1.x() * p2.y() * p3.z()
+        return 1.0 / 6.0 * (-v321 + v231 + v312 - v132 - v213 + v123)
     }
 
     class Builder {

@@ -3,11 +3,12 @@ package info.laht.krender.util
 import org.joml.Matrix4dc
 import org.joml.Vector3d
 import org.joml.Vector3dc
+import org.joml.Vector4d
 
 object JomlUtil {
 
-    fun toString(v: Vector3dc): String {
-        return "[x=" + v.x() + ", y=" + v.y() + ", z=" + v.z() + "]"
+    fun Vector3dc.toSimpleString(): String {
+        return "[x=" + x() + ", y=" + y() + ", z=" + z() + "]"
     }
 
     fun min(v1: Vector3dc, v2: Vector3dc, store: Vector3d): Vector3d {
@@ -45,20 +46,6 @@ object JomlUtil {
         return store
     }
 
-    /*fun normalize(v: Vector3d, min: Vector3dc, max: Vector3dc): Vector3d {
-        v.x = MathUtil.map(MathUtil.clamp(v.x, min.x(), max.x()), min.x(), max.x(), 0, 1)
-        v.y = MathUtil.map(MathUtil.clamp(v.y, min.y(), max.y()), min.y(), max.y(), 0, 1)
-        v.z = MathUtil.map(MathUtil.clamp(v.z, min.z(), max.z()), min.z(), max.z(), 0, 1)
-        return v
-    }
-
-    fun denormalize(v: Vector3d, min: Vector3dc, max: Vector3dc): Vector3d {
-        v.x = MathUtil.map(MathUtil.clamp(v.x, 0, 1), 0, 1, min.x(), max.x())
-        v.y = MathUtil.map(MathUtil.clamp(v.y, 0, 1), 0, 1, min.y(), max.y())
-        v.z = MathUtil.map(MathUtil.clamp(v.z, 0, 1), 0, 1, min.z(), max.z())
-        return v
-    }
-*/
     fun getMaxScaleOnAxis(m: Matrix4dc): Double {
         val scaleXSq = m.m00() * m.m00() + m.m01() * m.m01() + m.m02() * m.m02()
         val scaleYSq = m.m10() * m.m10() + m.m11() * m.m11() + m.m12() * m.m12()
@@ -85,4 +72,31 @@ object JomlUtil {
         dest[15] = m.m33().toFloat()
         return dest
     }
+
+    internal fun Vector3d.fromArray(list: List<Double>, offset: Int) {
+        x = list[offset]
+        y = list[offset + 1]
+        z = list[offset + 2]
+    }
+
+    internal fun Vector3d.fromArray(list: DoubleArray, offset: Int) {
+        x = list[offset]
+        y = list[offset + 1]
+        z = list[offset + 2]
+    }
+
+    internal fun Vector4d.fromArray(list: List<Double>, offset: Int) {
+        x = list[offset]
+        y = list[offset + 1]
+        z = list[offset + 2]
+        w = list[offset + 3]
+    }
+
+    internal fun Vector4d.fromArray(list: DoubleArray, offset: Int) {
+        x = list[offset]
+        y = list[offset + 1]
+        z = list[offset + 2]
+        w = list[offset + 3]
+    }
+
 }

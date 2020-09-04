@@ -10,8 +10,8 @@ class JmeCapsule(
     radialSamples: Int,
     zSamples: Int,
     radialSamples2: Int,
-    val radius: Float,
-    val height: Float
+    radius: Float,
+    height: Float
 ) : Node() {
 
     init {
