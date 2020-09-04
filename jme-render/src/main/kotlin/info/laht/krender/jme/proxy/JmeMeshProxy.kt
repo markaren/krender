@@ -62,14 +62,14 @@ class JmeMeshProxy : JmeProxy, MeshProxy {
             when (source) {
                 is FileSource -> {
                     assetManager.registerLocator(source.location, FileLocator::class.java)
-                    //            assetManager.registerLocator(((FileSource) source).getLocation() + "/textures", FileLocator.class);
+                    assetManager.registerLocator(source.location + "/textures", FileLocator::class.java)
                 }
                 is URLSource -> {
                     assetManager.registerLocator(source.location, UrlLocator::class.java)
-                    //            assetManager.registerLocator(((URLSource) source).getLocation() + "/textures", UrlLocator.class);
+                    assetManager.registerLocator(source.location + "/textures", UrlLocator::class.java)
                 }
                 else -> {
-                    throw UnsupportedOperationException()
+                    throw UnsupportedOperationException("Source $source not supported!")
                 }
             }
             val loadModel: Spatial = assetManager.loadModel(source.filename)

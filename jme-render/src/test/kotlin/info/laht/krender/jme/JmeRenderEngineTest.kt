@@ -1,6 +1,9 @@
 package info.laht.krender.jme
 
+import info.laht.krender.loaders.ObjLoader
 import info.laht.krender.util.FileSource
+import org.joml.Matrix4d
+import org.joml.Vector3d
 import java.awt.Color
 import java.io.File
 
@@ -17,13 +20,34 @@ object JmeRenderEngineTest {
         }
 
         val source = FileSource(File(JmeRenderEngineTest::class.java.classLoader.getResource("obj/bunny.obj")!!.file))
-        engine.createMesh(source, 10f)
+        val load = ObjLoader().load(source).apply {
+            computeVertexNormals()
+            scale(10f)
+        }
+        val bunny = engine.createMesh(load)
 
         Thread.sleep(1000)
 
         sphere.setColor(Color.BLUE)
 
-        engine.close()
+        var stop = false
+        Thread {
+
+            val transform = Matrix4d()
+
+            while (!stop) {
+
+                transform.rotate(0.1 * 0.1, Vector3d(0.0,1.0,0.0))
+                bunny.setTransform(transform)
+                Thread.sleep(10)
+            }
+
+        }.start()
+
+        engine.onClose {
+            stop = true
+            println("per")
+        }
 
     }
 

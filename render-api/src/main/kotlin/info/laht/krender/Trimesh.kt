@@ -1,12 +1,11 @@
 package info.laht.krender
 
 import info.laht.krender.util.ExternalSource
-import info.laht.krender.util.InputSource
 import org.joml.Vector3d
 import org.joml.Vector4d
 
 class Trimesh private constructor(
-    builder: Builder
+        builder: Builder
 ) {
 
     val indices: MutableList<Int> = builder.indices
@@ -17,6 +16,7 @@ class Trimesh private constructor(
 
     var source: ExternalSource? = null
     var scale: Float = 1f
+        private set
 
     fun hasSource(): Boolean {
         return source != null
@@ -40,6 +40,17 @@ class Trimesh private constructor(
 
     fun hasUvs(): Boolean {
         return uvs.isNotEmpty()
+    }
+
+    fun scale(scale: Float) {
+        this.scale *= scale
+        var i = 0
+        while (i < vertices.size) {
+            vertices[i + 0] = vertices[i + 0] * scale
+            vertices[i + 1] = vertices[i + 1] * scale
+            vertices[i + 2] = vertices[i + 2] * scale
+            i += 3
+        }
     }
 
     @JvmOverloads

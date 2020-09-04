@@ -30,6 +30,8 @@ class JmeRenderEngine : RenderEngine {
     private val ctx: JmeContext
         get() = renderer.ctx
 
+    private var onCloseCallback: (() -> Unit)? = null
+
     override fun init() {
         renderer = JmeRenderer(parent).apply {
             start()
@@ -38,6 +40,10 @@ class JmeRenderEngine : RenderEngine {
 
     override fun close() {
         renderer.stop()
+    }
+
+    override fun onClose(callback: () -> Unit) {
+        onCloseCallback = callback
     }
 
     override fun createMesh(mesh: Trimesh): MeshProxy {
@@ -121,7 +127,7 @@ class JmeRenderEngine : RenderEngine {
     }
 
 
-    private class JmeRenderer(
+    private inner class JmeRenderer(
         private val parent: Node
     ) : SimpleApplication() {
 
@@ -152,7 +158,7 @@ class JmeRenderEngine : RenderEngine {
 
             super.stateManager.attach(object : AbstractAppState() {
                 override fun cleanup() {
-                    //TODO
+                    onCloseCallback?.invoke()
                 }
             })
 

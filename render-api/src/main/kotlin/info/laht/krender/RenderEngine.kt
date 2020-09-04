@@ -28,6 +28,8 @@ interface RenderEngine : Closeable {
 
     fun createPointCloud(pointSize: Float, points: List<Vector3dc>): PointCloudProxy
 
+    fun onClose(callback: () -> Unit)
+
     /*fun registerKeyListener(consumer: KeyConsumer?)
     fun registerClickListener(consumer: ClickConsumer?)*/
 
