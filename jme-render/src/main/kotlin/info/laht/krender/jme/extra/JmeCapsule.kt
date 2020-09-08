@@ -16,13 +16,14 @@ class JmeCapsule(
 
     init {
 
-        val body = Geometry("body", Cylinder(axisSamples, radialSamples, radius, height, false))
+        val body = Geometry("body", Cylinder(axisSamples, radialSamples, radius, height - radius, false))
         val upperSphere = Geometry("upperSphere", Sphere(zSamples, radialSamples2, radius))
         val lowerSphere = Geometry("lowerSphere", Sphere(zSamples, radialSamples2, radius))
-        upperSphere.setLocalTranslation(0f, 0f, height / 2)
-        lowerSphere.setLocalTranslation(0f, 0f, -height / 2)
+        upperSphere.setLocalTranslation(0f, 0f, (height - radius) / 2)
+        lowerSphere.setLocalTranslation(0f, 0f, -(height - radius) / 2)
         attachChild(body)
         attachChild(upperSphere)
         attachChild(lowerSphere)
     }
+
 }

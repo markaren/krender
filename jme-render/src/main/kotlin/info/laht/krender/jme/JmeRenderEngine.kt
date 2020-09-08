@@ -23,7 +23,7 @@ import kotlin.concurrent.withLock
 
 class JmeRenderEngine : RenderEngine {
 
-    private lateinit var renderer: JmeRenderer
+    private lateinit var renderer: JmeInternalRenderer
     private val parent: Node = Node("parent")
 
     private val ctx: JmeContext
@@ -32,7 +32,7 @@ class JmeRenderEngine : RenderEngine {
     private var onCloseCallback: (() -> Unit)? = null
 
     override fun init() {
-        renderer = JmeRenderer(parent).apply {
+        renderer = JmeInternalRenderer(parent).apply {
             start()
         }
     }
@@ -119,7 +119,7 @@ class JmeRenderEngine : RenderEngine {
         TODO("Not yet implemented")
     }
 
-    private inner class JmeRenderer(
+    private inner class JmeInternalRenderer(
         private val parent: Node
     ) : SimpleApplication() {
 
