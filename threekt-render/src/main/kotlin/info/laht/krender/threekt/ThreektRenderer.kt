@@ -18,7 +18,6 @@ import kotlin.concurrent.withLock
 
 class ThreektRenderer : RenderEngine {
 
-    private val mutex: Unit = Unit
     private var onCloseCallback: (() -> Unit)? = null
 
     private val scene: Scene = Scene().apply {
@@ -111,7 +110,7 @@ class ThreektRenderer : RenderEngine {
 
         override fun run() {
 
-            Window().use { window ->
+            Window(antialias = 4).use { window ->
 
                 lock.withLock {
                     initialized.signalAll()

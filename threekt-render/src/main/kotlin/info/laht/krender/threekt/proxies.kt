@@ -18,8 +18,8 @@ internal open class ThreektProxy(
     val ctx: RenderContext
 ) : RenderProxy, WireframeProxy, ColorProxy, SpatialProxy {
 
-    val parentNode = Object3DImpl()
-    private val childNode = Object3DImpl()
+    val parentNode = Object3DImpl().apply { matrixAutoUpdate = false }
+    private val childNode = Object3DImpl().apply { matrixAutoUpdate = false }
 
     init {
         ctx.invokeLater {
@@ -34,6 +34,7 @@ internal open class ThreektProxy(
                 v.y().toFloat(),
                 v.z().toFloat()
             )
+            parentNode.updateMatrix()
         }
     }
 
@@ -45,16 +46,17 @@ internal open class ThreektProxy(
                 q.z().toFloat(),
                 q.w().toFloat()
             )
+            parentNode.updateMatrix()
         }
     }
 
     override fun setTransform(m: Matrix4dc) {
         ctx.invokeLater {
             parentNode.matrix.set(
-                m.m00().toFloat(), m.m01().toFloat(), m.m02().toFloat(), m.m03().toFloat(),
-                m.m10().toFloat(), m.m11().toFloat(), m.m12().toFloat(), m.m13().toFloat(),
-                m.m20().toFloat(), m.m21().toFloat(), m.m22().toFloat(), m.m23().toFloat(),
-                m.m30().toFloat(), m.m31().toFloat(), m.m32().toFloat(), m.m33().toFloat()
+                m.m00().toFloat(), m.m10().toFloat(), m.m20().toFloat(), m.m30().toFloat(),
+                m.m01().toFloat(), m.m11().toFloat(), m.m21().toFloat(), m.m31().toFloat(),
+                m.m02().toFloat(), m.m12().toFloat(), m.m22().toFloat(), m.m32().toFloat(),
+                m.m03().toFloat(), m.m13().toFloat(), m.m23().toFloat(), m.m33().toFloat()
             )
         }
     }
@@ -62,20 +64,22 @@ internal open class ThreektProxy(
     override fun setOffsetTransform(offset: Matrix4dc) {
         ctx.invokeLater {
             childNode.matrix.set(
-                offset.m00().toFloat(), offset.m01().toFloat(), offset.m02().toFloat(), offset.m03().toFloat(),
-                offset.m10().toFloat(), offset.m11().toFloat(), offset.m12().toFloat(), offset.m13().toFloat(),
-                offset.m20().toFloat(), offset.m21().toFloat(), offset.m22().toFloat(), offset.m23().toFloat(),
-                offset.m30().toFloat(), offset.m31().toFloat(), offset.m32().toFloat(), offset.m33().toFloat()
+                offset.m00().toFloat(), offset.m10().toFloat(), offset.m20().toFloat(), offset.m30().toFloat(),
+                offset.m01().toFloat(), offset.m11().toFloat(), offset.m21().toFloat(), offset.m31().toFloat(),
+                offset.m02().toFloat(), offset.m12().toFloat(), offset.m22().toFloat(), offset.m32().toFloat(),
+                offset.m03().toFloat(), offset.m13().toFloat(), offset.m23().toFloat(), offset.m33().toFloat()
             )
         }
     }
 
     override fun setWireframe(flag: Boolean) {
         ctx.invokeLater {
-            if (childNode is Mesh) {
-                val material = childNode.material
-                if (material is MaterialWithWireframe) {
-                    material.wireframe = flag
+            for (o in childNode.children) {
+                if (o is Mesh) {
+                    val material = o.material
+                    if (material is MaterialWithWireframe) {
+                        material.wireframe = flag
+                    }
                 }
             }
         }
