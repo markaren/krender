@@ -1,6 +1,7 @@
 plugins {
     id 'base'
     id 'java-library'
+    id "com.jfrog.bintray" version "1.8.4" apply(false)
     id 'org.jetbrains.kotlin.jvm' version '1.4.0' apply(false)
 }
 
@@ -17,6 +18,8 @@ println "Gradle version is ${gradle.getGradleVersion()}"
 subprojects {
     
     apply plugin: 'kotlin'
+    apply from: rootProject.file("gradle/mavenpublish.gradle")
+    apply from: rootProject.file("gradle/bintraypublish.gradle")
 
     repositories {
         mavenCentral()
