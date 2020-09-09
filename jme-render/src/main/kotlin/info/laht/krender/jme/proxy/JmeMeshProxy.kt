@@ -13,7 +13,7 @@ import info.laht.krender.util.FileSource
 import info.laht.krender.util.URLSource
 import org.joml.Matrix4dc
 
-class JmeMeshProxy : JmeProxy, MeshProxy {
+internal class JmeMeshProxy : JmeProxy, MeshProxy {
 
     constructor(ctx: JmeContext, data: Trimesh) : super("mesh", ctx) {
         attachChild(create(data))

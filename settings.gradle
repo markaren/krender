@@ -2,3 +2,4 @@ rootProject.name = 'KRender'
 
 include 'render-api'
 include 'jme-render'
+include 'threekt-render'

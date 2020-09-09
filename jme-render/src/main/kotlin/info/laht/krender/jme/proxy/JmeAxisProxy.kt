@@ -5,7 +5,7 @@ import info.laht.krender.jme.extra.JmeAxis
 import info.laht.krender.proxies.AxisProxy
 
 
-class JmeAxisProxy(
+internal class JmeAxisProxy(
     ctx: JmeContext,
     size: Float
 ) : JmeProxy("axis", ctx), AxisProxy {

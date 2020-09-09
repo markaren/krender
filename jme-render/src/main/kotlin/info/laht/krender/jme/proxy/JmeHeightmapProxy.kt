@@ -6,7 +6,7 @@ import info.laht.krender.jme.JmeContext
 import info.laht.krender.jme.extra.JmeGrid
 import info.laht.krender.proxies.TerrainProxy
 
-class JmeHeightmapProxy(
+internal class JmeHeightmapProxy(
     ctx: JmeContext,
     widthSegments: Int,
     heightSegments: Int,

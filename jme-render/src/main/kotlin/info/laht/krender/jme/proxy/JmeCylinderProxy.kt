@@ -6,7 +6,7 @@ import info.laht.krender.jme.JmeContext
 import info.laht.krender.proxies.CylinderProxy
 import org.joml.Matrix4dc
 
-class JmeCylinderProxy(
+internal class JmeCylinderProxy(
     ctx: JmeContext,
     private val originalRadius: Float,
     private val originalHeight: Float,

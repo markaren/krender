@@ -6,7 +6,7 @@ import info.laht.krender.jme.JmeContext
 import info.laht.krender.proxies.SphereProxy
 import org.joml.Matrix4dc
 
-class JmeSphereProxy(
+internal class JmeSphereProxy(
     ctx: JmeContext,
     private val originalRadius: Float,
     offset: Matrix4dc?

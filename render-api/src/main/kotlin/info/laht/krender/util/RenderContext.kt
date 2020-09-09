@@ -1,11 +1,8 @@
-package info.laht.krender.jme
+package info.laht.krender.util
 
-import com.jme3.asset.AssetManager
 import java.util.*
 
-class JmeContext(
-    val assetManager: AssetManager
-) {
+open class RenderContext {
 
     private val tasks: Queue<() -> Unit> = ArrayDeque()
 
@@ -15,7 +12,7 @@ class JmeContext(
     }
 
     @Synchronized
-    internal fun invokePendingTasks() {
+    fun invokePendingTasks() {
         while (!tasks.isEmpty()) {
             tasks.poll().invoke()
         }

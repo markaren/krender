@@ -20,6 +20,7 @@ subprojects {
 
     repositories {
         mavenCentral()
+        maven { url "https://dl.bintray.com/laht/mvn" }
         maven { url "https://dl.bintray.com/jmonkeyengine/org.jmonkeyengine" }
     }
 
@@ -34,6 +35,16 @@ subprojects {
         testImplementation("org.junit.jupiter:junit-jupiter-api:$junit_version")
         testImplementation("org.junit.jupiter:junit-jupiter-params:$junit_version")
         testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:$junit_version")
+    }
+
+    compileKotlin {
+        kotlinOptions {
+            jvmTarget = "1.8"
+            javaParameters = true
+        }
+    }
+    compileTestKotlin {
+        kotlinOptions.jvmTarget = "1.8"
     }
 
     test {

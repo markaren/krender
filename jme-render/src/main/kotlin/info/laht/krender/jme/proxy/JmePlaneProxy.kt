@@ -6,7 +6,7 @@ import info.laht.krender.jme.extra.JmeGrid
 import info.laht.krender.proxies.PlaneProxy
 import org.joml.Matrix4dc
 
-class JmePlaneProxy(
+internal class JmePlaneProxy(
     ctx: JmeContext,
     width: Float,
     height: Float,

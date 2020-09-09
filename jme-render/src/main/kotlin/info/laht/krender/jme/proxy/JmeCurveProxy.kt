@@ -11,7 +11,7 @@ import info.laht.krender.proxies.CurveProxy
 import org.joml.Vector3dc
 import java.awt.Color
 
-class JmeCurveProxy(
+internal class JmeCurveProxy(
     private val ctx: JmeContext,
     radius: Double,
     points: List<Vector3dc>

@@ -8,7 +8,7 @@ import com.jme3.scene.Node
 import com.jme3.scene.debug.Arrow
 import info.laht.krender.jme.JmeContext
 
-class JmeAxis(
+internal class JmeAxis(
     ctx: JmeContext,
     length: Float
 ) : Node() {

@@ -4,7 +4,7 @@ import info.laht.krender.jme.JmeContext
 import info.laht.krender.jme.extra.JmeArrow
 import info.laht.krender.proxies.ArrowProxy
 
-class JmeArrowProxy(
+internal class JmeArrowProxy(
     ctx: JmeContext,
     private val originalLength: Float
 ) : JmeProxy("arrow", ctx), ArrowProxy {

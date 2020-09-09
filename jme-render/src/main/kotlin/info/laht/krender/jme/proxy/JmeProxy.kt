@@ -18,7 +18,7 @@ import org.joml.*
 import java.awt.Color
 import java.io.IOException
 
-abstract class JmeProxy @JvmOverloads constructor(
+internal abstract class JmeProxy @JvmOverloads constructor(
     name: String?,
     protected val ctx: JmeContext,
     offset: Matrix4dc? = null

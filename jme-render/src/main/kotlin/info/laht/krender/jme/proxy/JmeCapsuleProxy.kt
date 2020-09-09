@@ -5,7 +5,7 @@ import info.laht.krender.jme.extra.JmeCapsule
 import info.laht.krender.proxies.CapsuleProxy
 import org.joml.Matrix4dc
 
-class JmeCapsuleProxy(
+internal class JmeCapsuleProxy(
     ctx: JmeContext,
     radius: Float,
     height: Float,

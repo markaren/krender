@@ -6,7 +6,7 @@ import info.laht.krender.jme.JmeContext
 import info.laht.krender.proxies.BoxProxy
 import org.joml.Matrix4dc
 
-class JmeBoxProxy(
+internal class JmeBoxProxy(
     ctx: JmeContext,
     width: Float,
     height: Float,

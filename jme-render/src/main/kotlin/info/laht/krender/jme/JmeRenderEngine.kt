@@ -2,6 +2,7 @@ package info.laht.krender.jme
 
 import com.jme3.app.SimpleApplication
 import com.jme3.app.state.AbstractAppState
+import com.jme3.asset.AssetManager
 import com.jme3.input.event.KeyInputEvent
 import com.jme3.input.event.MouseButtonEvent
 import com.jme3.light.AmbientLight
@@ -15,11 +16,15 @@ import info.laht.krender.jme.proxy.*
 import info.laht.krender.mesh.Trimesh
 import info.laht.krender.proxies.*
 import info.laht.krender.util.ExternalSource
+import info.laht.krender.util.RenderContext
 import org.joml.Matrix4dc
 import org.joml.Vector3dc
 import java.util.concurrent.locks.ReentrantLock
 import kotlin.concurrent.withLock
 
+internal class JmeContext(
+    val assetManager: AssetManager
+) : RenderContext()
 
 class JmeRenderEngine : RenderEngine {
 
