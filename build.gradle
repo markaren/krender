@@ -10,14 +10,15 @@ wrapper {
     gradleVersion = '6.6.1'
 }
 
-group 'info.laht.krender'
-version '0.1'
-
 println "Gradle version is ${gradle.getGradleVersion()}"
 
 subprojects {
     
     apply plugin: 'kotlin'
+
+    group 'info.laht.krender'
+    version 'r1'
+
     apply from: rootProject.file("gradle/mavenpublish.gradle")
     apply from: rootProject.file("gradle/bintraypublish.gradle")
 
