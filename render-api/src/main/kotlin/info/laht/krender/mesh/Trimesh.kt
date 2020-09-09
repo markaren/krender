@@ -5,6 +5,11 @@ import info.laht.krender.util.JomlUtil.fromArray
 import org.joml.*
 import java.util.*
 
+internal data class Face(
+    val a: Int,
+    val b: Int,
+    val c: Int
+)
 
 class Trimesh private constructor(
     builder: Builder

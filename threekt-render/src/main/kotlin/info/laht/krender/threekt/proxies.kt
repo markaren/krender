@@ -4,7 +4,10 @@ import info.laht.krender.proxies.*
 import info.laht.krender.util.ExternalSource
 import info.laht.krender.util.FileSource
 import info.laht.krender.util.RenderContext
+import info.laht.threekt.Colors
 import info.laht.threekt.Side
+import info.laht.threekt.core.BufferGeometry
+import info.laht.threekt.core.FloatBufferAttribute
 import info.laht.threekt.core.Object3D
 import info.laht.threekt.core.Object3DImpl
 import info.laht.threekt.geometries.*
@@ -12,15 +15,15 @@ import info.laht.threekt.loaders.TextureLoader
 import info.laht.threekt.materials.MaterialWithColor
 import info.laht.threekt.materials.MaterialWithWireframe
 import info.laht.threekt.materials.MeshBasicMaterial
-import info.laht.threekt.math.Curve3
+import info.laht.threekt.materials.PointsMaterial
 import info.laht.threekt.math.Vector3
 import info.laht.threekt.math.curves.CatmullRomCurve3
 import info.laht.threekt.objects.Mesh
+import info.laht.threekt.objects.Points
 import org.joml.Matrix4dc
 import org.joml.Quaterniondc
 import org.joml.Vector3dc
 import java.awt.Color
-import kotlin.math.roundToInt
 
 internal open class ThreektProxy(
     val ctx: RenderContext
@@ -209,20 +212,36 @@ internal class ThreektCylinderProxy(
 
 }
 
-class CurvePath(
-    private val points: List<Vector3dc>
-) : Curve3() {
+internal class ThreektPointCloudProxy(
+    ctx: RenderContext,
+    pointSize: Float,
+    points: List<Vector3dc>,
+) : ThreektProxy(ctx), PointCloudProxy {
 
-    private fun map(x: Float, in_min: Float, in_max: Float, out_min: Float, out_max: Float): Int {
-        return ((x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min).roundToInt()
+    init {
+
+        var i = 0
+        val positions = FloatArray(3 * points.size)
+        points.forEach { v ->
+            positions[i++] = v.x().toFloat()
+            positions[i++] = v.y().toFloat()
+            positions[i++] = v.z().toFloat()
+        }
+
+        val geometry = BufferGeometry()
+        geometry.addAttribute("position", FloatBufferAttribute(positions, 3))
+
+        val material = PointsMaterial().apply {
+            size = pointSize
+            vertexColors = Colors.Vertex
+        }
+
+        ctx.invokeLater {
+            attachChild(Points(geometry, material))
+        }
+
     }
 
-    override fun getPoint(t: Float, optionalTarget: Vector3): Vector3 {
-        val i = map(t.coerceIn(0f, 1f), 0f, 1f, 0f, points.size.toFloat() - 1)
-        val v = points[i]
-        println("t=$t, i=$i, size=${points.size}")
-        return optionalTarget.set(v.x().toFloat(), v.y().toFloat(), v.z().toFloat())
-    }
 }
 
 internal class ThreektCurveProxy(

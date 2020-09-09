@@ -111,7 +111,11 @@ class ThreektRenderer : RenderEngine {
     }
 
     override fun createPointCloud(pointSize: Float, points: List<Vector3dc>): PointCloudProxy {
-        TODO("Not yet implemented")
+        return ThreektPointCloudProxy(ctx, pointSize, points).also {
+            ctx.invokeLater {
+                scene.add(it.parentNode)
+            }
+        }
     }
 
     override fun onClose(callback: () -> Unit) {
