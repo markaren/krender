@@ -1,13 +1,19 @@
 package info.laht.krender.threekt
 
 import info.laht.krender.proxies.*
+import info.laht.krender.util.ExternalSource
+import info.laht.krender.util.FileSource
 import info.laht.krender.util.RenderContext
 import info.laht.threekt.core.Object3D
 import info.laht.threekt.core.Object3DImpl
 import info.laht.threekt.geometries.BoxBufferGeometry
+import info.laht.threekt.geometries.CylinderBufferGeometry
+import info.laht.threekt.geometries.PlaneBufferGeometry
 import info.laht.threekt.geometries.SphereBufferGeometry
+import info.laht.threekt.loaders.TextureLoader
 import info.laht.threekt.materials.MaterialWithColor
 import info.laht.threekt.materials.MaterialWithWireframe
+import info.laht.threekt.materials.MeshBasicMaterial
 import info.laht.threekt.objects.Mesh
 import org.joml.Matrix4dc
 import org.joml.Quaterniondc
@@ -16,7 +22,7 @@ import java.awt.Color
 
 internal open class ThreektProxy(
     val ctx: RenderContext
-) : RenderProxy, WireframeProxy, ColorProxy, SpatialProxy {
+) : RenderProxy, WireframeProxy, ColorProxy, SpatialProxy, TextureProxy {
 
     val parentNode = Object3DImpl().apply { matrixAutoUpdate = false }
     private val childNode = Object3DImpl().apply { matrixAutoUpdate = false }
@@ -72,6 +78,21 @@ internal open class ThreektProxy(
         }
     }
 
+    override fun setTexture(source: ExternalSource) {
+        if (source is FileSource) {
+            ctx.invokeLater {
+                for (o in childNode.children) {
+                    if (o is Mesh) {
+                        val m = o.material
+                        if (m is MeshBasicMaterial) {
+                            m.map = TextureLoader.load(source.file.absolutePath)
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     override fun setWireframe(flag: Boolean) {
         ctx.invokeLater {
             for (o in childNode.children) {
@@ -117,6 +138,25 @@ internal open class ThreektProxy(
 
 }
 
+internal class ThreektPlaneProxy(
+    ctx: RenderContext,
+    width: Float,
+    height: Float
+) : ThreektProxy(ctx), PlaneProxy {
+
+    private val geometry = PlaneBufferGeometry(width, height)
+    private val mesh = Mesh(geometry)
+
+    init {
+
+        ctx.invokeLater {
+            attachChild(mesh)
+        }
+
+    }
+
+}
+
 internal class ThreektBoxProxy(
     ctx: RenderContext,
     width: Float,
@@ -155,6 +195,33 @@ internal class ThreektSphereProxy(
     override fun setRadius(radius: Float) {
         val scale = originalRadius / radius
         geometry.scale(scale)
+    }
+
+}
+
+internal class ThreektCylinderProxy(
+    ctx: RenderContext,
+    radius: Float,
+    height: Float
+) : ThreektProxy(ctx), CylinderProxy {
+
+    private val originalRadius = radius
+    private val geometry = CylinderBufferGeometry(radius, height)
+    private val mesh = Mesh(geometry)
+
+    init {
+        ctx.invokeLater {
+            attachChild(mesh)
+        }
+    }
+
+    override fun setRadius(radius: Float) {
+        val scale = originalRadius / radius
+        geometry.scale(scale)
+    }
+
+    override fun setHeight(height: Float) {
+        TODO("Not yet implemented")
     }
 
 }

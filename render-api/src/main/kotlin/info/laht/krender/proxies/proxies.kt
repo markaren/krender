@@ -14,9 +14,9 @@ interface AxisProxy : RenderProxy, SpatialProxy {
     fun setSize(size: Float)
 }
 
-interface BoxProxy : RenderProxy, ColorProxy, SpatialProxy, WireframeProxy
+interface BoxProxy : RenderProxy, ColorProxy, SpatialProxy, WireframeProxy, TextureProxy
 
-interface CapsuleProxy : RenderProxy, ColorProxy, SpatialProxy, WireframeProxy {
+interface CapsuleProxy : RenderProxy, ColorProxy, SpatialProxy, WireframeProxy, TextureProxy {
     fun setRadius(radius: Float)
     fun setHeight(height: Float)
 }
@@ -46,7 +46,7 @@ interface SpatialProxy {
     fun setOffsetTransform(offset: Matrix4dc)
 }
 
-interface SphereProxy : RenderProxy, ColorProxy, SpatialProxy, WireframeProxy {
+interface SphereProxy : RenderProxy, ColorProxy, SpatialProxy, WireframeProxy, TextureProxy {
     fun setRadius(radius: Float)
 }
 

@@ -56,6 +56,7 @@ class ThreektRenderer : RenderEngine {
 
     override fun createSphere(radius: Float, offset: Matrix4dc?): SphereProxy {
         return ThreektSphereProxy(ctx, radius).also {
+            offset?.also { offset -> it.setOffsetTransform(offset) }
             ctx.invokeLater {
                 scene.add(it.parentNode)
             }
@@ -68,6 +69,7 @@ class ThreektRenderer : RenderEngine {
 
     override fun createBox(width: Float, height: Float, depth: Float, offset: Matrix4dc?): BoxProxy {
         return ThreektBoxProxy(ctx, width, height, depth).also {
+            offset?.also { offset -> it.setOffsetTransform(offset) }
             ctx.invokeLater {
                 scene.add(it.parentNode)
             }
@@ -75,7 +77,12 @@ class ThreektRenderer : RenderEngine {
     }
 
     override fun createCylinder(radius: Float, height: Float, offset: Matrix4dc?): CylinderProxy {
-        TODO("Not yet implemented")
+        return ThreektCylinderProxy(ctx, radius, height).also {
+            offset?.also { offset -> it.setOffsetTransform(offset) }
+            ctx.invokeLater {
+                scene.add(it.parentNode)
+            }
+        }
     }
 
     override fun createCapsule(radius: Float, height: Float, offset: Matrix4dc?): CapsuleProxy {
