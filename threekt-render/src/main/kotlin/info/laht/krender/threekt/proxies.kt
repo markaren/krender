@@ -4,21 +4,23 @@ import info.laht.krender.proxies.*
 import info.laht.krender.util.ExternalSource
 import info.laht.krender.util.FileSource
 import info.laht.krender.util.RenderContext
+import info.laht.threekt.Side
 import info.laht.threekt.core.Object3D
 import info.laht.threekt.core.Object3DImpl
-import info.laht.threekt.geometries.BoxBufferGeometry
-import info.laht.threekt.geometries.CylinderBufferGeometry
-import info.laht.threekt.geometries.PlaneBufferGeometry
-import info.laht.threekt.geometries.SphereBufferGeometry
+import info.laht.threekt.geometries.*
 import info.laht.threekt.loaders.TextureLoader
 import info.laht.threekt.materials.MaterialWithColor
 import info.laht.threekt.materials.MaterialWithWireframe
 import info.laht.threekt.materials.MeshBasicMaterial
+import info.laht.threekt.math.Curve3
+import info.laht.threekt.math.Vector3
+import info.laht.threekt.math.curves.CatmullRomCurve3
 import info.laht.threekt.objects.Mesh
 import org.joml.Matrix4dc
 import org.joml.Quaterniondc
 import org.joml.Vector3dc
 import java.awt.Color
+import kotlin.math.roundToInt
 
 internal open class ThreektProxy(
     val ctx: RenderContext
@@ -35,46 +37,27 @@ internal open class ThreektProxy(
 
     override fun setTranslate(v: Vector3dc) {
         ctx.invokeLater {
-            parentNode.position.set(
-                v.x().toFloat(),
-                v.y().toFloat(),
-                v.z().toFloat()
-            )
+            parentNode.position.set(v)
             parentNode.updateMatrix()
         }
     }
 
     override fun setRotate(q: Quaterniondc) {
         ctx.invokeLater {
-            parentNode.quaternion.set(
-                q.x().toFloat(),
-                q.y().toFloat(),
-                q.z().toFloat(),
-                q.w().toFloat()
-            )
+            parentNode.quaternion.set(q)
             parentNode.updateMatrix()
         }
     }
 
     override fun setTransform(m: Matrix4dc) {
         ctx.invokeLater {
-            parentNode.matrix.set(
-                m.m00().toFloat(), m.m10().toFloat(), m.m20().toFloat(), m.m30().toFloat(),
-                m.m01().toFloat(), m.m11().toFloat(), m.m21().toFloat(), m.m31().toFloat(),
-                m.m02().toFloat(), m.m12().toFloat(), m.m22().toFloat(), m.m32().toFloat(),
-                m.m03().toFloat(), m.m13().toFloat(), m.m23().toFloat(), m.m33().toFloat()
-            )
+            parentNode.matrix.set(m)
         }
     }
 
     override fun setOffsetTransform(offset: Matrix4dc) {
         ctx.invokeLater {
-            childNode.matrix.set(
-                offset.m00().toFloat(), offset.m10().toFloat(), offset.m20().toFloat(), offset.m30().toFloat(),
-                offset.m01().toFloat(), offset.m11().toFloat(), offset.m21().toFloat(), offset.m31().toFloat(),
-                offset.m02().toFloat(), offset.m12().toFloat(), offset.m22().toFloat(), offset.m32().toFloat(),
-                offset.m03().toFloat(), offset.m13().toFloat(), offset.m23().toFloat(), offset.m33().toFloat()
-            )
+            childNode.matrix.set(offset)
         }
     }
 
@@ -224,4 +207,50 @@ internal class ThreektCylinderProxy(
         TODO("Not yet implemented")
     }
 
+}
+
+class CurvePath(
+    private val points: List<Vector3dc>
+) : Curve3() {
+
+    private fun map(x: Float, in_min: Float, in_max: Float, out_min: Float, out_max: Float): Int {
+        return ((x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min).roundToInt()
+    }
+
+    override fun getPoint(t: Float, optionalTarget: Vector3): Vector3 {
+        val i = map(t.coerceIn(0f, 1f), 0f, 1f, 0f, points.size.toFloat() - 1)
+        val v = points[i]
+        println("t=$t, i=$i, size=${points.size}")
+        return optionalTarget.set(v.x().toFloat(), v.y().toFloat(), v.z().toFloat())
+    }
+}
+
+internal class ThreektCurveProxy(
+    ctx: RenderContext,
+    private val radius: Float,
+    points: List<Vector3dc>
+) : ThreektProxy(ctx), CurveProxy {
+
+    private val mesh = Mesh(
+        TubeBufferGeometry(
+            CatmullRomCurve3(points.map { Vector3().set(it) }),
+            radius = radius
+        )
+    ).apply {
+        material.side = Side.Double
+    }
+
+    init {
+        ctx.invokeLater {
+            attachChild(mesh)
+        }
+    }
+
+    override fun update(points: List<Vector3dc>) {
+        val curve = CatmullRomCurve3(points.map { Vector3().set(it) })
+        ctx.invokeLater {
+            mesh.geometry.dispose()
+            mesh.geometry = TubeBufferGeometry(curve, radius = radius)
+        }
+    }
 }

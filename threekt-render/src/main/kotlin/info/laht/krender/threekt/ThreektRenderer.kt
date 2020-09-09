@@ -64,7 +64,12 @@ class ThreektRenderer : RenderEngine {
     }
 
     override fun createPlane(width: Float, height: Float, offset: Matrix4dc?): PlaneProxy {
-        TODO("Not yet implemented")
+        return ThreektPlaneProxy(ctx, width, height).also {
+            offset?.also { offset -> it.setOffsetTransform(offset) }
+            ctx.invokeLater {
+                scene.add(it.parentNode)
+            }
+        }
     }
 
     override fun createBox(width: Float, height: Float, depth: Float, offset: Matrix4dc?): BoxProxy {
@@ -90,7 +95,11 @@ class ThreektRenderer : RenderEngine {
     }
 
     override fun createCurve(radius: Float, points: List<Vector3dc>): CurveProxy {
-        TODO("Not yet implemented")
+        return ThreektCurveProxy(ctx, radius, points).also {
+            ctx.invokeLater {
+                scene.add(it.parentNode)
+            }
+        }
     }
 
     override fun createHeightmap(widthSegments: Int, heightSegments: Int, width: Float, height: Float): TerrainProxy {
