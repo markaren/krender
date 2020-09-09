@@ -14,7 +14,9 @@ internal class JmeArrowProxy(
     }
 
     override fun setVisible(visible: Boolean) {
-        ctx.invokeLater { setCullHint(if (visible) CullHint.Never else CullHint.Always) }
+        ctx.invokeLater {
+            setCullHint(if (visible) CullHint.Never else CullHint.Always)
+        }
     }
 
     override fun setLength(length: Float) {

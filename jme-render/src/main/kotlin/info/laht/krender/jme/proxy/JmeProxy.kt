@@ -20,8 +20,7 @@ import java.io.IOException
 
 internal abstract class JmeProxy @JvmOverloads constructor(
     name: String?,
-    protected val ctx: JmeContext,
-    offset: Matrix4dc? = null
+    protected val ctx: JmeContext
 ) : Node(name), RenderProxy, ColorProxy, SpatialProxy, WireframeProxy, TextureProxy {
 
     private val v = Vector3d()
@@ -34,13 +33,7 @@ internal abstract class JmeProxy @JvmOverloads constructor(
     init {
         material_ = getLightingMaterial(ctx.assetManager)
         material_.additionalRenderState.faceCullMode = RenderState.FaceCullMode.Off
-        attachChild(node)
-        if (offset != null) {
-            offset.getTranslation(v)
-            offset.getNormalizedRotation(q)
-            node.setLocalTranslation(v.x.toFloat(), v.y.toFloat(), v.z.toFloat())
-            node.localRotation = convert(q)
-        }
+        super.attachChild(node)
     }
 
     override fun setVisible(visible: Boolean) {
@@ -97,6 +90,7 @@ internal abstract class JmeProxy @JvmOverloads constructor(
         ctx.invokeLater {
             node.localTranslation = convert(offset.getTranslation(Vector3d()))
             node.localRotation = convert(offset.getNormalizedRotation(Quaterniond()))
+            setTransformRefresh()
         }
     }
 
@@ -123,10 +117,7 @@ internal abstract class JmeProxy @JvmOverloads constructor(
     }
 
     override fun attachChild(child: Spatial): Int {
-        return if (child === node) {
-            super.attachChild(child)
-        } else {
-            val attachChild = node.attachChild(child)
+        return node.attachChild(child).also {
             child.breadthFirstTraversal(object : SceneGraphVisitorAdapter() {
                 override fun visit(geom: Geometry) {
                     if (geom.material == null || isWireframe) {
@@ -134,7 +125,6 @@ internal abstract class JmeProxy @JvmOverloads constructor(
                     }
                 }
             })
-            attachChild
         }
     }
 

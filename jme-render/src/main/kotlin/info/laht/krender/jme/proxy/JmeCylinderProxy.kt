@@ -4,14 +4,12 @@ import com.jme3.scene.Geometry
 import com.jme3.scene.shape.Cylinder
 import info.laht.krender.jme.JmeContext
 import info.laht.krender.proxies.CylinderProxy
-import org.joml.Matrix4dc
 
 internal class JmeCylinderProxy(
     ctx: JmeContext,
     private val originalRadius: Float,
-    private val originalHeight: Float,
-    offset: Matrix4dc?
-) : JmeProxy("cylinder", ctx, offset), CylinderProxy {
+    private val originalHeight: Float
+) : JmeProxy("cylinder", ctx), CylinderProxy {
 
     init {
         attachChild(Geometry("", Cylinder(32, 32, originalRadius, originalHeight, true)))

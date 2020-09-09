@@ -24,7 +24,9 @@ object JmeRenderEngineTest {
             computeVertexNormals()
             scale(10f)
         }
-        val bunny = engine.createMesh(load)
+        val bunny = engine.createMesh(load).apply {
+            setOffsetTransform(Matrix4d().setTranslation(2.0, 0.0, 0.0))
+        }
 
         Thread.sleep(1000)
 

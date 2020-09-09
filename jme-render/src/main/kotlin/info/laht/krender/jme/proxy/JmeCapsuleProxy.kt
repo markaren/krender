@@ -3,14 +3,12 @@ package info.laht.krender.jme.proxy
 import info.laht.krender.jme.JmeContext
 import info.laht.krender.jme.extra.JmeCapsule
 import info.laht.krender.proxies.CapsuleProxy
-import org.joml.Matrix4dc
 
 internal class JmeCapsuleProxy(
     ctx: JmeContext,
     radius: Float,
-    height: Float,
-    offset: Matrix4dc?
-) : JmeProxy("capsule", ctx, offset), CapsuleProxy {
+    height: Float
+) : JmeProxy("capsule", ctx), CapsuleProxy {
 
     private var originalRadius = 0f
     private var originalHeight = 0f

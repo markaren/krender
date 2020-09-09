@@ -63,31 +63,36 @@ class JmeRenderEngine : RenderEngine {
     }
 
     override fun createSphere(radius: Float, offset: Matrix4dc?): SphereProxy {
-        return JmeSphereProxy(ctx, radius, offset).also {
+        return JmeSphereProxy(ctx, radius).also {
+            offset?.also { offset -> it.setOffsetTransform(offset) }
             ctx.invokeLater { parent.attachChild(it) }
         }
     }
 
     override fun createBox(width: Float, height: Float, depth: Float, offset: Matrix4dc?): BoxProxy {
-        return JmeBoxProxy(ctx, width, height, depth, offset).also {
+        return JmeBoxProxy(ctx, width, height, depth).also {
+            offset?.also { offset -> it.setOffsetTransform(offset) }
             ctx.invokeLater { parent.attachChild(it) }
         }
     }
 
     override fun createCylinder(radius: Float, height: Float, offset: Matrix4dc?): CylinderProxy {
-        return JmeCylinderProxy(ctx, radius, height, offset).also {
+        return JmeCylinderProxy(ctx, radius, height).also {
+            offset?.also { offset -> it.setOffsetTransform(offset) }
             ctx.invokeLater { parent.attachChild(it) }
         }
     }
 
     override fun createCapsule(radius: Float, height: Float, offset: Matrix4dc?): CapsuleProxy {
-        return JmeCapsuleProxy(ctx, radius, height, offset).also {
+        return JmeCapsuleProxy(ctx, radius, height).also {
+            offset?.also { offset -> it.setOffsetTransform(offset) }
             ctx.invokeLater { parent.attachChild(it) }
         }
     }
 
     override fun createPlane(width: Float, height: Float, offset: Matrix4dc?): PlaneProxy {
-        return JmePlaneProxy(ctx, width, height, offset).also {
+        return JmePlaneProxy(ctx, width, height).also {
+            offset?.also { offset -> it.setOffsetTransform(offset) }
             ctx.invokeLater { parent.attachChild(it) }
         }
     }
