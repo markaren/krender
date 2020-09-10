@@ -13,7 +13,9 @@ fun main() {
     val tex = File(Dummy::class.java.classLoader.getResource("textures/checker.png")!!.file)
 
     ThreektRenderer().apply {
+
         init()
+        setBackGroundColor(0xF0F8FF)
 
         val c = createCylinder(0.5f, 1f).apply {
             setTexture(FileSource(tex))
@@ -48,7 +50,7 @@ fun main() {
 
         }.start()
 
-        onClose { stop = true }
+        registerCloseListener { stop = true }
 
     }
 

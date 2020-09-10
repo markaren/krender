@@ -8,9 +8,11 @@ import com.jme3.input.event.MouseButtonEvent
 import com.jme3.light.AmbientLight
 import com.jme3.light.DirectionalLight
 import com.jme3.math.ColorRGBA
+import com.jme3.math.FastMath
+import com.jme3.math.Vector2f
 import com.jme3.math.Vector3f
 import com.jme3.scene.Node
-import info.laht.krender.RenderEngine
+import info.laht.krender.AbstractRenderEngine
 import info.laht.krender.jme.extra.RawInputAdapter
 import info.laht.krender.jme.proxy.*
 import info.laht.krender.mesh.Trimesh
@@ -18,6 +20,8 @@ import info.laht.krender.proxies.*
 import info.laht.krender.util.ExternalSource
 import info.laht.krender.util.RenderContext
 import org.joml.Matrix4dc
+import org.joml.Matrix4f
+import org.joml.Vector3d
 import org.joml.Vector3dc
 import java.util.concurrent.locks.ReentrantLock
 import kotlin.concurrent.withLock
@@ -26,7 +30,7 @@ internal class JmeContext(
     val assetManager: AssetManager
 ) : RenderContext()
 
-class JmeRenderEngine : RenderEngine {
+class JmeRenderEngine : AbstractRenderEngine() {
 
     private lateinit var renderer: JmeInternalRenderer
     private val parent: Node = Node("parent")
@@ -34,20 +38,20 @@ class JmeRenderEngine : RenderEngine {
     private val ctx: JmeContext
         get() = renderer.ctx
 
-    private var onCloseCallback: (() -> Unit)? = null
-
     override fun init() {
         renderer = JmeInternalRenderer(parent).apply {
             start()
         }
     }
 
-    override fun close() {
-        renderer.stop()
+    override fun setBackGroundColor(color: Int) {
+        ctx.invokeLater {
+            renderer.viewPort.backgroundColor.set(ColorRGBA().fromIntARGB(color))
+        }
     }
 
-    override fun onClose(callback: () -> Unit) {
-        onCloseCallback = callback
+    override fun close() {
+        renderer.stop()
     }
 
     override fun createMesh(mesh: Trimesh): MeshProxy {
@@ -160,17 +164,15 @@ class JmeRenderEngine : RenderEngine {
             super.inputManager.addRawInputListener(InputListener())
             super.viewPort.backgroundColor.set(0.6f, 0.7f, 1f, 1f)
 
-            setupLights()
-
             super.stateManager.attach(object : AbstractAppState() {
                 override fun cleanup() {
-                    onCloseCallback?.invoke()
+                    closeListener?.onClose()
                 }
             })
 
-            rootNode.attachChild(parent)
-
-            ctx = JmeContext(assetManager)
+            this.setupLights()
+            this.rootNode.attachChild(parent)
+            this.ctx = JmeContext(assetManager)
 
             lock.withLock {
                 initialized.signalAll()
@@ -206,7 +208,7 @@ class JmeRenderEngine : RenderEngine {
         private inner class InputListener : RawInputAdapter() {
 
             override fun onMouseButtonEvent(evt: MouseButtonEvent) {
-                /*clickListener?.also {
+                mouseClickListener?.also {
                     val x = evt.x.toFloat()
                     val y = evt.y.toFloat()
                     val worldCoordinates = cam.getWorldCoordinates(Vector2f(x, y), 1000f)
@@ -215,8 +217,8 @@ class JmeRenderEngine : RenderEngine {
                     val m = Matrix4f().rotateX(FastMath.PI / 2)
                     pos.mulPosition(m)
                     dir.mulDirection(m)
-                    it.onMousePressed(pos, dir)
-                }*/
+                    it.onMouseClicked(pos, dir)
+                }
             }
 
             override fun onKeyEvent(evt: KeyInputEvent) {

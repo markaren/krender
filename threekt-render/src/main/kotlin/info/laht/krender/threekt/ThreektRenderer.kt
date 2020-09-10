@@ -1,6 +1,6 @@
 package info.laht.krender.threekt
 
-import info.laht.krender.RenderEngine
+import info.laht.krender.AbstractRenderEngine
 import info.laht.krender.mesh.Trimesh
 import info.laht.krender.proxies.*
 import info.laht.krender.util.ExternalSource
@@ -8,7 +8,6 @@ import info.laht.krender.util.RenderContext
 import info.laht.threekt.Window
 import info.laht.threekt.cameras.PerspectiveCamera
 import info.laht.threekt.controls.OrbitControls
-import info.laht.threekt.math.Color
 import info.laht.threekt.renderers.GLRenderer
 import info.laht.threekt.scenes.Scene
 import org.joml.Matrix4dc
@@ -16,15 +15,11 @@ import org.joml.Vector3dc
 import java.util.concurrent.locks.ReentrantLock
 import kotlin.concurrent.withLock
 
-class ThreektRenderer : RenderEngine {
+class ThreektRenderer : AbstractRenderEngine() {
 
-    private var onCloseCallback: (() -> Unit)? = null
-
-    private val scene: Scene = Scene().apply {
-        setBackground(Color.aliceblue)
-    }
     private val ctx: RenderContext = RenderContext()
 
+    private val scene: Scene = Scene()
     private var internalRenderer: InternalRenderer? = null
 
     private val lock = ReentrantLock()
@@ -32,10 +27,14 @@ class ThreektRenderer : RenderEngine {
 
     override fun init() {
         internalRenderer = InternalRenderer()
-        val t = Thread(internalRenderer).apply { start() }
+        Thread(internalRenderer).apply { start() }
         lock.withLock {
             initialized.await()
         }
+    }
+
+    override fun setBackGroundColor(color: Int) {
+        scene.setBackground(color)
     }
 
     override fun createAxis(size: Float): AxisProxy {
@@ -126,19 +125,18 @@ class ThreektRenderer : RenderEngine {
         }
     }
 
-    override fun onClose(callback: () -> Unit) {
-        onCloseCallback = callback
-    }
-
     override fun close() {
-        //internalRenderer?.window?.close()
+
     }
 
     private inner class InternalRenderer : Runnable {
 
         override fun run() {
 
-            Window(antialias = 4).use { window ->
+            Window(
+                antialias = 4,
+                resizeable = true
+            ).use { window ->
 
                 lock.withLock {
                     initialized.signalAll()
@@ -150,16 +148,20 @@ class ThreektRenderer : RenderEngine {
                 }
                 OrbitControls(camera, window)
 
-                window.animate {
+                window.onWindowResize { width, height ->
+                    camera.aspect = window.aspect
+                    camera.updateProjectionMatrix()
+                    renderer.setSize(width, height)
+                }
 
+                window.animate {
                     ctx.invokePendingTasks()
                     renderer.render(scene, camera)
-
                 }
 
             }
 
-            onCloseCallback?.invoke()
+            closeListener?.onClose()
 
         }
 

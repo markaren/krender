@@ -1,5 +1,8 @@
 package info.laht.krender
 
+import info.laht.krender.listeners.CloseListener
+import info.laht.krender.listeners.KeyListener
+import info.laht.krender.listeners.MouseClickListener
 import info.laht.krender.mesh.Trimesh
 import info.laht.krender.proxies.*
 import info.laht.krender.util.ExternalSource
@@ -10,6 +13,8 @@ import java.io.Closeable
 interface RenderEngine : Closeable {
 
     fun init()
+
+    fun setBackGroundColor(color: Int)
 
     fun createAxis(size: Float): AxisProxy
     fun createArrow(length: Float): ArrowProxy
@@ -30,9 +35,30 @@ interface RenderEngine : Closeable {
     fun createWater(width: Float, height: Float): WaterProxy
     fun createPointCloud(pointSize: Float, points: List<Vector3dc>): PointCloudProxy
 
-    fun onClose(callback: () -> Unit)
+    fun registerKeyListener(listener: KeyListener)
+    fun registerClickListener(listener: MouseClickListener)
 
-    /*fun registerKeyListener(consumer: KeyConsumer?)
-    fun registerClickListener(consumer: ClickConsumer?)*/
+    fun registerCloseListener(listener: CloseListener)
 
 }
+
+abstract class AbstractRenderEngine : RenderEngine {
+
+    protected var keyListener: KeyListener? = null
+    protected var closeListener: CloseListener? = null
+    protected var mouseClickListener: MouseClickListener? = null
+
+    override fun registerKeyListener(listener: KeyListener) {
+        this.keyListener = listener
+    }
+
+    override fun registerCloseListener(listener: CloseListener) {
+        this.closeListener = listener
+    }
+
+    override fun registerClickListener(listener: MouseClickListener) {
+        this.mouseClickListener = listener
+    }
+
+}
+
