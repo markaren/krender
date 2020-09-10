@@ -2,6 +2,7 @@ package info.laht.krender.jme.proxy
 
 import com.jme3.material.Material
 import com.jme3.material.RenderState
+import com.jme3.math.ColorRGBA
 import com.jme3.scene.Geometry
 import com.jme3.scene.Node
 import com.jme3.scene.SceneGraphVisitorAdapter
@@ -44,9 +45,9 @@ internal abstract class JmeProxy @JvmOverloads constructor(
         ctx.invokeLater { removeFromParent() }
     }
 
-    override fun setColor(color: Color) {
+    override fun setColor(color: Int) {
         ctx.invokeLater {
-            val colorRGBA = convert(color.also { this.color = it })
+            val colorRGBA = ColorRGBA().fromIntARGB(color)
             if (isWireframe) {
                 material_.setColor("Color", colorRGBA)
             } else {

@@ -21,7 +21,6 @@ import info.laht.threekt.objects.Points
 import org.joml.Matrix4dc
 import org.joml.Quaterniondc
 import org.joml.Vector3dc
-import java.awt.Color
 
 internal open class ThreektProxy(
     val ctx: RenderContext
@@ -90,7 +89,7 @@ internal open class ThreektProxy(
         }
     }
 
-    override fun setColor(color: Color) {
+    override fun setColor(color: Int) {
         ctx.invokeLater {
             for (o in childNode.children) {
                 if (o is MaterialObject) {

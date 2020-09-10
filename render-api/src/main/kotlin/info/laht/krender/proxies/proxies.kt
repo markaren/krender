@@ -4,7 +4,6 @@ import info.laht.krender.util.ExternalSource
 import org.joml.Matrix4dc
 import org.joml.Quaterniondc
 import org.joml.Vector3dc
-import java.awt.Color
 
 interface ArrowProxy : RenderProxy, ColorProxy, SpatialProxy {
     fun setLength(length: Float)
@@ -22,7 +21,7 @@ interface CapsuleProxy : RenderProxy, ColorProxy, SpatialProxy, WireframeProxy, 
 }
 
 interface ColorProxy {
-    fun setColor(color: Color)
+    fun setColor(color: Int)
 }
 
 interface CurveProxy : RenderProxy, ColorProxy, WireframeProxy {
