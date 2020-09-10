@@ -102,6 +102,14 @@ class ThreektRenderer : RenderEngine {
         }
     }
 
+    override fun createLine(points: List<Vector3dc>): LineProxy {
+        return ThreektLineProxy(ctx, points).also {
+            ctx.invokeLater {
+                scene.add(it.parentNode)
+            }
+        }
+    }
+
     override fun createHeightmap(widthSegments: Int, heightSegments: Int, width: Float, height: Float): TerrainProxy {
         TODO("Not yet implemented")
     }

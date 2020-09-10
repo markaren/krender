@@ -129,6 +129,10 @@ class JmeRenderEngine : RenderEngine {
         TODO("Not yet implemented")
     }
 
+    override fun createLine(points: List<Vector3dc>): LineProxy {
+        TODO("Not yet implemented")
+    }
+
     private inner class JmeInternalRenderer(
         private val parent: Node
     ) : SimpleApplication() {

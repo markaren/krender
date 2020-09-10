@@ -66,6 +66,10 @@ interface WireframeProxy {
     fun setWireframe(flag: Boolean)
 }
 
+interface LineProxy : RenderProxy, ColorProxy {
+    fun update(points: List<Vector3dc>)
+}
+
 interface MeshProxy : RenderProxy, WireframeProxy, SpatialProxy
 
 interface PlaneProxy : RenderProxy, ColorProxy, SpatialProxy, WireframeProxy

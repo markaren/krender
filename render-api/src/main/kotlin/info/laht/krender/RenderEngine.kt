@@ -23,6 +23,7 @@ interface RenderEngine : Closeable {
     fun createCylinder(radius: Float, height: Float, offset: Matrix4dc? = null): CylinderProxy
     fun createCapsule(radius: Float, height: Float, offset: Matrix4dc? = null): CapsuleProxy
 
+    fun createLine(points: List<Vector3dc>): LineProxy
     fun createCurve(radius: Float, points: List<Vector3dc>): CurveProxy
     fun createHeightmap(widthSegments: Int, heightSegments: Int, width: Float, height: Float): TerrainProxy
 

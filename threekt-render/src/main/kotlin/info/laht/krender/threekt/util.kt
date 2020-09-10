@@ -1,5 +1,6 @@
 package info.laht.krender.threekt
 
+import info.laht.threekt.math.Color
 import info.laht.threekt.math.Matrix4
 import info.laht.threekt.math.Quaternion
 import info.laht.threekt.math.Vector3
@@ -22,4 +23,20 @@ internal fun Matrix4.set(m: Matrix4dc): Matrix4 {
         m.m02().toFloat(), m.m12().toFloat(), m.m22().toFloat(), m.m32().toFloat(),
         m.m03().toFloat(), m.m13().toFloat(), m.m23().toFloat(), m.m33().toFloat()
     )
+}
+
+internal fun List<Vector3dc>.flatten(): FloatArray {
+    var i = 0
+    val array = FloatArray(3 * size)
+    for (v in this) {
+        array[i++] = v.x().toFloat()
+        array[i++] = v.y().toFloat()
+        array[i++] = v.z().toFloat()
+    }
+    return array
+}
+
+internal fun Color.set(c: java.awt.Color): Color {
+    val rgb = c.getRGBColorComponents(null)
+    return set(rgb[0], rgb[1], rgb[2])
 }

@@ -6,10 +6,7 @@ import info.laht.krender.util.FileSource
 import info.laht.krender.util.RenderContext
 import info.laht.threekt.Colors
 import info.laht.threekt.Side
-import info.laht.threekt.core.BufferGeometry
-import info.laht.threekt.core.FloatBufferAttribute
-import info.laht.threekt.core.Object3D
-import info.laht.threekt.core.Object3DImpl
+import info.laht.threekt.core.*
 import info.laht.threekt.geometries.*
 import info.laht.threekt.loaders.TextureLoader
 import info.laht.threekt.materials.MaterialWithColor
@@ -18,6 +15,7 @@ import info.laht.threekt.materials.MeshBasicMaterial
 import info.laht.threekt.materials.PointsMaterial
 import info.laht.threekt.math.Vector3
 import info.laht.threekt.math.curves.CatmullRomCurve3
+import info.laht.threekt.objects.Line
 import info.laht.threekt.objects.Mesh
 import info.laht.threekt.objects.Points
 import org.joml.Matrix4dc
@@ -95,11 +93,10 @@ internal open class ThreektProxy(
     override fun setColor(color: Color) {
         ctx.invokeLater {
             for (o in childNode.children) {
-                if (o is Mesh) {
+                if (o is MaterialObject) {
                     val material = o.material
                     if (material is MaterialWithColor) {
-                        val rgb = color.getRGBColorComponents(FloatArray(3))
-                        material.color.set(rgb[0], rgb[1], rgb[2])
+                        material.color.set(color)
                     }
                 }
             }
@@ -274,4 +271,38 @@ internal class ThreektCurveProxy(
             mesh.geometry = TubeBufferGeometry(curve, radius = radius)
         }
     }
+}
+
+internal class ThreektLineProxy(
+    ctx: RenderContext,
+    points: List<Vector3dc>
+) : ThreektProxy(ctx), LineProxy {
+
+    private val line = Line(
+        createGeometry(points)
+    )
+
+    init {
+        ctx.invokeLater {
+            attachChild(line)
+        }
+    }
+
+    override fun update(points: List<Vector3dc>) {
+        ctx.invokeLater {
+            line.geometry.dispose()
+            line.geometry = createGeometry(points)
+        }
+    }
+
+    private companion object {
+
+        fun createGeometry(points: List<Vector3dc>): BufferGeometry {
+            return BufferGeometry().apply {
+                addAttribute("position", FloatBufferAttribute(points.flatten(), 3))
+            }
+        }
+
+    }
+
 }
