@@ -41,9 +41,9 @@ internal class JmeCurveProxy(
         ctx.invokeLater { removeFromParent() }
     }
 
-    override fun setColor(color: Color) {
+    override fun setColor(color: Int) {
         ctx.invokeLater {
-            val colorRGBA: ColorRGBA = JmeUtils.convert(color.also { this.color = it })
+            val colorRGBA = ColorRGBA().fromIntARGB(color)
             if (isWireframe) {
                 material_.setColor("Color", colorRGBA)
             } else {

@@ -1,7 +1,7 @@
 package info.laht.krender.threekt
 
+import info.laht.krender.ColorConstants
 import org.joml.Vector3d
-import java.awt.Color
 
 fun main() {
 
@@ -14,7 +14,7 @@ fun main() {
 
     val renderEngine = ThreektRenderer().apply { init() }
     val curve = renderEngine.createLine(points).apply {
-        setColor(Color.green)
+        setColor(ColorConstants.green)
     }
 
     Thread.sleep(1000)

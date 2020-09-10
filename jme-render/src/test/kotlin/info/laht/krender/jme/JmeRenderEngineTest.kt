@@ -1,10 +1,10 @@
 package info.laht.krender.jme
 
+import info.laht.krender.ColorConstants
 import info.laht.krender.loaders.ObjLoader
 import info.laht.krender.util.FileSource
 import org.joml.Matrix4d
 import org.joml.Vector3d
-import java.awt.Color
 import java.io.File
 
 
@@ -19,7 +19,7 @@ object JmeRenderEngineTest {
             setBackGroundColor(0xF0F8FF)
 
             val sphere = createSphere(0.1f).apply {
-                setColor(Color.BLACK)
+                setColor(ColorConstants.black)
             }
 
             val source =
@@ -34,7 +34,7 @@ object JmeRenderEngineTest {
 
             Thread.sleep(1000)
 
-            sphere.setColor(Color.BLUE)
+            sphere.setColor(ColorConstants.blue)
             bunny.setWireframe(true)
 
             var stop = false

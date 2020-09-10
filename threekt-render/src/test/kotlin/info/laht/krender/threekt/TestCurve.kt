@@ -1,7 +1,8 @@
 package info.laht.krender.threekt
 
+import info.laht.krender.ColorConstants
 import org.joml.Vector3d
-import java.awt.Color
+
 
 fun main() {
 
@@ -17,7 +18,7 @@ fun main() {
 
     Thread.sleep(1000)
 
-    curve.setColor(Color.blue)
+    curve.setColor(ColorConstants.blue)
     curve.setWireframe(true)
 
     Thread.sleep(1000)

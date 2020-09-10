@@ -1,9 +1,9 @@
 package info.laht.krender.threekt
 
+import info.laht.krender.ColorConstants
 import info.laht.krender.util.FileSource
 import org.joml.Matrix4d
 import org.joml.Vector3d
-import java.awt.Color
 import java.io.File
 
 private class Dummy
@@ -24,13 +24,13 @@ fun main() {
         }
 
         val s = createSphere(0.5f).apply {
-            setColor(Color.red)
+            setColor(ColorConstants.red)
             setWireframe(true)
             setOffsetTransform(Matrix4d().translate(0.0, -2.0, 0.0))
         }
 
         val b = createBox(1f, 1f, 1f).apply {
-            setColor(Color.blue)
+            setColor(ColorConstants.blue)
             setTexture(FileSource(tex))
             setOffsetTransform(Matrix4d().translate(Vector3d(-2.0, 0.0, 0.0)))
         }

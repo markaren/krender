@@ -1,7 +1,7 @@
 package info.laht.krender.jme
 
+import info.laht.krender.ColorConstants
 import org.joml.Vector3d
-import java.awt.Color
 
 fun main() {
 
@@ -16,12 +16,12 @@ fun main() {
     val curve = renderEngine.createCurve(0.1f, points)
 
     val arrow = renderEngine.createArrow(1f).apply {
-        setColor(Color.yellow)
+        setColor(ColorConstants.yellow)
     }
 
     Thread.sleep(1000)
 
-    curve.setColor(Color.blue)
+    curve.setColor(ColorConstants.blue)
     curve.setWireframe(true)
 
 }
