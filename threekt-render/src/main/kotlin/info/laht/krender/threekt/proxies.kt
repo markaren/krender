@@ -6,13 +6,16 @@ import info.laht.krender.util.FileSource
 import info.laht.krender.util.RenderContext
 import info.laht.threekt.Colors
 import info.laht.threekt.Side
+import info.laht.threekt.TextureWrapping
 import info.laht.threekt.core.*
+import info.laht.threekt.extras.objects.Water
 import info.laht.threekt.geometries.*
 import info.laht.threekt.loaders.TextureLoader
 import info.laht.threekt.materials.MaterialWithColor
 import info.laht.threekt.materials.MaterialWithWireframe
 import info.laht.threekt.materials.MeshBasicMaterial
 import info.laht.threekt.materials.PointsMaterial
+import info.laht.threekt.math.Color
 import info.laht.threekt.math.Vector3
 import info.laht.threekt.math.curves.CatmullRomCurve3
 import info.laht.threekt.objects.Line
@@ -21,6 +24,7 @@ import info.laht.threekt.objects.Points
 import org.joml.Matrix4dc
 import org.joml.Quaterniondc
 import org.joml.Vector3dc
+import kotlin.math.PI
 
 internal open class ThreektProxy(
     val ctx: RenderContext
@@ -300,6 +304,46 @@ internal class ThreektLineProxy(
             return BufferGeometry().apply {
                 addAttribute("position", FloatBufferAttribute(points.flatten(), 3))
             }
+        }
+
+    }
+
+}
+
+internal class ThreektWaterProxy(
+    ctx: RenderContext,
+    width: Float,
+    height: Float
+) : ThreektProxy(ctx), WaterProxy {
+
+    val water: Water
+
+    init {
+
+        val texture =
+            TextureLoader.load(
+                ThreektWaterProxy::class.java.classLoader.getResource("textures/waternormals.jpg")!!.file
+            ).apply {
+                wrapS = TextureWrapping.Repeat
+                wrapT = TextureWrapping.Repeat
+            }
+
+        val planeGeometry = PlaneBufferGeometry(width, height)
+        water = Water(
+            planeGeometry, Water.Options(
+                alpha = 0.7f,
+                waterNormals = texture,
+                waterColor = Color(0x001e0f),
+                sunColor = Color(0xffffff),
+                textureWidth = 512,
+                textureHeight = 512,
+                sunDirection = Vector3(1, 1, 0).normalize(),
+                distortionScale = 1f
+            )
+        )
+        water.rotateX(-PI.toFloat() / 2)
+        ctx.invokeLater {
+            attachChild(water)
         }
 
     }

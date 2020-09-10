@@ -1,5 +1,7 @@
 package info.laht.krender.threekt
 
+import info.laht.krender.ColorConstants
+import org.joml.Matrix4d
 import org.joml.Vector3d
 
 fun main() {
@@ -11,7 +13,10 @@ fun main() {
         Vector3d(1.0, 2.0, 5.0),
     )
 
-    val renderEngine = ThreektRenderer().apply { init() }
-    renderEngine.createPointCloud(0.1f, points)
+    ThreektRenderer().apply {
+        init(Matrix4d().setTranslation(0.0, 0.0, -5.0))
+        setBackGroundColor(ColorConstants.aliceblue)
+        createPointCloud(0.1f, points)
+    }
 
 }

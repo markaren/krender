@@ -14,7 +14,7 @@ fun main() {
 
     ThreektRenderer().apply {
 
-        init()
+        init(Matrix4d().setTranslation(0.0, 0.0, -5.0))
         setBackGroundColor(0xF0F8FF)
 
         val c = createCylinder(0.5f, 1f).apply {

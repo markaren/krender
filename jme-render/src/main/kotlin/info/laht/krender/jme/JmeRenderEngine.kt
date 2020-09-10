@@ -38,7 +38,7 @@ class JmeRenderEngine : AbstractRenderEngine() {
     private val ctx: JmeContext
         get() = renderer.ctx
 
-    override fun init() {
+    override fun init(cameraTransform: Matrix4dc?) {
         renderer = JmeInternalRenderer(parent).apply {
             start()
         }
