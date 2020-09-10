@@ -165,10 +165,9 @@ internal class ThreektBoxProxy(
 
 internal class ThreektSphereProxy(
     ctx: RenderContext,
-    radius: Float
+    private var radius: Float
 ) : ThreektProxy(ctx), SphereProxy {
 
-    private val originalRadius = radius
     private val geometry = SphereBufferGeometry(radius)
     private val mesh = Mesh(geometry)
 
@@ -179,19 +178,19 @@ internal class ThreektSphereProxy(
     }
 
     override fun setRadius(radius: Float) {
-        val scale = originalRadius / radius
+        val scale = radius / this.radius
         geometry.scale(scale)
+        this.radius = radius
     }
 
 }
 
 internal class ThreektCylinderProxy(
     ctx: RenderContext,
-    radius: Float,
-    height: Float
+    private var radius: Float,
+    private var height: Float
 ) : ThreektProxy(ctx), CylinderProxy {
 
-    private val originalRadius = radius
     private val geometry = CylinderBufferGeometry(radius, height)
     private val mesh = Mesh(geometry)
 
@@ -202,12 +201,15 @@ internal class ThreektCylinderProxy(
     }
 
     override fun setRadius(radius: Float) {
-        val scale = originalRadius / radius
+        val scale = radius / this.radius
         geometry.scale(scale)
+        this.radius = radius
     }
 
     override fun setHeight(height: Float) {
-        TODO("Not yet implemented")
+        val scale = (height / this.height)
+        geometry.scale(1f, scale, 1f)
+        this.height = height
     }
 
 }

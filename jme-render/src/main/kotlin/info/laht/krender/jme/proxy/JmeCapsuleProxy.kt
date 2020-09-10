@@ -6,12 +6,9 @@ import info.laht.krender.proxies.CapsuleProxy
 
 internal class JmeCapsuleProxy(
     ctx: JmeContext,
-    radius: Float,
-    height: Float
+    private var radius: Float,
+    private var height: Float
 ) : JmeProxy("capsule", ctx), CapsuleProxy {
-
-    private var originalRadius = 0f
-    private var originalHeight = 0f
 
     init {
         attachChild(
@@ -20,20 +17,22 @@ internal class JmeCapsuleProxy(
                 32,
                 32,
                 32,
-                radius.also { originalRadius = it },
-                height.also { originalHeight = it }
+                radius,
+                height
             )
         )
     }
 
     override fun setRadius(radius: Float) {
-        val scale = (radius / originalRadius)
+        val scale = (radius / this.radius)
         scale(scale, scale, 1f)
+        this.radius = radius
     }
 
     override fun setHeight(height: Float) {
-        val scale = (height / originalHeight)
+        val scale = (height / this.height)
         scale(1f, 1f, scale)
+        this.height = height
     }
 
 }

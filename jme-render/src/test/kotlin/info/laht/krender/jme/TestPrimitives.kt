@@ -24,7 +24,6 @@ fun main() {
             setTranslate(Vector3d(4.0, 0.0, 0.0))
         }
 
-
     }
 
 }

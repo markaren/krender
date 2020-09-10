@@ -7,22 +7,24 @@ import info.laht.krender.proxies.CylinderProxy
 
 internal class JmeCylinderProxy(
     ctx: JmeContext,
-    private val originalRadius: Float,
-    private val originalHeight: Float
+    private var radius: Float,
+    private var height: Float
 ) : JmeProxy("cylinder", ctx), CylinderProxy {
 
     init {
-        attachChild(Geometry("", Cylinder(32, 32, originalRadius, originalHeight, true)))
+        attachChild(Geometry("", Cylinder(32, 32, radius, height, true)))
     }
 
     override fun setRadius(radius: Float) {
-        val scale = (radius / originalRadius).toFloat()
+        val scale = (radius / this.radius)
         scale(scale, scale, 1f)
+        this.radius = radius
     }
 
     override fun setHeight(height: Float) {
-        val scale = (height / originalHeight).toFloat()
+        val scale = (height / this.height)
         scale(1f, 1f, scale)
+        this.height = height
     }
 
 }

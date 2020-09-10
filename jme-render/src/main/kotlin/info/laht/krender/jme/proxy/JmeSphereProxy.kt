@@ -7,16 +7,17 @@ import info.laht.krender.proxies.SphereProxy
 
 internal class JmeSphereProxy(
     ctx: JmeContext,
-    private val originalRadius: Float
+    private var radius: Float
 ) : JmeProxy("sphere", ctx), SphereProxy {
 
     init {
-        attachChild(Geometry("", Sphere(32, 32, originalRadius)))
+        attachChild(Geometry("", Sphere(32, 32, radius)))
     }
 
     override fun setRadius(radius: Float) {
-        val scale = radius / originalRadius
+        val scale = radius / this.radius
         scale(scale)
+        this.radius = radius
     }
 
 }

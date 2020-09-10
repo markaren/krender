@@ -18,6 +18,7 @@ fun main() {
         val c = createCylinder(0.5f, 1f).apply {
             setTexture(FileSource(tex))
             setOffsetTransform(Matrix4d().translate(0.0, 0.0, 0.0))
+            setHeight(2f)
         }
 
         val s = createSphere(0.5f).apply {
@@ -26,7 +27,7 @@ fun main() {
             setOffsetTransform(Matrix4d().translate(0.0, -2.0, 0.0))
         }
 
-        val b = createBox(0.5f, 0.5f, 0.5f).apply {
+        val b = createBox(1f, 1f, 1f).apply {
             setColor(Color.blue)
             setTexture(FileSource(tex))
             setOffsetTransform(Matrix4d().translate(Vector3d(-2.0, 0.0, 0.0)))
