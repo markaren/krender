@@ -1,6 +1,5 @@
 package info.laht.krender.threekt
 
-import info.laht.threekt.math.Color
 import info.laht.threekt.math.Matrix4
 import info.laht.threekt.math.Quaternion
 import info.laht.threekt.math.Vector3
@@ -36,7 +35,3 @@ internal fun List<Vector3dc>.flatten(): FloatArray {
     return array
 }
 
-internal fun Color.set(c: java.awt.Color): Color {
-    val rgb = c.getRGBColorComponents(null)
-    return set(rgb[0], rgb[1], rgb[2])
-}

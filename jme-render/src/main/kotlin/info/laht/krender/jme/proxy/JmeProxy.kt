@@ -8,6 +8,7 @@ import com.jme3.scene.Node
 import com.jme3.scene.SceneGraphVisitorAdapter
 import com.jme3.scene.Spatial
 import com.jme3.texture.Texture
+import info.laht.krender.ColorConstants
 import info.laht.krender.jme.JmeContext
 import info.laht.krender.jme.extra.JmeUtils
 import info.laht.krender.jme.extra.JmeUtils.convert
@@ -16,17 +17,16 @@ import info.laht.krender.jme.extra.JmeUtils.getWireFrameMaterial
 import info.laht.krender.proxies.*
 import info.laht.krender.util.ExternalSource
 import org.joml.*
-import java.awt.Color
 import java.io.IOException
 
-internal abstract class JmeProxy @JvmOverloads constructor(
+internal abstract class JmeProxy constructor(
     name: String?,
     protected val ctx: JmeContext
 ) : Node(name), RenderProxy, ColorProxy, SpatialProxy, WireframeProxy, TextureProxy {
 
     private val v = Vector3d()
     private val q = Quaterniond()
-    private var color: Color? = null
+    private var color: Int? = null
     private var material_: Material
     private var isWireframe = false
     private val node: Node = Node()
@@ -46,8 +46,11 @@ internal abstract class JmeProxy @JvmOverloads constructor(
     }
 
     override fun setColor(color: Int) {
+        val colorRGBA = ColorRGBA().fromIntARGB(color).also {
+            it.a = 1f
+            this.color = color
+        }
         ctx.invokeLater {
-            val colorRGBA = ColorRGBA().fromIntARGB(color)
             if (isWireframe) {
                 material_.setColor("Color", colorRGBA)
             } else {
@@ -108,7 +111,7 @@ internal abstract class JmeProxy @JvmOverloads constructor(
     override fun setWireframe(flag: Boolean) {
         ctx.invokeLater {
             if (flag && !isWireframe) {
-                setMaterial(getWireFrameMaterial(ctx.assetManager, Color.BLACK).also { material_ = it })
+                setMaterial(getWireFrameMaterial(ctx.assetManager, ColorConstants.black).also { material_ = it })
             } else if (!flag && isWireframe) {
                 setMaterial(getLightingMaterial(ctx.assetManager, color!!).also { material_ = it })
             }

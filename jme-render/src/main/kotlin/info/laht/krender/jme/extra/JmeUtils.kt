@@ -15,7 +15,6 @@ import info.laht.krender.util.FileSource
 import info.laht.krender.util.JomlUtil
 import info.laht.krender.util.URLSource
 import org.joml.*
-import java.awt.Color
 
 internal object JmeUtils {
 
@@ -56,20 +55,15 @@ internal object JmeUtils {
         return store
     }
 
-    fun convert(color: Color): ColorRGBA {
-        val rgba = color.getRGBComponents(null)
-        return ColorRGBA(rgba[0], rgba[1], rgba[2], rgba[3])
-    }
-
     @JvmOverloads
-    fun getLightingMaterial(assetManager: AssetManager, color: Color? = null): Material {
+    fun getLightingMaterial(assetManager: AssetManager, color: Int? = null): Material {
         val mat = Material(
             assetManager,
             "Common/MatDefs/Light/Lighting.j3md"
         )
         mat.additionalRenderState.blendMode = RenderState.BlendMode.Alpha
         if (color != null) {
-            val colorRGBA = convert(color)
+            val colorRGBA = ColorRGBA().fromIntARGB(color)
             mat.setBoolean("UseMaterialColors", true)
             mat.setColor("Ambient", colorRGBA)
             mat.setColor("Diffuse", colorRGBA)
@@ -90,12 +84,12 @@ internal object JmeUtils {
         return getWireFrameMaterial(assetManager, null)
     }
 
-    fun getWireFrameMaterial(assetManager: AssetManager, color: Color?): Material {
+    fun getWireFrameMaterial(assetManager: AssetManager, color: Int?): Material {
         val mat = getUnshadedMaterial(assetManager)
         val state = mat.additionalRenderState
         state.isWireframe = true
         if (color != null) {
-            mat.setColor("Color", convert(color))
+            mat.setColor("Color", ColorRGBA().fromIntARGB(color))
         }
         return mat
     }

@@ -9,7 +9,6 @@ import info.laht.krender.jme.extra.JmeTubeGeometry
 import info.laht.krender.jme.extra.JmeUtils
 import info.laht.krender.proxies.CurveProxy
 import org.joml.Vector3dc
-import java.awt.Color
 
 internal class JmeCurveProxy(
     private val ctx: JmeContext,
@@ -18,7 +17,7 @@ internal class JmeCurveProxy(
 ) : Node(), CurveProxy {
 
     private var isWireframe = false
-    private var color: Color? = null
+    private var color: Int? = null
     private val tube: JmeTubeGeometry
     private var material_: Material
 
@@ -41,9 +40,12 @@ internal class JmeCurveProxy(
         ctx.invokeLater { removeFromParent() }
     }
 
-    override fun setColor(color: Color) {
+    override fun setColor(color: Int) {
+        val colorRGBA = ColorRGBA().fromIntARGB(color).also {
+            it.a = 1f
+            this.color = color
+        }
         ctx.invokeLater {
-            val colorRGBA: ColorRGBA = JmeUtils.convert(color.also { this.color = it })
             if (isWireframe) {
                 material_.setColor("Color", colorRGBA)
             } else {
