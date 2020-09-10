@@ -103,7 +103,7 @@ class JmeRenderEngine : RenderEngine {
         }
     }
 
-    override fun createHeightmap(widthSegments: Int, heightSegments: Int, width: Float, height: Float): TerrainProxy {
+    override fun createHeightmap(widthSegments: Int, heightSegments: Int, width: Float, height: Float): HeightmapProxy {
         return JmeHeightmapProxy(ctx, widthSegments, heightSegments, width, height).also {
             ctx.invokeLater { parent.attachChild(it) }
         }

@@ -110,7 +110,7 @@ class ThreektRenderer : RenderEngine {
         }
     }
 
-    override fun createHeightmap(widthSegments: Int, heightSegments: Int, width: Float, height: Float): TerrainProxy {
+    override fun createHeightmap(widthSegments: Int, heightSegments: Int, width: Float, height: Float): HeightmapProxy {
         TODO("Not yet implemented")
     }
 

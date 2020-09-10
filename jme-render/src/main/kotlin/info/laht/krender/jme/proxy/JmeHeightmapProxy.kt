@@ -4,7 +4,7 @@ import com.jme3.renderer.queue.RenderQueue
 import com.jme3.scene.Geometry
 import info.laht.krender.jme.JmeContext
 import info.laht.krender.jme.extra.JmeGrid
-import info.laht.krender.proxies.TerrainProxy
+import info.laht.krender.proxies.HeightmapProxy
 
 internal class JmeHeightmapProxy(
     ctx: JmeContext,
@@ -12,7 +12,7 @@ internal class JmeHeightmapProxy(
     heightSegments: Int,
     width: Float,
     height: Float
-) : JmeProxy("Heightmap", ctx), TerrainProxy {
+) : JmeProxy("Heightmap", ctx), HeightmapProxy {
 
     private var grid: JmeGrid
 

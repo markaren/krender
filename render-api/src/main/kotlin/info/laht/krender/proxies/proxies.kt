@@ -50,7 +50,7 @@ interface SphereProxy : RenderProxy, ColorProxy, SpatialProxy, WireframeProxy, T
     fun setRadius(radius: Float)
 }
 
-interface TerrainProxy : RenderProxy, SpatialProxy, WireframeProxy, ColorProxy, TextureProxy {
+interface HeightmapProxy : RenderProxy, SpatialProxy, WireframeProxy, ColorProxy, TextureProxy {
     fun setHeights(heights: FloatArray)
 }
 
