@@ -5,6 +5,7 @@ import info.laht.threekt.math.Quaternion
 import info.laht.threekt.math.Vector3
 import org.joml.Matrix4dc
 import org.joml.Quaterniondc
+import org.joml.Vector3d
 import org.joml.Vector3dc
 
 internal fun Vector3.set(v: Vector3dc): Vector3 {
@@ -22,6 +23,10 @@ internal fun Matrix4.set(m: Matrix4dc): Matrix4 {
         m.m02().toFloat(), m.m12().toFloat(), m.m22().toFloat(), m.m32().toFloat(),
         m.m03().toFloat(), m.m13().toFloat(), m.m23().toFloat(), m.m33().toFloat()
     )
+}
+
+internal fun Vector3d.set(v: Vector3): Vector3d {
+    return Vector3d(v.x.toDouble(), v.y.toDouble(), v.z.toDouble())
 }
 
 internal fun List<Vector3dc>.flatten(): FloatArray {
