@@ -12,7 +12,7 @@ import java.io.Closeable
 
 interface RenderEngine : Closeable {
 
-    fun init()
+    fun init(cameraTransform: Matrix4dc? = null)
 
     fun setBackGroundColor(color: Int)
 

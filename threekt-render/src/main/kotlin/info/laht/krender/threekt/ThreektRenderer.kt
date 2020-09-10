@@ -8,6 +8,9 @@ import info.laht.krender.util.RenderContext
 import info.laht.threekt.Window
 import info.laht.threekt.cameras.PerspectiveCamera
 import info.laht.threekt.controls.OrbitControls
+import info.laht.threekt.core.Clock
+import info.laht.threekt.lights.DirectionalLight
+import info.laht.threekt.math.Matrix4
 import info.laht.threekt.renderers.GLRenderer
 import info.laht.threekt.scenes.Scene
 import org.joml.Matrix4dc
@@ -22,11 +25,13 @@ class ThreektRenderer : AbstractRenderEngine() {
     private val scene: Scene = Scene()
     private var internalRenderer: InternalRenderer? = null
 
+    private var water: ThreektWaterProxy? = null
+
     private val lock = ReentrantLock()
     private var initialized = lock.newCondition()
 
-    override fun init() {
-        internalRenderer = InternalRenderer()
+    override fun init(cameraTransform: Matrix4dc?) {
+        internalRenderer = InternalRenderer(cameraTransform?.let { Matrix4().set(it) })
         Thread(internalRenderer).apply { start() }
         lock.withLock {
             initialized.await()
@@ -114,7 +119,10 @@ class ThreektRenderer : AbstractRenderEngine() {
     }
 
     override fun createWater(width: Float, height: Float): WaterProxy {
-        TODO("Not yet implemented")
+        return ThreektWaterProxy(ctx, width, height).also {
+            water = it
+            scene.add(it.parentNode)
+        }
     }
 
     override fun createPointCloud(pointSize: Float, points: List<Vector3dc>): PointCloudProxy {
@@ -129,7 +137,9 @@ class ThreektRenderer : AbstractRenderEngine() {
 
     }
 
-    private inner class InternalRenderer : Runnable {
+    private inner class InternalRenderer(
+        private val cameraTransform: Matrix4?
+    ) : Runnable {
 
         override fun run() {
 
@@ -143,10 +153,16 @@ class ThreektRenderer : AbstractRenderEngine() {
                 }
 
                 val renderer = GLRenderer(window.size)
-                val camera = PerspectiveCamera(75, window.aspect, 0.1, 1000).apply {
-                    position.z = 5f
+                val camera = PerspectiveCamera(75, window.aspect, 0.1, 1000)
+                cameraTransform?.also { t ->
+                    camera.position.setFromMatrixPosition(cameraTransform)
+                    camera.quaternion.setFromRotationMatrix(cameraTransform)
                 }
                 OrbitControls(camera, window)
+
+                DirectionalLight(0xffffff, 0.5).also {
+                    scene.add(it)
+                }
 
                 window.onWindowResize { width, height ->
                     camera.aspect = window.aspect
@@ -154,8 +170,15 @@ class ThreektRenderer : AbstractRenderEngine() {
                     renderer.setSize(width, height)
                 }
 
+                val clock = Clock()
                 window.animate {
                     ctx.invokePendingTasks()
+
+                    water?.water?.apply {
+                        val wTime = uniforms["time"]!!.value as Float
+                        uniforms["time"]!!.value = wTime + (0.2f * clock.getDelta())
+                    }
+
                     renderer.render(scene, camera)
                 }
 
