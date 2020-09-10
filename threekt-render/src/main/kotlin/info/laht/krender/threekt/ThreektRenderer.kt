@@ -9,6 +9,7 @@ import info.laht.threekt.Window
 import info.laht.threekt.cameras.PerspectiveCamera
 import info.laht.threekt.controls.OrbitControls
 import info.laht.threekt.core.Clock
+import info.laht.threekt.input.KeyAction
 import info.laht.threekt.math.Matrix4
 import info.laht.threekt.renderers.GLRenderer
 import info.laht.threekt.scenes.Scene
@@ -163,6 +164,12 @@ class ThreektRenderer : AbstractRenderEngine() {
                     camera.aspect = window.aspect
                     camera.updateProjectionMatrix()
                     renderer.setSize(width, height)
+                }
+
+                window.addKeyListener {
+                    if (it.action == KeyAction.PRESS) {
+                        keyListener?.onKeyPressed(it.keyCode)
+                    }
                 }
 
                 val clock = Clock()
