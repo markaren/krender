@@ -17,12 +17,12 @@ import info.laht.krender.jme.extra.RawInputAdapter
 import info.laht.krender.jme.proxy.*
 import info.laht.krender.mesh.Trimesh
 import info.laht.krender.proxies.*
-import info.laht.krender.util.ExternalSource
 import info.laht.krender.util.RenderContext
 import org.joml.Matrix4f
 import org.joml.Matrix4fc
 import org.joml.Vector3d
 import org.joml.Vector3fc
+import java.io.File
 import java.util.concurrent.locks.ReentrantLock
 import kotlin.concurrent.withLock
 
@@ -60,7 +60,7 @@ class JmeRenderEngine : AbstractRenderEngine() {
         }
     }
 
-    override fun createMesh(source: ExternalSource, scale: Float, offset: Matrix4fc?): MeshProxy {
+    override fun createMesh(source: File, scale: Float, offset: Matrix4fc?): MeshProxy {
         return JmeMeshProxy(ctx, source, scale, offset).also {
             ctx.invokeLater { parent.attachChild(it) }
         }

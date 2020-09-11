@@ -69,7 +69,7 @@ interface LineProxy : RenderProxy, ColorProxy {
     fun update(points: List<Vector3fc>)
 }
 
-interface MeshProxy : RenderProxy, WireframeProxy, SpatialProxy
+interface MeshProxy : RenderProxy, WireframeProxy, SpatialProxy, TextureProxy, ColorProxy
 
 interface PlaneProxy : RenderProxy, ColorProxy, SpatialProxy, WireframeProxy
 

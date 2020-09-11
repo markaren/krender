@@ -4,7 +4,6 @@ import info.laht.krender.AbstractRenderEngine
 import info.laht.krender.ColorConstants
 import info.laht.krender.mesh.Trimesh
 import info.laht.krender.proxies.*
-import info.laht.krender.util.ExternalSource
 import info.laht.krender.util.RenderContext
 import info.laht.threekt.Window
 import info.laht.threekt.cameras.PerspectiveCamera
@@ -16,6 +15,7 @@ import info.laht.threekt.renderers.GLRenderer
 import info.laht.threekt.scenes.Scene
 import org.joml.Matrix4fc
 import org.joml.Vector3fc
+import java.io.File
 import java.util.concurrent.locks.ReentrantLock
 import kotlin.concurrent.withLock
 
@@ -54,11 +54,19 @@ class ThreektRenderer : AbstractRenderEngine() {
     }
 
     override fun createMesh(mesh: Trimesh): MeshProxy {
-        TODO("Not yet implemented")
+        return ThreektTrimeshProxy(ctx, mesh).also {
+            ctx.invokeLater {
+                scene.add(it.parentNode)
+            }
+        }
     }
 
-    override fun createMesh(source: ExternalSource, scale: Float, offset: Matrix4fc?): MeshProxy {
-        TODO("Not yet implemented")
+    override fun createMesh(source: File, scale: Float, offset: Matrix4fc?): MeshProxy {
+        return ThreektTrimeshProxy(ctx, source, scale).also {
+            ctx.invokeLater {
+                scene.add(it.parentNode)
+            }
+        }
     }
 
     override fun createSphere(radius: Float, offset: Matrix4fc?): SphereProxy {

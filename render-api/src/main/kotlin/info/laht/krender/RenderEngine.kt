@@ -5,10 +5,10 @@ import info.laht.krender.listeners.KeyListener
 import info.laht.krender.listeners.MouseClickListener
 import info.laht.krender.mesh.Trimesh
 import info.laht.krender.proxies.*
-import info.laht.krender.util.ExternalSource
 import org.joml.Matrix4fc
 import org.joml.Vector3fc
 import java.io.Closeable
+import java.io.File
 
 interface RenderEngine : Closeable {
 
@@ -20,7 +20,7 @@ interface RenderEngine : Closeable {
     fun createArrow(length: Float): ArrowProxy
 
     fun createMesh(mesh: Trimesh): MeshProxy
-    fun createMesh(source: ExternalSource, scale: Float = 1f, offset: Matrix4fc? = null): MeshProxy
+    fun createMesh(source: File, scale: Float = 1f, offset: Matrix4fc? = null): MeshProxy
 
     fun createSphere(radius: Float, offset: Matrix4fc? = null): SphereProxy
     fun createPlane(width: Float, height: Float, offset: Matrix4fc? = null): PlaneProxy

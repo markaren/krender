@@ -6,13 +6,11 @@ import org.joml.Matrix4f
 import org.joml.Vector3f
 import java.io.File
 
-private class Dummy
-
 fun main() {
 
-    val tex = File(Dummy::class.java.classLoader.getResource("textures/checker.png")!!.file)
-
     ThreektRenderer().apply {
+
+        val tex = File(javaClass.classLoader.getResource("textures/checker.png")!!.file)
 
         init(Matrix4f().setTranslation(0f, 0f, -5f))
         setBackGroundColor(ColorConstants.gray)

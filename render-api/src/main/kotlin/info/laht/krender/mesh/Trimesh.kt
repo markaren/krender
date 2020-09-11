@@ -1,8 +1,8 @@
 package info.laht.krender.mesh
 
-import info.laht.krender.util.ExternalSource
 import info.laht.krender.util.JomlUtil.fromArray
 import org.joml.*
+import java.io.File
 import java.util.*
 
 internal data class Face(
@@ -19,7 +19,7 @@ open class Trimesh(
     val uvs: MutableList<Float> = mutableListOf()
 ) {
 
-    var source: ExternalSource? = null
+    var source: File? = null
     var scale: Float = 1f
         private set
 

@@ -1,5 +1,6 @@
 package info.laht.krender.threekt
 
+import info.laht.krender.mesh.Trimesh
 import info.laht.krender.proxies.*
 import info.laht.krender.util.ExternalSource
 import info.laht.krender.util.FileSource
@@ -10,6 +11,8 @@ import info.laht.threekt.TextureWrapping
 import info.laht.threekt.core.*
 import info.laht.threekt.extras.objects.Water
 import info.laht.threekt.geometries.*
+import info.laht.threekt.loaders.OBJLoader
+import info.laht.threekt.loaders.STLLoader
 import info.laht.threekt.loaders.TextureLoader
 import info.laht.threekt.materials.MaterialWithColor
 import info.laht.threekt.materials.MaterialWithWireframe
@@ -24,6 +27,7 @@ import info.laht.threekt.objects.Points
 import org.joml.Matrix4fc
 import org.joml.Quaternionfc
 import org.joml.Vector3fc
+import java.io.File
 import kotlin.math.PI
 
 internal open class ThreektProxy(
@@ -210,6 +214,39 @@ internal class ThreektCylinderProxy(
         val scale = (height / this.height)
         geometry.scale(1f, scale, 1f)
         this.height = height
+    }
+
+}
+
+internal class ThreektTrimeshProxy private constructor(
+    ctx: RenderContext
+) : ThreektProxy(ctx), MeshProxy {
+
+    constructor(ctx: RenderContext, trimesh: Trimesh) : this(ctx) {
+        val geometry = BufferGeometry().apply {
+            setIndex(IntBufferAttribute(trimesh.indices.toIntArray(), 1))
+            addAttribute("position", FloatBufferAttribute(trimesh.vertices.toFloatArray(), 3))
+            addAttribute("normal", FloatBufferAttribute(trimesh.normals.toFloatArray(), 3))
+            addAttribute("uv", FloatBufferAttribute(trimesh.uvs.toFloatArray(), 3))
+        }
+        geometry.computeBoundingSphere()
+
+        val mesh = Mesh(geometry)
+        ctx.invokeLater {
+            attachChild(mesh)
+        }
+    }
+
+    constructor(ctx: RenderContext, source: File, scale: Float) : this(ctx) {
+
+        val mesh = when (val ext = source.extension.toLowerCase()) {
+            "obj" -> OBJLoader().load(source.absolutePath)
+            "stl" -> Mesh(STLLoader().load(source.absolutePath))
+            else -> throw UnsupportedOperationException("Unsupported extension: $ext")
+        }
+        mesh.scale.set(scale, scale, scale)
+        attachChild(mesh)
+
     }
 
 }

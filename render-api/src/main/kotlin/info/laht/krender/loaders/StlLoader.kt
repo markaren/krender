@@ -1,7 +1,7 @@
 package info.laht.krender.loaders
 
 import info.laht.krender.mesh.Trimesh
-import info.laht.krender.util.ExternalSource
+import java.io.File
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import java.util.*
@@ -17,7 +17,7 @@ class StlLoader {
     val supportedExtension: String
         get() = "stl"
 
-    fun load(source: ExternalSource): Trimesh {
+    fun load(source: File): Trimesh {
         //MeshLoader.testExtension(supportedExtension, source.extension)
         return loadBinary(source.readBytes().let {
             ByteBuffer.wrap(it).apply {

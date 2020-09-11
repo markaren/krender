@@ -8,7 +8,7 @@ import kotlin.math.cos
 import kotlin.math.sin
 
 class SphereMesh(
-    radius: Float
+    radius: Float = 0.5f
 ) : SphericalMesh(radius)
 
 open class SphericalMesh(
@@ -17,12 +17,13 @@ open class SphericalMesh(
     val heightSegments: Int = 32,
     val phiStart: Float = 0f,
     val phiLength: Float = (PI * 2).toFloat(),
-    val thetaLength: Float = 0f,
-    val thetaStart: Float = PI.toFloat()
+    val thetaStart: Float = 0f,
+    val thetaLength: Float = PI.toFloat()
 ) : Trimesh() {
 
     init {
         Helper().also { h ->
+            indices.addAll(h.indices.toList())
             vertices.addAll(h.positions.toList())
             normals.addAll(h.normals.toList())
             uvs.addAll(h.uvs.toList())
