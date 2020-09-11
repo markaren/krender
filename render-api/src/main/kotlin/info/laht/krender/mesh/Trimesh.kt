@@ -11,15 +11,13 @@ internal data class Face(
     val c: Int
 )
 
-class Trimesh private constructor(
-    builder: Builder
+open class Trimesh(
+    val indices: MutableList<Int> = mutableListOf(),
+    val vertices: MutableList<Double> = mutableListOf(),
+    val normals: MutableList<Double> = mutableListOf(),
+    val colors: MutableList<Float> = mutableListOf(),
+    val uvs: MutableList<Double> = mutableListOf()
 ) {
-
-    val indices: MutableList<Int> = builder.indices
-    val vertices: MutableList<Double> = builder.vertices
-    val normals: MutableList<Double> = builder.normals
-    val colors: MutableList<Float> = builder.colors
-    val uvs: MutableList<Double> = builder.uvs
 
     var source: ExternalSource? = null
     var scale: Float = 1f
@@ -47,6 +45,46 @@ class Trimesh private constructor(
 
     fun hasUvs(): Boolean {
         return uvs.isNotEmpty()
+    }
+
+    fun indices(indices: List<Int>) = apply {
+        this.indices.addAll(indices)
+    }
+
+    fun indices(indices: IntArray) = apply {
+        indices.forEach { this.indices.add(it) }
+    }
+
+    fun vertices(vertices: List<Double>) = apply {
+        this.vertices.addAll(vertices)
+    }
+
+    fun vertices(vertices: DoubleArray) = apply {
+        vertices.forEach { this.vertices.add(it) }
+    }
+
+    fun normals(normals: List<Double>) = apply {
+        this.normals.addAll(normals)
+    }
+
+    fun normals(normals: DoubleArray) = apply {
+        normals.forEach { this.normals.add(it) }
+    }
+
+    fun colors(colors: List<Float>) = apply {
+        this.colors.addAll(colors)
+    }
+
+    fun colors(colors: FloatArray) = apply {
+        colors.forEach { this.colors.add(it) }
+    }
+
+    fun uvs(uvs: List<Double>) = apply {
+        this.uvs.addAll(uvs)
+    }
+
+    fun uvs(uvs: DoubleArray) = apply {
+        uvs.forEach { this.uvs.add(it) }
     }
 
     fun scale(scale: Float) {
@@ -242,60 +280,6 @@ class Trimesh private constructor(
         val v213 = p2.x() * p1.y() * p3.z()
         val v123 = p1.x() * p2.y() * p3.z()
         return 1.0 / 6.0 * (-v321 + v231 + v312 - v132 - v213 + v123)
-    }
-
-    class Builder {
-
-        internal val indices: MutableList<Int> = mutableListOf()
-        internal val vertices: MutableList<Double> = mutableListOf()
-        internal val normals: MutableList<Double> = mutableListOf()
-        internal val colors: MutableList<Float> = mutableListOf()
-        internal val uvs: MutableList<Double> = mutableListOf()
-
-        fun indices(indices: List<Int>) = apply {
-            this.indices.addAll(indices)
-        }
-
-        fun indices(indices: IntArray) = apply {
-            indices.forEach { this.indices.add(it) }
-        }
-
-        fun vertices(vertices: List<Double>) = apply {
-            this.vertices.addAll(vertices)
-        }
-
-        fun vertices(vertices: DoubleArray) = apply {
-            vertices.forEach { this.vertices.add(it) }
-        }
-
-        fun normals(normals: List<Double>) = apply {
-            this.normals.addAll(normals)
-        }
-
-        fun normals(normals: DoubleArray) = apply {
-            normals.forEach { this.normals.add(it) }
-        }
-
-        fun colors(colors: List<Float>) = apply {
-            this.colors.addAll(colors)
-        }
-
-        fun colors(colors: FloatArray) = apply {
-            colors.forEach { this.colors.add(it) }
-        }
-
-        fun uvs(uvs: List<Double>) = apply {
-            this.uvs.addAll(uvs)
-        }
-
-        fun uvs(uvs: DoubleArray) = apply {
-            uvs.forEach { this.uvs.add(it) }
-        }
-
-        fun build(): Trimesh {
-            return Trimesh(this)
-        }
-
     }
 
 }

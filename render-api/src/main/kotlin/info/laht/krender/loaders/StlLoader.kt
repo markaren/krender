@@ -76,10 +76,10 @@ class StlLoader {
                 }
             }
             for (i in 1..3) {
-                val vertexstart = start + i * 12
-                vertices.add(reader.getFloat(vertexstart).toDouble())
-                vertices.add(reader.getFloat(vertexstart + 4).toDouble())
-                vertices.add(reader.getFloat(vertexstart + 8).toDouble())
+                val vertexStart = start + i * 12
+                vertices.add(reader.getFloat(vertexStart).toDouble())
+                vertices.add(reader.getFloat(vertexStart + 4).toDouble())
+                vertices.add(reader.getFloat(vertexStart + 8).toDouble())
                 normals.add(normalX)
                 normals.add(normalY)
                 normals.add(normalZ)
@@ -90,13 +90,14 @@ class StlLoader {
                 }
             }
         }
-        return Trimesh.Builder().let {
+        return Trimesh(
+            vertices = vertices,
+            normals = normals
+        ).also {
             if (colors != null) {
                 it.colors(colors)
             }
-            it.vertices(vertices)
-            it.normals(normals)
-            it.build().generateIndices()
+            it.generateIndices()
         }
     }
 

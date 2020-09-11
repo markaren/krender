@@ -83,11 +83,11 @@ class ObjLoader {
                 indices.add(result[3].split("//").toTypedArray()[0].toInt() - 1)
             }
         }
-        return Trimesh.Builder()
-            .indices(indices)
-            .vertices(vertices)
-            .normals(normals)
-            .build()
+        return Trimesh(
+            indices = indices,
+            vertices = vertices,
+            normals = normals
+        )
     }
 
     companion object {
