@@ -11,7 +11,7 @@ import info.laht.krender.proxies.MeshProxy
 import info.laht.krender.util.ExternalSource
 import info.laht.krender.util.FileSource
 import info.laht.krender.util.URLSource
-import org.joml.Matrix4dc
+import org.joml.Matrix4fc
 
 internal class JmeMeshProxy : JmeProxy, MeshProxy {
 
@@ -20,7 +20,7 @@ internal class JmeMeshProxy : JmeProxy, MeshProxy {
     }
 
     @JvmOverloads
-    constructor(ctx: JmeContext, source: ExternalSource, scale: Float, offset: Matrix4dc? = null) : super("mesh", ctx) {
+    constructor(ctx: JmeContext, source: ExternalSource, scale: Float, offset: Matrix4fc? = null) : super("mesh", ctx) {
         attachChild(create(ctx.assetManager, source, scale, offset))
     }
 
@@ -53,7 +53,7 @@ internal class JmeMeshProxy : JmeProxy, MeshProxy {
             assetManager: AssetManager,
             source: ExternalSource,
             scale: Float,
-            offset: Matrix4dc? = null
+            offset: Matrix4fc? = null
         ): Spatial {
             val extension: String = source.extension
             if (extension != "obj") {

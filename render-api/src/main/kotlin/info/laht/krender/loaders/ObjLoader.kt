@@ -19,28 +19,32 @@ class ObjLoader {
 
     fun load(text: String): Trimesh {
 
-        val indices: MutableList<Int> = mutableListOf()
-        val vertices: MutableList<Double> = mutableListOf()
-        val normals: MutableList<Double> = mutableListOf()
+        val indices = mutableListOf<Int>()
+        val vertices = mutableListOf<Float>()
+        val normals = mutableListOf<Float>()
 
         run {
             val compile = Pattern.compile(VERTEX_PATTERN)
             val matcher = compile.matcher(text)
             while (matcher.find()) {
-                val result = matcher.group().replace("  ", " ").split(" ").toTypedArray()
-                vertices.add(result[1].toDouble())
-                vertices.add(result[2].toDouble())
-                vertices.add(result[3].toDouble())
+                val result = matcher.group()
+                    .replace("  ", " ")
+                    .split(" ").toTypedArray()
+                vertices.add(result[1].toFloat())
+                vertices.add(result[2].toFloat())
+                vertices.add(result[3].toFloat())
             }
         }
         run {
             val compile = Pattern.compile(NORMAL_PATTERN)
             val matcher = compile.matcher(text)
             while (matcher.find()) {
-                val result = matcher.group().replace("  ", " ").split(" ").toTypedArray()
-                normals.add(result[1].toDouble())
-                normals.add(result[2].toDouble())
-                normals.add(result[3].toDouble())
+                val result = matcher.group()
+                    .replace("  ", " ")
+                    .split(" ").toTypedArray()
+                normals.add(result[1].toFloat())
+                normals.add(result[2].toFloat())
+                normals.add(result[3].toFloat())
             }
         }
         run {

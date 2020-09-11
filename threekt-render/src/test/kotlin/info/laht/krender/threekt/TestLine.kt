@@ -1,21 +1,21 @@
 package info.laht.krender.threekt
 
 import info.laht.krender.ColorConstants
-import org.joml.Matrix4d
-import org.joml.Vector3d
+import org.joml.Matrix4f
+import org.joml.Vector3f
 
 fun main() {
 
     val points = listOf(
-        Vector3d(0.0, 0.0, 0.0),
-        Vector3d(1.0, 0.0, 0.0),
-        Vector3d(1.0, 2.0, 0.0),
-        Vector3d(1.0, 2.0, 5.0),
+        Vector3f(0f, 0f, 0f),
+        Vector3f(1f, 0f, 0f),
+        Vector3f(1f, 2f, 0f),
+        Vector3f(1f, 2f, 5f),
     )
 
-    val renderEngine = ThreektRenderer().apply {
+    ThreektRenderer().apply {
 
-        init(Matrix4d().setTranslation(0.0, 0.0, -5.0))
+        init(Matrix4f().setTranslation(0f, 0f, 5f))
         setBackGroundColor(ColorConstants.aliceblue)
 
         val curve = createLine(points).apply {
@@ -26,10 +26,10 @@ fun main() {
 
         curve.update(
             listOf(
-                Vector3d(0.0, 0.0, 0.0),
-                Vector3d(-1.0, 0.0, 0.0),
-                Vector3d(-1.0, 2.0, 0.0),
-                Vector3d(-1.0, 2.0, 5.0),
+                Vector3f(0f, 0f, 0f),
+                Vector3f(-1f, 0f, 0f),
+                Vector3f(-1f, 2f, 0f),
+                Vector3f(-1f, 2f, 5f),
             )
         )
     }

@@ -54,13 +54,13 @@ class StlLoader {
         }
         val dataOffset = 84
         val faceLength = 12 * 4 + 2
-        val vertices: MutableList<Double> = ArrayList()
-        val normals: MutableList<Double> = ArrayList()
+        val vertices = mutableListOf<Float>()
+        val normals = mutableListOf<Float>()
         for (face in 0 until faces) {
             val start = dataOffset + face * faceLength
-            val normalX = reader.getFloat(start).toDouble()
-            val normalY = reader.getFloat(start + 4).toDouble()
-            val normalZ = reader.getFloat(start + 8).toDouble()
+            val normalX = reader.getFloat(start)
+            val normalY = reader.getFloat(start + 4)
+            val normalZ = reader.getFloat(start + 8)
             if (hasColors) {
                 val packedColor = reader.getChar(start + 48).toInt()
                 if (packedColor and 0x8000 == 0) {
@@ -77,9 +77,9 @@ class StlLoader {
             }
             for (i in 1..3) {
                 val vertexStart = start + i * 12
-                vertices.add(reader.getFloat(vertexStart).toDouble())
-                vertices.add(reader.getFloat(vertexStart + 4).toDouble())
-                vertices.add(reader.getFloat(vertexStart + 8).toDouble())
+                vertices.add(reader.getFloat(vertexStart))
+                vertices.add(reader.getFloat(vertexStart + 4))
+                vertices.add(reader.getFloat(vertexStart + 8))
                 normals.add(normalX)
                 normals.add(normalY)
                 normals.add(normalZ)

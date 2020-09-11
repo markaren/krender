@@ -1,9 +1,9 @@
 package info.laht.krender.proxies
 
 import info.laht.krender.util.ExternalSource
-import org.joml.Matrix4dc
-import org.joml.Quaterniondc
-import org.joml.Vector3dc
+import org.joml.Matrix4fc
+import org.joml.Quaternionfc
+import org.joml.Vector3fc
 
 interface ArrowProxy : RenderProxy, ColorProxy, SpatialProxy {
     fun setLength(length: Float)
@@ -25,7 +25,7 @@ interface ColorProxy {
 }
 
 interface CurveProxy : RenderProxy, ColorProxy, WireframeProxy {
-    fun update(points: List<Vector3dc>)
+    fun update(points: List<Vector3fc>)
 }
 
 interface CylinderProxy : RenderProxy, ColorProxy, SpatialProxy, WireframeProxy, TextureProxy {
@@ -39,10 +39,10 @@ interface RenderProxy {
 }
 
 interface SpatialProxy {
-    fun setTranslate(v: Vector3dc)
-    fun setRotate(q: Quaterniondc)
-    fun setTransform(m: Matrix4dc)
-    fun setOffsetTransform(offset: Matrix4dc)
+    fun setTranslate(v: Vector3fc)
+    fun setRotate(q: Quaternionfc)
+    fun setTransform(m: Matrix4fc)
+    fun setOffsetTransform(offset: Matrix4fc)
 }
 
 interface SphereProxy : RenderProxy, ColorProxy, SpatialProxy, WireframeProxy, TextureProxy {
@@ -58,7 +58,7 @@ interface TextureProxy {
 }
 
 interface WaterProxy : RenderProxy, WireframeProxy {
-    fun setTranslate(v: Vector3dc)
+    fun setTranslate(v: Vector3fc)
 }
 
 interface WireframeProxy {
@@ -66,7 +66,7 @@ interface WireframeProxy {
 }
 
 interface LineProxy : RenderProxy, ColorProxy {
-    fun update(points: List<Vector3dc>)
+    fun update(points: List<Vector3fc>)
 }
 
 interface MeshProxy : RenderProxy, WireframeProxy, SpatialProxy

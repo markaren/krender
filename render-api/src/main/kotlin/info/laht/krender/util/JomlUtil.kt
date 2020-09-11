@@ -1,9 +1,6 @@
 package info.laht.krender.util
 
-import org.joml.Matrix4dc
-import org.joml.Vector3d
-import org.joml.Vector3dc
-import org.joml.Vector4d
+import org.joml.*
 
 object JomlUtil {
 
@@ -53,46 +50,65 @@ object JomlUtil {
         return kotlin.math.sqrt(kotlin.math.max(kotlin.math.max(scaleXSq, scaleYSq), scaleZSq))
     }
 
-    fun rowMajor(m: Matrix4dc, dest: FloatArray = FloatArray(16)): FloatArray {
-        dest[0] = m.m00().toFloat()
-        dest[1] = m.m10().toFloat()
-        dest[2] = m.m20().toFloat()
-        dest[3] = m.m30().toFloat()
-        dest[4] = m.m01().toFloat()
-        dest[5] = m.m11().toFloat()
-        dest[6] = m.m21().toFloat()
-        dest[7] = m.m31().toFloat()
-        dest[8] = m.m02().toFloat()
-        dest[9] = m.m12().toFloat()
-        dest[10] = m.m22().toFloat()
-        dest[11] = m.m32().toFloat()
-        dest[12] = m.m03().toFloat()
-        dest[13] = m.m13().toFloat()
-        dest[14] = m.m23().toFloat()
-        dest[15] = m.m33().toFloat()
+    fun rowMajor(m: Matrix4fc, dest: FloatArray = FloatArray(16)): FloatArray {
+        dest[0] = m.m00()
+        dest[1] = m.m10()
+        dest[2] = m.m20()
+        dest[3] = m.m30()
+        dest[4] = m.m01()
+        dest[5] = m.m11()
+        dest[6] = m.m21()
+        dest[7] = m.m31()
+        dest[8] = m.m02()
+        dest[9] = m.m12()
+        dest[10] = m.m22()
+        dest[11] = m.m32()
+        dest[12] = m.m03()
+        dest[13] = m.m13()
+        dest[14] = m.m23()
+        dest[15] = m.m33()
         return dest
     }
 
-    internal fun Vector3d.fromArray(list: List<Double>, offset: Int) {
+    internal fun Vector3d.fromArray(list: List<Double>, offset: Int) = apply {
         x = list[offset]
         y = list[offset + 1]
         z = list[offset + 2]
     }
 
-    internal fun Vector3d.fromArray(list: DoubleArray, offset: Int) {
+    internal fun Vector3f.fromArray(list: List<Float>, offset: Int) = apply {
         x = list[offset]
         y = list[offset + 1]
         z = list[offset + 2]
     }
 
-    internal fun Vector4d.fromArray(list: List<Double>, offset: Int) {
+    internal fun Vector3d.fromArray(list: DoubleArray, offset: Int) = apply {
+        x = list[offset]
+        y = list[offset + 1]
+        z = list[offset + 2]
+    }
+
+    internal fun Vector3f.fromArray(list: FloatArray, offset: Int) = apply {
+        x = list[offset]
+        y = list[offset + 1]
+        z = list[offset + 2]
+    }
+
+    internal fun Vector4d.fromArray(list: List<Double>, offset: Int) = apply {
         x = list[offset]
         y = list[offset + 1]
         z = list[offset + 2]
         w = list[offset + 3]
     }
 
-    internal fun Vector4d.fromArray(list: DoubleArray, offset: Int) {
+    internal fun Vector4f.fromArray(list: List<Float>, offset: Int) = apply {
+        x = list[offset]
+        y = list[offset + 1]
+        z = list[offset + 2]
+        w = list[offset + 3]
+    }
+
+    internal fun Vector4d.fromArray(list: DoubleArray, offset: Int) = apply {
         x = list[offset]
         y = list[offset + 1]
         z = list[offset + 2]

@@ -8,12 +8,12 @@ import info.laht.krender.jme.JmeContext
 import info.laht.krender.jme.extra.JmeTubeGeometry
 import info.laht.krender.jme.extra.JmeUtils
 import info.laht.krender.proxies.CurveProxy
-import org.joml.Vector3dc
+import org.joml.Vector3fc
 
 internal class JmeCurveProxy(
     private val ctx: JmeContext,
-    radius: Double,
-    points: List<Vector3dc>
+    radius: Float,
+    points: List<Vector3fc>
 ) : Node(), CurveProxy {
 
     private var isWireframe = false
@@ -28,7 +28,7 @@ internal class JmeCurveProxy(
         material_.additionalRenderState.faceCullMode = RenderState.FaceCullMode.Off
     }
 
-    override fun update(points: List<Vector3dc>) {
+    override fun update(points: List<Vector3fc>) {
         ctx.invokeLater { tube.update(points) }
     }
 

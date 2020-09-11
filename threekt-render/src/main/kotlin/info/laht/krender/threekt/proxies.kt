@@ -21,9 +21,9 @@ import info.laht.threekt.math.curves.CatmullRomCurve3
 import info.laht.threekt.objects.Line
 import info.laht.threekt.objects.Mesh
 import info.laht.threekt.objects.Points
-import org.joml.Matrix4dc
-import org.joml.Quaterniondc
-import org.joml.Vector3dc
+import org.joml.Matrix4fc
+import org.joml.Quaternionfc
+import org.joml.Vector3fc
 import kotlin.math.PI
 
 internal open class ThreektProxy(
@@ -39,27 +39,27 @@ internal open class ThreektProxy(
         }
     }
 
-    override fun setTranslate(v: Vector3dc) {
+    override fun setTranslate(v: Vector3fc) {
         ctx.invokeLater {
             parentNode.position.set(v)
             parentNode.updateMatrix()
         }
     }
 
-    override fun setRotate(q: Quaterniondc) {
+    override fun setRotate(q: Quaternionfc) {
         ctx.invokeLater {
             parentNode.quaternion.set(q)
             parentNode.updateMatrix()
         }
     }
 
-    override fun setTransform(m: Matrix4dc) {
+    override fun setTransform(m: Matrix4fc) {
         ctx.invokeLater {
             parentNode.matrix.set(m)
         }
     }
 
-    override fun setOffsetTransform(offset: Matrix4dc) {
+    override fun setOffsetTransform(offset: Matrix4fc) {
         ctx.invokeLater {
             childNode.matrix.set(offset)
         }
@@ -217,7 +217,7 @@ internal class ThreektCylinderProxy(
 internal class ThreektPointCloudProxy(
     ctx: RenderContext,
     pointSize: Float,
-    points: List<Vector3dc>,
+    points: List<Vector3fc>,
 ) : ThreektProxy(ctx), PointCloudProxy {
 
     init {
@@ -249,7 +249,7 @@ internal class ThreektPointCloudProxy(
 internal class ThreektCurveProxy(
     ctx: RenderContext,
     private val radius: Float,
-    points: List<Vector3dc>
+    points: List<Vector3fc>
 ) : ThreektProxy(ctx), CurveProxy {
 
     private val mesh = Mesh(
@@ -267,7 +267,7 @@ internal class ThreektCurveProxy(
         }
     }
 
-    override fun update(points: List<Vector3dc>) {
+    override fun update(points: List<Vector3fc>) {
         val curve = CatmullRomCurve3(points.map { Vector3().set(it) })
         ctx.invokeLater {
             mesh.geometry.dispose()
@@ -278,7 +278,7 @@ internal class ThreektCurveProxy(
 
 internal class ThreektLineProxy(
     ctx: RenderContext,
-    points: List<Vector3dc>
+    points: List<Vector3fc>
 ) : ThreektProxy(ctx), LineProxy {
 
     private val line = Line(
@@ -291,7 +291,7 @@ internal class ThreektLineProxy(
         }
     }
 
-    override fun update(points: List<Vector3dc>) {
+    override fun update(points: List<Vector3fc>) {
         ctx.invokeLater {
             line.geometry.dispose()
             line.geometry = createGeometry(points)
@@ -300,7 +300,7 @@ internal class ThreektLineProxy(
 
     private companion object {
 
-        fun createGeometry(points: List<Vector3dc>): BufferGeometry {
+        fun createGeometry(points: List<Vector3fc>): BufferGeometry {
             return BufferGeometry().apply {
                 addAttribute("position", FloatBufferAttribute(points.flatten(), 3))
             }

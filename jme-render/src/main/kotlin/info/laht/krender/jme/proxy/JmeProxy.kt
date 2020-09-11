@@ -24,8 +24,8 @@ internal abstract class JmeProxy constructor(
     protected val ctx: JmeContext
 ) : Node(name), RenderProxy, ColorProxy, SpatialProxy, WireframeProxy, TextureProxy {
 
-    private val v = Vector3d()
-    private val q = Quaterniond()
+    private val v = Vector3f()
+    private val q = Quaternionf()
     private var color: Int? = null
     private var material_: Material
     private var isWireframe = false
@@ -76,34 +76,34 @@ internal abstract class JmeProxy constructor(
         }
     }
 
-    override fun setTranslate(v: Vector3dc) {
+    override fun setTranslate(v: Vector3fc) {
         ctx.invokeLater {
-            localTranslation[v.x().toFloat(), v.y().toFloat()] = v.z().toFloat()
+            localTranslation.set(v.x(), v.y(), v.z())
             setTransformRefresh()
         }
     }
 
-    override fun setRotate(q: Quaterniondc) {
+    override fun setRotate(q: Quaternionfc) {
         ctx.invokeLater {
-            localRotation[q.x().toFloat(), q.y().toFloat(), q.z().toFloat()] = q.w().toFloat()
+            localRotation.set(q.x(), q.y(), q.z(), q.w())
             setTransformRefresh()
         }
     }
 
-    override fun setOffsetTransform(offset: Matrix4dc) {
+    override fun setOffsetTransform(offset: Matrix4fc) {
         ctx.invokeLater {
-            node.localTranslation = convert(offset.getTranslation(Vector3d()))
-            node.localRotation = convert(offset.getNormalizedRotation(Quaterniond()))
+            node.localTranslation = convert(offset.getTranslation(Vector3f()))
+            node.localRotation = convert(offset.getNormalizedRotation(Quaternionf()))
             setTransformRefresh()
         }
     }
 
-    override fun setTransform(m: Matrix4dc) {
+    override fun setTransform(m: Matrix4fc) {
         m.getTranslation(v)
         m.getNormalizedRotation(q)
         ctx.invokeLater {
-            localTranslation[v.x.toFloat(), v.y.toFloat()] = v.z.toFloat()
-            localRotation[q.x.toFloat(), q.y.toFloat(), q.z.toFloat()] = q.w.toFloat()
+            localTranslation.set(v.x, v.y, v.z)
+            localRotation.set(q.x, q.y, q.z, q.w)
             setTransformRefresh()
         }
     }

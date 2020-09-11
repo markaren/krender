@@ -23,8 +23,8 @@ internal object JmeUtils {
     }
 
     @JvmOverloads
-    fun convert(v: Vector3dc, store: Vector3f = Vector3f()): Vector3f {
-        return store.set(v.x().toFloat(), v.y().toFloat(), v.z().toFloat())
+    fun convert(v: Vector3fc, store: Vector3f = Vector3f()): Vector3f {
+        return store.set(v.x(), v.y(), v.z())
     }
 
     fun convert(q: Quaternion): Quaterniondc {
@@ -32,12 +32,12 @@ internal object JmeUtils {
     }
 
     @JvmOverloads
-    fun convert(q: Quaterniondc, store: Quaternion = Quaternion()): Quaternion {
-        return store.set(q.x().toFloat(), q.y().toFloat(), q.z().toFloat(), q.w().toFloat())
+    fun convert(q: Quaternionfc, store: Quaternion = Quaternion()): Quaternion {
+        return store.set(q.x(), q.y(), q.z(), q.w())
     }
 
     @JvmOverloads
-    fun convertM(m: Matrix4dc, store: Matrix4f = Matrix4f()): Matrix4f {
+    fun convertM(m: Matrix4fc, store: Matrix4f = Matrix4f()): Matrix4f {
         store.set(JomlUtil.rowMajor(m, FloatArray(16)))
         return store
     }
@@ -50,7 +50,7 @@ internal object JmeUtils {
     }
 
     @JvmOverloads
-    fun convertT(m: Matrix4dc, store: Transform = Transform()): Transform {
+    fun convertT(m: Matrix4fc, store: Transform = Transform()): Transform {
         store.fromTransformMatrix(convertM(m, Matrix4f()))
         return store
     }

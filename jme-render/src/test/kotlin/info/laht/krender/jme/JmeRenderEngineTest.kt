@@ -3,8 +3,8 @@ package info.laht.krender.jme
 import info.laht.krender.ColorConstants
 import info.laht.krender.loaders.ObjLoader
 import info.laht.krender.util.FileSource
-import org.joml.Matrix4d
-import org.joml.Vector3d
+import org.joml.Matrix4f
+import org.joml.Vector3f
 import java.io.File
 
 
@@ -29,7 +29,7 @@ object JmeRenderEngineTest {
                 scale(10f)
             }
             val bunny = createMesh(load).apply {
-                setOffsetTransform(Matrix4d().setTranslation(2.0, 0.0, 0.0))
+                setOffsetTransform(Matrix4f().setTranslation(2f, 0f, 0f))
             }
 
             Thread.sleep(1000)
@@ -40,11 +40,11 @@ object JmeRenderEngineTest {
             var stop = false
             Thread {
 
-                val transform = Matrix4d()
+                val transform = Matrix4f()
 
                 while (!stop) {
 
-                    transform.rotate(0.1 * 0.1, Vector3d(0.0, 1.0, 0.0))
+                    transform.rotate(0.1f * 0.1f, Vector3f(0f, 1f, 0f))
                     bunny.setTransform(transform)
                     Thread.sleep(10)
                 }

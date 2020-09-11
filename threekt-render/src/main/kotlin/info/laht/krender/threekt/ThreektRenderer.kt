@@ -1,6 +1,7 @@
 package info.laht.krender.threekt
 
 import info.laht.krender.AbstractRenderEngine
+import info.laht.krender.ColorConstants
 import info.laht.krender.mesh.Trimesh
 import info.laht.krender.proxies.*
 import info.laht.krender.util.ExternalSource
@@ -13,8 +14,8 @@ import info.laht.threekt.input.KeyAction
 import info.laht.threekt.math.Matrix4
 import info.laht.threekt.renderers.GLRenderer
 import info.laht.threekt.scenes.Scene
-import org.joml.Matrix4dc
-import org.joml.Vector3dc
+import org.joml.Matrix4fc
+import org.joml.Vector3fc
 import java.util.concurrent.locks.ReentrantLock
 import kotlin.concurrent.withLock
 
@@ -22,7 +23,9 @@ class ThreektRenderer : AbstractRenderEngine() {
 
     private val ctx: RenderContext = RenderContext()
 
-    private val scene: Scene = Scene()
+    private val scene: Scene = Scene().apply {
+        setBackground(ColorConstants.aliceblue)
+    }
     private var internalRenderer: InternalRenderer? = null
 
     private var water: ThreektWaterProxy? = null
@@ -30,7 +33,7 @@ class ThreektRenderer : AbstractRenderEngine() {
     private val lock = ReentrantLock()
     private var initialized = lock.newCondition()
 
-    override fun init(cameraTransform: Matrix4dc?) {
+    override fun init(cameraTransform: Matrix4fc?) {
         internalRenderer = InternalRenderer(cameraTransform?.let { Matrix4().set(it) })
         Thread(internalRenderer).apply { start() }
         lock.withLock {
@@ -54,11 +57,11 @@ class ThreektRenderer : AbstractRenderEngine() {
         TODO("Not yet implemented")
     }
 
-    override fun createMesh(source: ExternalSource, scale: Float, offset: Matrix4dc?): MeshProxy {
+    override fun createMesh(source: ExternalSource, scale: Float, offset: Matrix4fc?): MeshProxy {
         TODO("Not yet implemented")
     }
 
-    override fun createSphere(radius: Float, offset: Matrix4dc?): SphereProxy {
+    override fun createSphere(radius: Float, offset: Matrix4fc?): SphereProxy {
         return ThreektSphereProxy(ctx, radius).also {
             offset?.also { offset -> it.setOffsetTransform(offset) }
             ctx.invokeLater {
@@ -67,7 +70,7 @@ class ThreektRenderer : AbstractRenderEngine() {
         }
     }
 
-    override fun createPlane(width: Float, height: Float, offset: Matrix4dc?): PlaneProxy {
+    override fun createPlane(width: Float, height: Float, offset: Matrix4fc?): PlaneProxy {
         return ThreektPlaneProxy(ctx, width, height).also {
             offset?.also { offset -> it.setOffsetTransform(offset) }
             ctx.invokeLater {
@@ -76,7 +79,7 @@ class ThreektRenderer : AbstractRenderEngine() {
         }
     }
 
-    override fun createBox(width: Float, height: Float, depth: Float, offset: Matrix4dc?): BoxProxy {
+    override fun createBox(width: Float, height: Float, depth: Float, offset: Matrix4fc?): BoxProxy {
         return ThreektBoxProxy(ctx, width, height, depth).also {
             offset?.also { offset -> it.setOffsetTransform(offset) }
             ctx.invokeLater {
@@ -85,7 +88,7 @@ class ThreektRenderer : AbstractRenderEngine() {
         }
     }
 
-    override fun createCylinder(radius: Float, height: Float, offset: Matrix4dc?): CylinderProxy {
+    override fun createCylinder(radius: Float, height: Float, offset: Matrix4fc?): CylinderProxy {
         return ThreektCylinderProxy(ctx, radius, height).also {
             offset?.also { offset -> it.setOffsetTransform(offset) }
             ctx.invokeLater {
@@ -94,11 +97,11 @@ class ThreektRenderer : AbstractRenderEngine() {
         }
     }
 
-    override fun createCapsule(radius: Float, height: Float, offset: Matrix4dc?): CapsuleProxy {
+    override fun createCapsule(radius: Float, height: Float, offset: Matrix4fc?): CapsuleProxy {
         TODO("Not yet implemented")
     }
 
-    override fun createCurve(radius: Float, points: List<Vector3dc>): CurveProxy {
+    override fun createCurve(radius: Float, points: List<Vector3fc>): CurveProxy {
         return ThreektCurveProxy(ctx, radius, points).also {
             ctx.invokeLater {
                 scene.add(it.parentNode)
@@ -106,7 +109,7 @@ class ThreektRenderer : AbstractRenderEngine() {
         }
     }
 
-    override fun createLine(points: List<Vector3dc>): LineProxy {
+    override fun createLine(points: List<Vector3fc>): LineProxy {
         return ThreektLineProxy(ctx, points).also {
             ctx.invokeLater {
                 scene.add(it.parentNode)
@@ -125,7 +128,7 @@ class ThreektRenderer : AbstractRenderEngine() {
         }
     }
 
-    override fun createPointCloud(pointSize: Float, points: List<Vector3dc>): PointCloudProxy {
+    override fun createPointCloud(pointSize: Float, points: List<Vector3fc>): PointCloudProxy {
         return ThreektPointCloudProxy(ctx, pointSize, points).also {
             ctx.invokeLater {
                 scene.add(it.parentNode)

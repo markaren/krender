@@ -7,11 +7,11 @@ import info.laht.krender.curves.CatmullRomCurve3
 import info.laht.krender.curves.Curve3
 import org.joml.Vector2d
 import org.joml.Vector3d
-import org.joml.Vector3dc
+import org.joml.Vector3fc
 
 class JmeTubeGeometry(
-    private val radius: Double,
-    points: List<Vector3dc>,
+    private val radius: Float,
+    points: List<Vector3fc>,
     private val tubularSegments: Int,
     private val radialSegments: Int,
     private val closed: Boolean
@@ -28,7 +28,7 @@ class JmeTubeGeometry(
         mesh.setDynamic()
     }
 
-    fun update(points: List<Vector3dc>) {
+    fun update(points: List<Vector3fc>) {
         h.update(points)
         mesh.setBuffer(VertexBuffer.Type.Index, 1, h.indices.toIntArray())
         mesh.setBuffer(VertexBuffer.Type.Position, 3, h.vertices.toFloatArray())
@@ -52,7 +52,7 @@ class JmeTubeGeometry(
         private val normal = Vector3d()
         private val uv = Vector2d()
 
-        fun update(points: List<Vector3dc>) {
+        fun update(points: List<Vector3fc>) {
             indices.clear()
             vertices.clear()
             normals.clear()

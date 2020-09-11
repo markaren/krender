@@ -1,12 +1,12 @@
 package info.laht.krender.threekt
 
 import info.laht.krender.ColorConstants
-import org.joml.Matrix4d
+import org.joml.Matrix4f
 
 fun main() {
 
     ThreektRenderer().apply {
-        init(Matrix4d().setTranslation(-50.0, 50.0, -50.0))
+        init(Matrix4f().setTranslation(-50f, 50f, -50f))
         setBackGroundColor(ColorConstants.aliceblue)
         createWater(100f, 100f)
     }

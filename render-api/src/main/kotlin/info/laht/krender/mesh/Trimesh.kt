@@ -13,10 +13,10 @@ internal data class Face(
 
 open class Trimesh(
     val indices: MutableList<Int> = mutableListOf(),
-    val vertices: MutableList<Double> = mutableListOf(),
-    val normals: MutableList<Double> = mutableListOf(),
+    val vertices: MutableList<Float> = mutableListOf(),
+    val normals: MutableList<Float> = mutableListOf(),
     val colors: MutableList<Float> = mutableListOf(),
-    val uvs: MutableList<Double> = mutableListOf()
+    val uvs: MutableList<Float> = mutableListOf()
 ) {
 
     var source: ExternalSource? = null
@@ -55,19 +55,19 @@ open class Trimesh(
         indices.forEach { this.indices.add(it) }
     }
 
-    fun vertices(vertices: List<Double>) = apply {
+    fun vertices(vertices: List<Float>) = apply {
         this.vertices.addAll(vertices)
     }
 
-    fun vertices(vertices: DoubleArray) = apply {
+    fun vertices(vertices: FloatArray) = apply {
         vertices.forEach { this.vertices.add(it) }
     }
 
-    fun normals(normals: List<Double>) = apply {
+    fun normals(normals: List<Float>) = apply {
         this.normals.addAll(normals)
     }
 
-    fun normals(normals: DoubleArray) = apply {
+    fun normals(normals: FloatArray) = apply {
         normals.forEach { this.normals.add(it) }
     }
 
@@ -79,11 +79,11 @@ open class Trimesh(
         colors.forEach { this.colors.add(it) }
     }
 
-    fun uvs(uvs: List<Double>) = apply {
+    fun uvs(uvs: List<Float>) = apply {
         this.uvs.addAll(uvs)
     }
 
-    fun uvs(uvs: DoubleArray) = apply {
+    fun uvs(uvs: FloatArray) = apply {
         uvs.forEach { this.uvs.add(it) }
     }
 
@@ -110,37 +110,37 @@ open class Trimesh(
     }
 
 
-    fun rotateX(angle: Number) = apply {
-        return applyMatrix4(Matrix4d().rotate(angle.toDouble(), 1.0, 0.0, 0.0))
+    fun rotateX(angle: Float) = apply {
+        return applyMatrix4(Matrix4f().rotate(angle, 1f, 0f, 0f))
     }
 
-    fun rotateY(angle: Number) = apply {
-        return applyMatrix4(Matrix4d().rotate(angle.toDouble(), 0.0, 1.0, 0.0))
+    fun rotateY(angle: Float) = apply {
+        return applyMatrix4(Matrix4f().rotate(angle, 0f, 1f, 0f))
     }
 
-    fun rotateZ(angle: Number) = apply {
-        return applyMatrix4(Matrix4d().rotate(angle.toDouble(), 0.0, 0.0, 1.0))
+    fun rotateZ(angle: Float) = apply {
+        return applyMatrix4(Matrix4f().rotate(angle, 0f, 0f, 1f))
     }
 
-    fun translateX(x: Number) = apply {
-        return applyMatrix4(Matrix4d().setTranslation(x.toDouble(), 0.0, 0.0))
+    fun translateX(x: Float) = apply {
+        return applyMatrix4(Matrix4f().setTranslation(x, 0f, 0f))
     }
 
-    fun translateY(y: Number) = apply {
-        return applyMatrix4(Matrix4d().setTranslation(0.0, y.toDouble(), 0.0))
+    fun translateY(y: Float) = apply {
+        return applyMatrix4(Matrix4f().setTranslation(0f, y, 0f))
     }
 
-    fun translateZ(z: Number) = apply {
-        return applyMatrix4(Matrix4d().setTranslation(0.0, 0.0, z.toDouble()))
+    fun translateZ(z: Float) = apply {
+        return applyMatrix4(Matrix4f().setTranslation(0f, 0f, z))
     }
 
-    fun translate(x: Number, y: Number, z: Number) = apply {
-        return applyMatrix4(Matrix4d().setTranslation(x.toDouble(), y.toDouble(), z.toDouble()))
+    fun translate(x: Float, y: Float, z: Float) = apply {
+        return applyMatrix4(Matrix4f().setTranslation(x, y, z))
     }
 
-    fun applyMatrix4(m: Matrix4dc) = apply {
+    fun applyMatrix4(m: Matrix4fc) = apply {
 
-        val v = Vector3d()
+        val v = Vector3f()
         for (i in 0 until vertices.size / 3) {
             val index = i * 3
             v[vertices[index + 0], vertices[index + 1]] = vertices[index + 2]
@@ -151,7 +151,7 @@ open class Trimesh(
         }
 
         if (hasNormals()) {
-            val normalMatrix = m.normal(Matrix3d())
+            val normalMatrix = m.normal(Matrix3f())
             var i = 0
             while (i < normals.size) {
                 v.set(normals[i], normals[i + 1], normals[i + 2]).mul(normalMatrix)
@@ -168,16 +168,16 @@ open class Trimesh(
         if (vertices.isNotEmpty()) {
             normals.clear()
             for (i in vertices.indices) {
-                normals.add(0.0)
+                normals.add(0f)
             }
             var vA: Int
             var vB: Int
             var vC: Int
-            val pA = Vector3d()
-            val pB = Vector3d()
-            val pC = Vector3d()
-            val cb = Vector3d()
-            val ab = Vector3d()
+            val pA = Vector3f()
+            val pB = Vector3f()
+            val pC = Vector3f()
+            val cb = Vector3f()
+            val ab = Vector3f()
 
             // indexed elements
             if (indices.isNotEmpty()) {
@@ -235,7 +235,7 @@ open class Trimesh(
     }
 
     private fun normalizeNormals() {
-        val vector = Vector3d()
+        val vector = Vector3f()
         var i = 0
         val il = normals.size / 3
         while (i < il) {
@@ -253,11 +253,11 @@ open class Trimesh(
 
     fun getVolume(): Double {
         val faces: MutableList<Face> = ArrayList()
-        val vertex: MutableList<Vector3d> = ArrayList()
+        val vertex: MutableList<Vector3f> = ArrayList()
 
         var i = 0
         while (i < vertices.size) {
-            vertex.add(Vector3d(vertices[i], vertices[i + 1], vertices[i + 2]))
+            vertex.add(Vector3f(vertices[i], vertices[i + 1], vertices[i + 2]))
             i += 3
         }
 
@@ -272,7 +272,7 @@ open class Trimesh(
         }.sum()
     }
 
-    private fun signedVolumeOfTriangle(p1: Vector3dc, p2: Vector3dc, p3: Vector3dc): Double {
+    private fun signedVolumeOfTriangle(p1: Vector3fc, p2: Vector3fc, p3: Vector3fc): Double {
         val v321 = p3.x() * p2.y() * p1.z()
         val v231 = p2.x() * p3.y() * p1.z()
         val v312 = p3.x() * p1.y() * p2.z()
