@@ -154,9 +154,9 @@ class ThreektRenderer : AbstractRenderEngine() {
 
                 val renderer = GLRenderer(window.size)
                 val camera = PerspectiveCamera(75, window.aspect, 0.1, 1000)
-                cameraTransform?.also { t ->
-                    camera.position.setFromMatrixPosition(cameraTransform)
-                    camera.quaternion.setFromRotationMatrix(cameraTransform)
+                cameraTransform?.also {
+                    camera.position.setFromMatrixPosition(it)
+                    camera.quaternion.setFromRotationMatrix(it)
                 }
                 OrbitControls(camera, window)
 
