@@ -20,12 +20,12 @@ fun main() {
         val source = File(javaClass.classLoader.getResource("obj/bunny.obj")!!.file)
         val load = ObjLoader().load(source).apply {
             computeVertexNormals()
-            scale(10f)
+            scale(5f)
         }
         val bunny = createMesh(load).apply {
             setOffsetTransform(Matrix4f().setTranslation(2f, 0f, 0f))
         }
-        val bunny2 = createMesh(source)
+        val bunny2 = createMesh(source, 2f)
 
         Thread.sleep(1000)
 

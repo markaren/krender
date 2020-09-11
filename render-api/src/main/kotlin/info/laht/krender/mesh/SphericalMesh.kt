@@ -9,9 +9,9 @@ import kotlin.math.sin
 
 class SphereMesh(
     radius: Float = 0.5f
-) : SphericalMesh(radius)
+) : SphericalMesh(radius), SphereShape
 
-open class SphericalMesh(
+sealed class SphericalMesh(
     val radius: Float = 0.5f,
     val widthSegments: Int = 32,
     val heightSegments: Int = 32,
@@ -19,22 +19,26 @@ open class SphericalMesh(
     val phiLength: Float = (PI * 2).toFloat(),
     val thetaStart: Float = 0f,
     val thetaLength: Float = PI.toFloat()
-) : Trimesh() {
+) : TrimeshShape {
+
+    override val indices: List<Int>
+    override val vertices: List<Float>
+    override val normals: List<Float>
+    override val uvs: List<Float>
 
     init {
         Helper().also { h ->
-            indices.addAll(h.indices.toList())
-            vertices.addAll(h.positions.toList())
-            normals.addAll(h.normals.toList())
-            uvs.addAll(h.uvs.toList())
+            indices = h.indices
+            vertices = h.vertices.toList()
+            normals = h.normals.toList()
+            uvs = h.uvs.toList()
         }
     }
-
 
     private inner class Helper {
 
         var indices: MutableList<Int>
-        var positions: FloatArray
+        var vertices: FloatArray
         var normals: FloatArray
         var uvs: FloatArray
 
@@ -43,14 +47,14 @@ open class SphericalMesh(
 
             val vertexCount = (widthSegments + 1) * (heightSegments + 1)
 
-            positions = FloatArray(vertexCount * 3)
+            vertices = FloatArray(vertexCount * 3)
             normals = FloatArray(vertexCount * 3)
             uvs = FloatArray(vertexCount * 2)
 
             var index = 0
             val normal = Vector3f()
 
-            val vertices = ArrayList<List<Int>>()
+            val vertices = mutableListOf<List<Int>>()
 
             for (y in 0..heightSegments) {
 
@@ -69,7 +73,7 @@ open class SphericalMesh(
 
                     normal.set(px, py, pz).normalize()
 
-                    positions.setXYZ(index, px, py, pz)
+                    this.vertices.setXYZ(index, px, py, pz)
                     normals.setXYZ(index, normal.x, normal.y, normal.z)
                     uvs.setXY(index, u, 1 - v)
 

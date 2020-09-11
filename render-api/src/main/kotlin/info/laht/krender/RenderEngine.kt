@@ -3,7 +3,7 @@ package info.laht.krender
 import info.laht.krender.listeners.CloseListener
 import info.laht.krender.listeners.KeyListener
 import info.laht.krender.listeners.MouseClickListener
-import info.laht.krender.mesh.Trimesh
+import info.laht.krender.mesh.TrimeshShape
 import info.laht.krender.proxies.*
 import org.joml.Matrix4fc
 import org.joml.Vector3fc
@@ -19,7 +19,7 @@ interface RenderEngine : Closeable {
     fun createAxis(size: Float): AxisProxy
     fun createArrow(length: Float): ArrowProxy
 
-    fun createMesh(mesh: Trimesh): MeshProxy
+    fun createMesh(mesh: TrimeshShape): MeshProxy
     fun createMesh(source: File, scale: Float = 1f, offset: Matrix4fc? = null): MeshProxy
 
     fun createSphere(radius: Float, offset: Matrix4fc? = null): SphereProxy

@@ -3,23 +3,26 @@ package info.laht.krender.mesh
 import org.joml.Vector3f
 
 class BoxMesh(
-    private var width: Float = 1f,
-    private var height: Float = 1f,
-    private var depth: Float = 1f,
+    override var width: Float = 1f,
+    override var height: Float = 1f,
+    override var depth: Float = 1f,
     private var widthSegments: Int = 1,
     private var heightSegments: Int = 1,
     private var depthSegments: Int = 1
-) : Trimesh() {
+) : TrimeshShape, BoxShape {
+
+    override val indices: List<Int>
+    override val vertices: List<Float>
+    override val normals: List<Float>
+    override val uvs: List<Float>
 
     init {
-
         Helper().also { h ->
-            indices.addAll(h.indices.toList())
-            vertices.addAll(h.vertices.toList())
-            normals.addAll(h.normals.toList())
-            uvs.addAll(h.uvs.toList())
+            indices = h.indices.toList()
+            vertices = h.vertices.toList()
+            normals = h.normals.toList()
+            uvs = h.uvs.toList()
         }
-
     }
 
     private inner class Helper {
@@ -74,7 +77,6 @@ class BoxMesh(
             val gridY1 = gridY + 1
 
             var vertexCounter = 0
-            var groupCount = 0
 
             val vector = Vector3f()
 

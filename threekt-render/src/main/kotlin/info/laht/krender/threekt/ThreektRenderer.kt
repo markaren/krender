@@ -2,7 +2,7 @@ package info.laht.krender.threekt
 
 import info.laht.krender.AbstractRenderEngine
 import info.laht.krender.ColorConstants
-import info.laht.krender.mesh.Trimesh
+import info.laht.krender.mesh.TrimeshShape
 import info.laht.krender.proxies.*
 import info.laht.krender.util.RenderContext
 import info.laht.threekt.Window
@@ -53,7 +53,7 @@ class ThreektRenderer : AbstractRenderEngine() {
         TODO("Not yet implemented")
     }
 
-    override fun createMesh(mesh: Trimesh): MeshProxy {
+    override fun createMesh(mesh: TrimeshShape): MeshProxy {
         return ThreektTrimeshProxy(ctx, mesh).also {
             ctx.invokeLater {
                 scene.add(it.parentNode)

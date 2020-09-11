@@ -14,3 +14,14 @@ internal fun FloatArray.setXYZ(index: Int, x: Float, y: Float, z: Float) = apply
     this[i + 1] = y
     this[i + 2] = z
 }
+
+internal fun <E> MutableList<E>.push(e1: E, e2: E) {
+    add(e1)
+    add(e2)
+}
+
+internal fun <E> MutableList<E>.push(e1: E, e2: E, e3: E) {
+    add(e1)
+    add(e2)
+    add(e3)
+}

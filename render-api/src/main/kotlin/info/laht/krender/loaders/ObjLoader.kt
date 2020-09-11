@@ -13,7 +13,6 @@ class ObjLoader {
     fun load(source: File): Trimesh {
         //MeshLoader.testExtension(supportedExtension, source.extension)
         val parse = load(source.readText())
-        parse.source = source
         return parse
     }
 

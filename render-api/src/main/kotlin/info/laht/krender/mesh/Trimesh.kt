@@ -2,30 +2,14 @@ package info.laht.krender.mesh
 
 import info.laht.krender.util.JomlUtil.fromArray
 import org.joml.*
-import java.io.File
 import java.util.*
 
-internal data class Face(
-    val a: Int,
-    val b: Int,
-    val c: Int
-)
-
-open class Trimesh(
-    val indices: MutableList<Int> = mutableListOf(),
-    val vertices: MutableList<Float> = mutableListOf(),
-    val normals: MutableList<Float> = mutableListOf(),
-    val colors: MutableList<Float> = mutableListOf(),
-    val uvs: MutableList<Float> = mutableListOf()
-) {
-
-    var source: File? = null
-    var scale: Float = 1f
-        private set
-
-    fun hasSource(): Boolean {
-        return source != null
-    }
+class Trimesh(
+    override val indices: MutableList<Int> = mutableListOf(),
+    override val vertices: MutableList<Float> = mutableListOf(),
+    override val normals: MutableList<Float> = mutableListOf(),
+    override val uvs: MutableList<Float> = mutableListOf()
+) : TrimeshShape {
 
     fun hasIndices(): Boolean {
         return indices.isNotEmpty()
@@ -37,10 +21,6 @@ open class Trimesh(
 
     fun hasNormals(): Boolean {
         return normals.isNotEmpty()
-    }
-
-    fun hasColors(): Boolean {
-        return colors.isNotEmpty()
     }
 
     fun hasUvs(): Boolean {
@@ -71,14 +51,6 @@ open class Trimesh(
         normals.forEach { this.normals.add(it) }
     }
 
-    fun colors(colors: List<Float>) = apply {
-        this.colors.addAll(colors)
-    }
-
-    fun colors(colors: FloatArray) = apply {
-        colors.forEach { this.colors.add(it) }
-    }
-
     fun uvs(uvs: List<Float>) = apply {
         this.uvs.addAll(uvs)
     }
@@ -87,8 +59,7 @@ open class Trimesh(
         uvs.forEach { this.uvs.add(it) }
     }
 
-    fun scale(scale: Float) {
-        this.scale *= scale
+    fun scale(scale: Float) = apply {
         var i = 0
         while (i < vertices.size) {
             vertices[i + 0] = vertices[i + 0] * scale
@@ -251,7 +222,7 @@ open class Trimesh(
         }
     }
 
-    fun getVolume(): Double {
+    fun getVolume(): Float {
         val faces: MutableList<Face> = ArrayList()
         val vertex: MutableList<Vector3f> = ArrayList()
 
@@ -272,14 +243,20 @@ open class Trimesh(
         }.sum()
     }
 
-    private fun signedVolumeOfTriangle(p1: Vector3fc, p2: Vector3fc, p3: Vector3fc): Double {
+    private fun signedVolumeOfTriangle(p1: Vector3fc, p2: Vector3fc, p3: Vector3fc): Float {
         val v321 = p3.x() * p2.y() * p1.z()
         val v231 = p2.x() * p3.y() * p1.z()
         val v312 = p3.x() * p1.y() * p2.z()
         val v132 = p1.x() * p3.y() * p2.z()
         val v213 = p2.x() * p1.y() * p3.z()
         val v123 = p1.x() * p2.y() * p3.z()
-        return 1.0 / 6.0 * (-v321 + v231 + v312 - v132 - v213 + v123)
+        return 1.0f / 6.0f * (-v321 + v231 + v312 - v132 - v213 + v123)
     }
+
+    private class Face(
+        val a: Int,
+        val b: Int,
+        val c: Int
+    )
 
 }

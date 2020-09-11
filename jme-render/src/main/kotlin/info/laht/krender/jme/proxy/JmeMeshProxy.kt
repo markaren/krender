@@ -5,14 +5,14 @@ import com.jme3.asset.plugins.FileLocator
 import com.jme3.scene.*
 import info.laht.krender.jme.JmeContext
 import info.laht.krender.jme.extra.JmeUtils
-import info.laht.krender.mesh.Trimesh
+import info.laht.krender.mesh.TrimeshShape
 import info.laht.krender.proxies.MeshProxy
 import org.joml.Matrix4fc
 import java.io.File
 
 internal class JmeMeshProxy : JmeProxy, MeshProxy {
 
-    constructor(ctx: JmeContext, data: Trimesh) : super("mesh", ctx) {
+    constructor(ctx: JmeContext, data: TrimeshShape) : super("mesh", ctx) {
         attachChild(create(data))
     }
 
@@ -23,23 +23,23 @@ internal class JmeMeshProxy : JmeProxy, MeshProxy {
 
     companion object {
 
-        private fun create(data: Trimesh): Spatial {
+        private fun create(data: TrimeshShape): Spatial {
             val jmeMesh = Mesh()
-            if (data.hasIndices()) {
-//            mesh.generateIndices();
+
+            jmeMesh.setBuffer(VertexBuffer.Type.Position, 3, data.vertices.toFloatArray())
+
+            if (data.indices.isNotEmpty()) {
                 jmeMesh.setBuffer(VertexBuffer.Type.Index, 1, data.indices.toIntArray())
             }
-            jmeMesh.setBuffer(VertexBuffer.Type.Position, 3, data.vertices.toFloatArray())
-            if (data.hasNormals()) {
-//            mesh.computeVertexNormals();
+
+            if (data.normals.isNotEmpty()) {
                 jmeMesh.setBuffer(VertexBuffer.Type.Normal, 3, data.normals.toFloatArray())
             }
-            if (data.hasColors()) {
-                jmeMesh.setBuffer(VertexBuffer.Type.Color, 3, data.colors.toFloatArray())
-            }
-            if (data.hasUvs()) {
+
+            if (data.uvs.isNotEmpty()) {
                 jmeMesh.setBuffer(VertexBuffer.Type.TexCoord, 2, data.uvs.toFloatArray())
             }
+
             jmeMesh.mode = Mesh.Mode.Triangles
             jmeMesh.updateCounts()
             jmeMesh.updateBound()
@@ -57,8 +57,9 @@ internal class JmeMeshProxy : JmeProxy, MeshProxy {
                 throw Exception("Unsupported format: $extension")
             }
 
-            assetManager.registerLocator(source.absolutePath, FileLocator::class.java)
-            assetManager.registerLocator("${source.absolutePath}${File.separatorChar}textures", FileLocator::class.java)
+            val parentPath = source.parentFile.absolutePath
+            assetManager.registerLocator(parentPath, FileLocator::class.java)
+            assetManager.registerLocator("$parentPath${File.separatorChar}textures", FileLocator::class.java)
 
             val loadModel: Spatial = assetManager.loadModel(source.name)
             loadModel.scale(scale)

@@ -15,7 +15,7 @@ import com.jme3.scene.Node
 import info.laht.krender.AbstractRenderEngine
 import info.laht.krender.jme.extra.RawInputAdapter
 import info.laht.krender.jme.proxy.*
-import info.laht.krender.mesh.Trimesh
+import info.laht.krender.mesh.TrimeshShape
 import info.laht.krender.proxies.*
 import info.laht.krender.util.RenderContext
 import org.joml.Matrix4f
@@ -54,7 +54,7 @@ class JmeRenderEngine : AbstractRenderEngine() {
         renderer.stop()
     }
 
-    override fun createMesh(mesh: Trimesh): MeshProxy {
+    override fun createMesh(mesh: TrimeshShape): MeshProxy {
         return JmeMeshProxy(ctx, mesh).also {
             ctx.invokeLater { parent.attachChild(it) }
         }

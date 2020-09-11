@@ -23,9 +23,7 @@ class StlLoader {
             ByteBuffer.wrap(it).apply {
                 order(ByteOrder.nativeOrder())
             }
-        }).apply {
-            this.source = source
-        }
+        })
     }
 
     private fun loadBinary(reader: ByteBuffer): Trimesh {
@@ -94,9 +92,6 @@ class StlLoader {
             vertices = vertices,
             normals = normals
         ).also {
-            if (colors != null) {
-                it.colors(colors)
-            }
             it.generateIndices()
         }
     }

@@ -1,6 +1,6 @@
 package info.laht.krender.threekt
 
-import info.laht.krender.mesh.Trimesh
+import info.laht.krender.mesh.TrimeshShape
 import info.laht.krender.proxies.*
 import info.laht.krender.util.ExternalSource
 import info.laht.krender.util.FileSource
@@ -222,7 +222,7 @@ internal class ThreektTrimeshProxy private constructor(
     ctx: RenderContext
 ) : ThreektProxy(ctx), MeshProxy {
 
-    constructor(ctx: RenderContext, trimesh: Trimesh) : this(ctx) {
+    constructor(ctx: RenderContext, trimesh: TrimeshShape) : this(ctx) {
         val geometry = BufferGeometry().apply {
             setIndex(IntBufferAttribute(trimesh.indices.toIntArray(), 1))
             addAttribute("position", FloatBufferAttribute(trimesh.vertices.toFloatArray(), 3))
