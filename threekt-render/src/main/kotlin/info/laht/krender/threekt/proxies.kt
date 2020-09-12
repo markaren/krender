@@ -231,7 +231,9 @@ internal class ThreektTrimeshProxy private constructor(
         }
         geometry.computeBoundingSphere()
 
-        val mesh = Mesh(geometry)
+        val mesh = Mesh(geometry).apply {
+            material.side = Side.Double
+        }
         ctx.invokeLater {
             attachChild(mesh)
         }

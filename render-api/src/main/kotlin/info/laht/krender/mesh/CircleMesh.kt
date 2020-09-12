@@ -8,11 +8,11 @@ import kotlin.math.cos
 import kotlin.math.max
 import kotlin.math.sin
 
-class CircleGeometry(
+class CircleMesh(
     radius: Float
-) : CircularGeometry(radius), CircleShape
+) : CircularMesh(radius), CircleShape
 
-sealed class CircularGeometry(
+sealed class CircularMesh(
     val radius: Float = 1f,
     segments: Int? = null,
     val thetaStart: Float = 0f,

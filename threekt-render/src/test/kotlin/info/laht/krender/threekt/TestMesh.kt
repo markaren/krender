@@ -1,6 +1,7 @@
 package info.laht.krender.threekt
 
 import info.laht.krender.mesh.BoxMesh
+import info.laht.krender.mesh.RingMesh
 import info.laht.krender.mesh.SphereMesh
 import info.laht.threekt.math.Color
 import org.joml.Matrix4f
@@ -19,6 +20,11 @@ fun main() {
         createMesh(BoxMesh()).apply {
             setColor(Color.blue)
             setTranslate(Vector3f().setComponent(0, 5f))
+        }
+
+        createMesh(RingMesh(2f, 10f)).apply {
+            setColor(Color.purple)
+            setTranslate(Vector3f().setComponent(0, -10f))
         }
 
         val objFile = File(javaClass.classLoader.getResource("obj/female02/female02.obj")!!.file)
