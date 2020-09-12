@@ -87,7 +87,7 @@ sealed class SphericalMesh(
 
             }
 
-            indices = ArrayList()
+            indices = mutableListOf()
 
             for (y in 0 until heightSegments) {
 
