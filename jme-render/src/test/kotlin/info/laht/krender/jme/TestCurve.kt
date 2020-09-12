@@ -15,7 +15,9 @@ fun main() {
     JmeRenderEngine().apply {
 
         init()
-        val curve = createCurve(0.1f, points)
+        val curve = createCurve(0.1f, points).apply {
+            setOpacity(1f)
+        }
 
         createArrow(1f).apply {
             setColor(ColorConstants.yellow)

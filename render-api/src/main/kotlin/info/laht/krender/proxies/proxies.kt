@@ -22,6 +22,7 @@ interface CapsuleProxy : RenderProxy, ColorProxy, SpatialProxy, WireframeProxy, 
 
 interface ColorProxy {
     fun setColor(color: Int)
+    fun setOpacity(value: Float)
 }
 
 interface CurveProxy : RenderProxy, ColorProxy, WireframeProxy {

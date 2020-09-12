@@ -19,6 +19,7 @@ fun main() {
         }
         createMesh(BoxMesh()).apply {
             setColor(Color.blue)
+            setOpacity(0.5f)
             setTranslate(Vector3f().setComponent(0, 5f))
         }
 

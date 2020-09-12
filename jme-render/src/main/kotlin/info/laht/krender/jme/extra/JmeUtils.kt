@@ -55,22 +55,21 @@ internal object JmeUtils {
         return store
     }
 
-    @JvmOverloads
-    fun getLightingMaterial(assetManager: AssetManager, color: Int? = null): Material {
-        val mat = Material(
+    fun getLightingMaterial(assetManager: AssetManager, color: Int, opacity: Float): Material {
+        return Material(
             assetManager,
             "Common/MatDefs/Light/Lighting.j3md"
-        )
-        mat.additionalRenderState.blendMode = RenderState.BlendMode.Alpha
-        if (color != null) {
+        ).apply {
+            additionalRenderState.blendMode = RenderState.BlendMode.Alpha
+
             val colorRGBA = ColorRGBA().fromIntARGB(color)
-            mat.setBoolean("UseMaterialColors", true)
-            mat.setColor("Ambient", colorRGBA)
-            mat.setColor("Diffuse", colorRGBA)
-            mat.setColor("Specular", colorRGBA)
-            mat.setColor("GlowColor", colorRGBA)
+            colorRGBA.a = opacity
+            setBoolean("UseMaterialColors", true)
+            setColor("Ambient", colorRGBA)
+            setColor("Diffuse", colorRGBA)
+            setColor("Specular", colorRGBA)
+            setColor("GlowColor", colorRGBA)
         }
-        return mat
     }
 
     fun getUnshadedMaterial(assetManager: AssetManager): Material {
@@ -78,6 +77,15 @@ internal object JmeUtils {
             assetManager,
             "Common/MatDefs/Misc/Unshaded.j3md"
         )
+    }
+
+    fun getUnshadedMaterial(assetManager: AssetManager, color: Int): Material {
+        return Material(
+            assetManager,
+            "Common/MatDefs/Misc/Unshaded.j3md"
+        ).apply {
+            setColor("Color", ColorRGBA().fromIntARGB(color))
+        }
     }
 
     fun getWireFrameMaterial(assetManager: AssetManager): Material {

@@ -13,9 +13,19 @@ class CylinderMesh(
     height: Float
 ) : CylindricalMesh(radius, radius, height), CylinderShape
 
+class ConeMesh(
+    val radius: Float = 0.5f,
+    height: Float = 1f,
+    radialSegments: Int = 32,
+    heightSegments: Int = 8,
+    openEnded: Boolean = false,
+    thetaStart: Float = 0f,
+    thetaLength: Float = (PI * 2).toFloat()
+) : CylindricalMesh(0f, radius, height, radialSegments, heightSegments, openEnded, thetaStart, thetaLength)
+
 sealed class CylindricalMesh(
-    val radiusTop: Float = 1f,
-    val radiusBottom: Float = 1f,
+    val radiusTop: Float = 0.5f,
+    val radiusBottom: Float = 0.5f,
     val height: Float = 1f,
     val radialSegments: Int = 32,
     val heightSegments: Int = 8,

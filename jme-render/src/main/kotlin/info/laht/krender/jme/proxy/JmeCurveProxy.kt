@@ -4,6 +4,7 @@ import com.jme3.material.Material
 import com.jme3.material.RenderState
 import com.jme3.math.ColorRGBA
 import com.jme3.scene.Node
+import info.laht.krender.ColorConstants
 import info.laht.krender.jme.JmeContext
 import info.laht.krender.jme.extra.JmeTubeGeometry
 import info.laht.krender.jme.extra.JmeUtils
@@ -17,14 +18,15 @@ internal class JmeCurveProxy(
 ) : Node(), CurveProxy {
 
     private var isWireframe = false
-    private var color: Int? = null
+    private var opacity: Float = 1f
+    private var color: Int = ColorConstants.gray
     private val tube: JmeTubeGeometry
     private var material_: Material
 
     init {
         tube = JmeTubeGeometry(radius, points, 80, 20, false)
         attachChild(tube)
-        setMaterial(JmeUtils.getLightingMaterial(ctx.assetManager).also { material_ = it })
+        setMaterial(JmeUtils.getLightingMaterial(ctx.assetManager, color, opacity).also { material_ = it })
         material_.additionalRenderState.faceCullMode = RenderState.FaceCullMode.Off
     }
 
@@ -42,7 +44,7 @@ internal class JmeCurveProxy(
 
     override fun setColor(color: Int) {
         val colorRGBA = ColorRGBA().fromIntARGB(color).also {
-            it.a = 1f
+            it.a = this.opacity
             this.color = color
         }
         ctx.invokeLater {
@@ -58,12 +60,17 @@ internal class JmeCurveProxy(
         }
     }
 
+    override fun setOpacity(value: Float) {
+        this.opacity = value
+        setColor(color)
+    }
+
     override fun setWireframe(flag: Boolean) {
         ctx.invokeLater {
             if (flag && !isWireframe) {
                 setMaterial(JmeUtils.getWireFrameMaterial(ctx.assetManager, color).also { material_ = it })
             } else if (!flag && isWireframe) {
-                setMaterial(JmeUtils.getLightingMaterial(ctx.assetManager, color).also { material_ = it })
+                setMaterial(JmeUtils.getLightingMaterial(ctx.assetManager, color, opacity).also { material_ = it })
             }
             material_.additionalRenderState.faceCullMode = RenderState.FaceCullMode.Off
             isWireframe = flag

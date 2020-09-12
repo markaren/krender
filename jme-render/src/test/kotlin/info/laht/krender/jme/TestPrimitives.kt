@@ -17,6 +17,7 @@ fun main() {
         createSphere(0.5f).apply {
             setTranslate(Vector3f(0f, 0f, 0f))
             setColor(ColorConstants.firebrick)
+            setOpacity(0.5f)
         }
 
         createCapsule(0.5f, 1f).apply {

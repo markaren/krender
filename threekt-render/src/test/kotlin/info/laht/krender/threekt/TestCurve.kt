@@ -14,7 +14,7 @@ fun main() {
         Vector3f(1f, 2f, 5f),
     )
 
-    val renderEngine = ThreektRenderer().apply {
+    ThreektRenderer().apply {
 
         init(Matrix4f().setTranslation(0f, 0f, 5f))
         setBackGroundColor(ColorConstants.aliceblue)

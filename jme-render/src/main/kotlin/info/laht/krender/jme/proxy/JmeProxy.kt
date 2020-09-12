@@ -18,6 +18,8 @@ import info.laht.krender.proxies.*
 import info.laht.krender.util.ExternalSource
 import org.joml.*
 import java.io.IOException
+import java.util.logging.Level
+import java.util.logging.Logger
 
 internal abstract class JmeProxy constructor(
     name: String?,
@@ -26,13 +28,14 @@ internal abstract class JmeProxy constructor(
 
     private val v = Vector3f()
     private val q = Quaternionf()
-    private var color: Int? = null
+    private var color: Int = ColorConstants.white
     private var material_: Material
     private var isWireframe = false
     private val node: Node = Node()
+    private var opacity = 1f
 
     init {
-        material_ = getLightingMaterial(ctx.assetManager)
+        material_ = getLightingMaterial(ctx.assetManager, color, opacity)
         material_.additionalRenderState.faceCullMode = RenderState.FaceCullMode.Off
         super.attachChild(node)
     }
@@ -47,7 +50,7 @@ internal abstract class JmeProxy constructor(
 
     override fun setColor(color: Int) {
         val colorRGBA = ColorRGBA().fromIntARGB(color).also {
-            it.a = 1f
+            it.a = this.opacity
             this.color = color
         }
         ctx.invokeLater {
@@ -63,6 +66,11 @@ internal abstract class JmeProxy constructor(
         }
     }
 
+    override fun setOpacity(value: Float) {
+        this.opacity = value
+        setColor(this.color)
+    }
+
     override fun setTexture(source: ExternalSource) {
         ctx.invokeLater {
             if (!isWireframe) {
@@ -70,7 +78,7 @@ internal abstract class JmeProxy constructor(
                     val loadTexture: Texture = JmeUtils.loadTexture(ctx.assetManager, source)
                     material_.setTexture("DiffuseMap", loadTexture)
                 } catch (ex: IOException) {
-                    // Logger.getLogger(JmeProxy::class.java.name).log(Level.SEVERE, null, ex)
+                    Logger.getLogger(JmeProxy::class.java.name).log(Level.SEVERE, null, ex)
                 }
             }
         }
@@ -113,7 +121,7 @@ internal abstract class JmeProxy constructor(
             if (flag && !isWireframe) {
                 setMaterial(getWireFrameMaterial(ctx.assetManager, ColorConstants.black).also { material_ = it })
             } else if (!flag && isWireframe) {
-                setMaterial(getLightingMaterial(ctx.assetManager, color!!).also { material_ = it })
+                setMaterial(getLightingMaterial(ctx.assetManager, color, opacity).also { material_ = it })
             }
             material_.additionalRenderState.faceCullMode = RenderState.FaceCullMode.Off
             isWireframe = flag

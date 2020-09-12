@@ -110,6 +110,18 @@ internal open class ThreektProxy(
         }
     }
 
+    override fun setOpacity(value: Float) {
+        ctx.invokeLater {
+            for (o in childNode.children) {
+                if (o is MaterialObject) {
+                    val material = o.material
+                    material.opacity = value
+                    material.transparent = true
+                }
+            }
+        }
+    }
+
     override fun setVisible(visible: Boolean) {
         ctx.invokeLater {
             childNode.visible = visible

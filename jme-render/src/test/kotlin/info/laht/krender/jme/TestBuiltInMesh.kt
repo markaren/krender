@@ -1,0 +1,25 @@
+package info.laht.krender.jme
+
+import info.laht.krender.ColorConstants
+import info.laht.krender.mesh.ConeMesh
+import org.joml.Vector3f
+
+fun main() {
+
+    JmeRenderEngine().apply {
+
+        init()
+
+        createMesh(ConeMesh()).apply {
+            setColor(ColorConstants.orange)
+            setOpacity(0.1f)
+        }
+
+        createMesh(ConeMesh()).apply {
+            setColor(ColorConstants.red)
+            setTranslate(Vector3f(0f, 0f, -1f))
+        }
+
+    }
+
+}
