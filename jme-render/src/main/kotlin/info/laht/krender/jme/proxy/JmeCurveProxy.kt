@@ -3,6 +3,7 @@ package info.laht.krender.jme.proxy
 import com.jme3.material.Material
 import com.jme3.material.RenderState
 import com.jme3.math.ColorRGBA
+import com.jme3.renderer.queue.RenderQueue
 import com.jme3.scene.Node
 import info.laht.krender.ColorConstants
 import info.laht.krender.jme.JmeContext
@@ -62,6 +63,7 @@ internal class JmeCurveProxy(
 
     override fun setOpacity(value: Float) {
         this.opacity = value
+        setQueueBucket(RenderQueue.Bucket.Transparent)
         setColor(color)
     }
 

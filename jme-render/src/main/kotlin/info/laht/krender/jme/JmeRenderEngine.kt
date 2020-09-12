@@ -107,8 +107,14 @@ class JmeRenderEngine : AbstractRenderEngine() {
         }
     }
 
-    override fun createHeightmap(widthSegments: Int, heightSegments: Int, width: Float, height: Float): HeightmapProxy {
-        return JmeHeightmapProxy(ctx, widthSegments, heightSegments, width, height).also {
+    override fun createHeightmap(
+        width: Float,
+        height: Float,
+        widthSegments: Int,
+        heightSegments: Int,
+        heights: FloatArray
+    ): HeightmapProxy {
+        return JmeHeightmapProxy(ctx, width, height, widthSegments, heightSegments, heights).also {
             ctx.invokeLater { parent.attachChild(it) }
         }
     }

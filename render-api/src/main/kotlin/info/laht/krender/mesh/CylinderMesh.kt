@@ -23,7 +23,7 @@ class ConeMesh(
     thetaLength: Float = (PI * 2).toFloat()
 ) : CylindricalMesh(0f, radius, height, radialSegments, heightSegments, openEnded, thetaStart, thetaLength)
 
-sealed class CylindricalMesh(
+open class CylindricalMesh(
     val radiusTop: Float = 0.5f,
     val radiusBottom: Float = 0.5f,
     val height: Float = 1f,

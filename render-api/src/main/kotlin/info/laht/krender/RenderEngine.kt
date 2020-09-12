@@ -30,7 +30,13 @@ interface RenderEngine : Closeable {
 
     fun createLine(points: List<Vector3fc>): LineProxy
     fun createCurve(radius: Float, points: List<Vector3fc>): CurveProxy
-    fun createHeightmap(widthSegments: Int, heightSegments: Int, width: Float, height: Float): HeightmapProxy
+    fun createHeightmap(
+        width: Float,
+        height: Float,
+        widthSegments: Int,
+        heightSegments: Int,
+        heights: FloatArray
+    ): HeightmapProxy
 
     fun createWater(width: Float, height: Float): WaterProxy
     fun createPointCloud(pointSize: Float, points: List<Vector3fc>): PointCloudProxy

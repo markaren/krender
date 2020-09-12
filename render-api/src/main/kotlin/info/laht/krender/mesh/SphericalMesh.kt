@@ -11,7 +11,7 @@ class SphereMesh(
     radius: Float = 0.5f
 ) : SphericalMesh(radius), SphereShape
 
-sealed class SphericalMesh(
+open class SphericalMesh(
     val radius: Float = 0.5f,
     val widthSegments: Int = 32,
     val heightSegments: Int = 32,

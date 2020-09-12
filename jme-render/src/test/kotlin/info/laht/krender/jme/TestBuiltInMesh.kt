@@ -12,7 +12,7 @@ fun main() {
 
         createMesh(ConeMesh()).apply {
             setColor(ColorConstants.orange)
-            setOpacity(0.1f)
+            setOpacity(0.5f)
         }
 
         createMesh(ConeMesh()).apply {

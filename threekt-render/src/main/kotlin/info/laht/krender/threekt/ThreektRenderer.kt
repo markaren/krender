@@ -125,14 +125,26 @@ class ThreektRenderer : AbstractRenderEngine() {
         }
     }
 
-    override fun createHeightmap(widthSegments: Int, heightSegments: Int, width: Float, height: Float): HeightmapProxy {
-        TODO("Not yet implemented")
+    override fun createHeightmap(
+        width: Float,
+        height: Float,
+        widthSegments: Int,
+        heightSegments: Int,
+        heights: FloatArray
+    ): HeightmapProxy {
+        return ThreektHeightmapProxy(ctx, width, height, widthSegments, heightSegments, heights).also {
+            ctx.invokeLater {
+                scene.attach(it.parentNode)
+            }
+        }
     }
 
     override fun createWater(width: Float, height: Float): WaterProxy {
         return ThreektWaterProxy(ctx, width, height).also {
             water = it
-            scene.add(it.parentNode)
+            ctx.invokeLater {
+                scene.add(it.parentNode)
+            }
         }
     }
 

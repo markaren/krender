@@ -26,6 +26,14 @@ interface CylinderShape : Shape {
     val height: Float
 }
 
+interface HeightmapShape : Shape {
+    val width: Float
+    val height: Float
+    val widthSegments: Int
+    val heightSegments: Int
+    val heights: FloatArray
+}
+
 interface TrimeshShape : Shape {
     val indices: List<Int>
     val vertices: List<Float>

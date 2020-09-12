@@ -1,21 +1,25 @@
 package info.laht.krender.mesh
 
-class PlaneMesh(
-    override val width: Float,
-    override val height: Float,
+open class PlaneMesh(
+    override val width: Float = 1f,
+    override val height: Float = 1f,
     private val widthSegments: Int = 1,
     private val heightSegments: Int = 1
 ) : TrimeshShape, PlaneShape {
 
     override val indices: List<Int>
+    protected val vertices_: MutableList<Float>
     override val vertices: List<Float>
+        get() {
+            return vertices_
+        }
     override val normals: List<Float>
     override val uvs: List<Float>
 
     init {
         Helper().also { h ->
             indices = h.indices.toList()
-            vertices = h.vertices.toList()
+            vertices_ = h.vertices.toMutableList()
             normals = h.normals.toList()
             uvs = h.uvs.toList()
         }
@@ -99,6 +103,32 @@ class PlaneMesh(
 
             }
 
+        }
+
+    }
+
+}
+
+class TerrainMesh(
+    override val width: Float = 1f,
+    override val height: Float = 1f,
+    override val widthSegments: Int = 1,
+    override val heightSegments: Int = 1,
+    override val heights: FloatArray
+) : PlaneMesh(width, height, widthSegments, heightSegments), HeightmapShape {
+
+    init {
+
+        val expectedSize = (widthSegments + 1) * (heightSegments + 1)
+        require(heights.size == expectedSize)
+
+        {
+            /* var i = 0
+             var j = 0
+             while (i < vertices_.size) {
+                 vertices_[i + 2] = heights[j++]
+                 i += 3
+             }*/
         }
 
     }

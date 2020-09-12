@@ -8,10 +8,11 @@ import info.laht.krender.proxies.HeightmapProxy
 
 internal class JmeHeightmapProxy(
     ctx: JmeContext,
+    width: Float,
+    height: Float,
     widthSegments: Int,
     heightSegments: Int,
-    width: Float,
-    height: Float
+    heights: FloatArray
 ) : JmeProxy("Heightmap", ctx), HeightmapProxy {
 
     private var grid: JmeGrid
@@ -19,9 +20,6 @@ internal class JmeHeightmapProxy(
     init {
         attachChild(Geometry("", JmeGrid(widthSegments, heightSegments, width, height).also { grid = it }))
         setQueueBucket(RenderQueue.Bucket.Transparent)
-    }
-
-    override fun setHeights(heights: FloatArray) {
         ctx.invokeLater { grid.setHeights(heights) }
     }
 

@@ -151,6 +151,8 @@ internal class ThreektPlaneProxy(
 
     init {
 
+        mesh.material.side = Side.Double
+
         ctx.invokeLater {
             attachChild(mesh)
         }
@@ -239,7 +241,7 @@ internal class ThreektTrimeshProxy private constructor(
             setIndex(IntBufferAttribute(trimesh.indices.toIntArray(), 1))
             addAttribute("position", FloatBufferAttribute(trimesh.vertices.toFloatArray(), 3))
             addAttribute("normal", FloatBufferAttribute(trimesh.normals.toFloatArray(), 3))
-            addAttribute("uv", FloatBufferAttribute(trimesh.uvs.toFloatArray(), 3))
+            addAttribute("uv", FloatBufferAttribute(trimesh.uvs.toFloatArray(), 2))
         }
         geometry.computeBoundingSphere()
 
@@ -276,9 +278,9 @@ internal class ThreektPointCloudProxy(
         var i = 0
         val positions = FloatArray(3 * points.size)
         points.forEach { v ->
-            positions[i++] = v.x().toFloat()
-            positions[i++] = v.y().toFloat()
-            positions[i++] = v.z().toFloat()
+            positions[i++] = v.x()
+            positions[i++] = v.y()
+            positions[i++] = v.z()
         }
 
         val geometry = BufferGeometry()
@@ -355,6 +357,39 @@ internal class ThreektLineProxy(
             return BufferGeometry().apply {
                 addAttribute("position", FloatBufferAttribute(points.flatten(), 3))
             }
+        }
+
+    }
+
+}
+
+internal class ThreektHeightmapProxy(
+    ctx: RenderContext,
+    width: Float,
+    height: Float,
+    widthSegments: Int,
+    heightSegments: Int,
+    heights: FloatArray
+) : ThreektProxy(ctx), HeightmapProxy {
+
+    init {
+
+        val map = PlaneBufferGeometry(width, height, widthSegments, heightSegments)
+
+        var i = 0
+        var j = 0
+        val vertices = map.getAttribute("position") as FloatBufferAttribute
+        while (i < vertices.size) {
+            vertices[i + 2] = heights[j++]
+            i += 3
+        }
+
+        val mesh = Mesh(map).apply {
+            material.side = Side.Double
+        }
+
+        ctx.invokeLater {
+            attachChild(mesh)
         }
 
     }
