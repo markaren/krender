@@ -26,6 +26,11 @@ interface CylinderShape : Shape {
     val height: Float
 }
 
+interface CapsuleShape : Shape {
+    val radius: Float
+    val height: Float
+}
+
 interface HeightmapShape : Shape {
     val width: Float
     val height: Float
