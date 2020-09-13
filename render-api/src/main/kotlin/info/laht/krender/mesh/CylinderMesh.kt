@@ -9,8 +9,8 @@ import kotlin.math.cos
 import kotlin.math.sin
 
 class CylinderMesh(
-    override val radius: Float,
-    height: Float
+    override val radius: Float = 0.5f,
+    height: Float = 1f
 ) : CylindricalMesh(radius, radius, height), CylinderShape
 
 class ConeMesh(
