@@ -17,7 +17,7 @@ subprojects {
     apply plugin: 'kotlin'
 
     group 'info.laht.krender'
-    version 'r3'
+    version 'r4'
 
     apply from: rootProject.file("gradle/mavenpublish.gradle")
     apply from: rootProject.file("gradle/bintraypublish.gradle")
