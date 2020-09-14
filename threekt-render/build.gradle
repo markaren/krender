@@ -3,6 +3,6 @@ dependencies {
 
     api project(':render-api')
 
-    implementation 'info.laht.threekt:core-jvm:r1-ALPHA-17'
+    implementation 'info.laht.threekt:core-jvm:r1-ALPHA-18'
 
 }

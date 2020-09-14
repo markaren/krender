@@ -32,5 +32,4 @@ fun main() {
         createMesh(objFile, 0.1f)
     }
 
-
 }

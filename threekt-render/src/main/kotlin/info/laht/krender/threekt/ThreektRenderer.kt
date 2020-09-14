@@ -6,6 +6,7 @@ import info.laht.krender.mesh.TrimeshShape
 import info.laht.krender.proxies.*
 import info.laht.krender.util.RenderContext
 import info.laht.threekt.Window
+import info.laht.threekt.WindowClosingCallback
 import info.laht.threekt.cameras.PerspectiveCamera
 import info.laht.threekt.controls.OrbitControls
 import info.laht.threekt.core.Clock
@@ -30,14 +31,10 @@ class ThreektRenderer : AbstractRenderEngine() {
 
     private var water: ThreektWaterProxy? = null
 
-    private val lock = ReentrantLock()
-    private var initialized = lock.newCondition()
 
     override fun init(cameraTransform: Matrix4fc?) {
-        internalRenderer = InternalRenderer(cameraTransform?.let { Matrix4().set(it) })
-        Thread(internalRenderer).apply { start() }
-        lock.withLock {
-            initialized.await()
+        internalRenderer = InternalRenderer(cameraTransform?.let { Matrix4().set(it) }).apply {
+            start()
         }
     }
 
@@ -126,11 +123,11 @@ class ThreektRenderer : AbstractRenderEngine() {
     }
 
     override fun createHeightmap(
-        width: Float,
-        height: Float,
-        widthSegments: Int,
-        heightSegments: Int,
-        heights: FloatArray
+            width: Float,
+            height: Float,
+            widthSegments: Int,
+            heightSegments: Int,
+            heights: FloatArray
     ): HeightmapProxy {
         return ThreektHeightmapProxy(ctx, width, height, widthSegments, heightSegments, heights).also {
             ctx.invokeLater {
@@ -157,19 +154,43 @@ class ThreektRenderer : AbstractRenderEngine() {
     }
 
     override fun close() {
-
+        internalRenderer?.close()
     }
 
     private inner class InternalRenderer(
-        private val cameraTransform: Matrix4?
+            private val cameraTransform: Matrix4?
     ) : Runnable {
+
+        private val lock = ReentrantLock()
+        private var initialized = lock.newCondition()
+
+        private var window: Window? = null
+
+        fun start() {
+            Thread(this).apply { start() }
+            lock.withLock {
+                initialized.await()
+            }
+        }
+
+        fun close() {
+            window?.close()
+        }
 
         override fun run() {
 
-            Window(
-                antialias = 4,
-                resizeable = true
-            ).use { window ->
+            window = Window(
+                    antialias = 4,
+                    resizeable = true
+            ).apply {
+
+                onCloseCallback = WindowClosingCallback {
+                    closeListener?.onClose()
+                }
+
+            }
+
+            window?.use { window ->
 
                 lock.withLock {
                     initialized.signalAll()
@@ -208,8 +229,6 @@ class ThreektRenderer : AbstractRenderEngine() {
                 }
 
             }
-
-            closeListener?.onClose()
 
         }
 
