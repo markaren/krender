@@ -11,6 +11,7 @@ import info.laht.threekt.TextureWrapping
 import info.laht.threekt.core.*
 import info.laht.threekt.extras.objects.Water
 import info.laht.threekt.geometries.*
+import info.laht.threekt.helpers.ArrowHelper
 import info.laht.threekt.loaders.OBJLoader
 import info.laht.threekt.loaders.STLLoader
 import info.laht.threekt.loaders.TextureLoader
@@ -434,4 +435,28 @@ internal class ThreektWaterProxy(
 
     }
 
+}
+
+internal class ThreektArrowProxy(
+        ctx: RenderContext,
+        length: Float
+): ThreektProxy(ctx), ArrowProxy {
+
+    private val arrow = ArrowHelper(
+            length = length
+    )
+
+    init {
+        ctx.invokeLater {
+            attachChild(arrow)
+        }
+    }
+
+    override fun setColor(color: Int) {
+        arrow.setColor(color)
+    }
+
+    override fun setLength(length: Float) {
+        arrow.setLength(length)
+    }
 }

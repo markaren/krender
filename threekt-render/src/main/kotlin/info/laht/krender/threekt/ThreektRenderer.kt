@@ -47,7 +47,11 @@ class ThreektRenderer : AbstractRenderEngine() {
     }
 
     override fun createArrow(length: Float): ArrowProxy {
-        TODO("Not yet implemented")
+        return ThreektArrowProxy(ctx, length).also {
+            ctx.invokeLater {
+                scene.add(it.parentNode)
+            }
+        }
     }
 
     override fun createMesh(mesh: TrimeshShape): MeshProxy {
@@ -197,7 +201,9 @@ class ThreektRenderer : AbstractRenderEngine() {
                 }
 
                 val renderer = GLRenderer(window.size)
-                val camera = PerspectiveCamera(75, window.aspect, 0.1, 1000)
+                val camera = PerspectiveCamera(75, window.aspect, 0.1, 1000).apply {
+                    position.set(0f, 0f, 5f)
+                }
                 cameraTransform?.also {
                     camera.position.setFromMatrixPosition(it)
                     camera.quaternion.setFromRotationMatrix(it)
