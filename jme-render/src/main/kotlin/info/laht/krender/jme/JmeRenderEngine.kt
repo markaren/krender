@@ -18,10 +18,8 @@ import info.laht.krender.jme.proxy.*
 import info.laht.krender.mesh.TrimeshShape
 import info.laht.krender.proxies.*
 import info.laht.krender.util.RenderContext
-import org.joml.Matrix4f
-import org.joml.Matrix4fc
-import org.joml.Vector3d
-import org.joml.Vector3fc
+import org.joml.*
+import java.awt.event.KeyEvent
 import java.io.File
 import java.util.concurrent.locks.ReentrantLock
 import kotlin.concurrent.withLock
@@ -51,7 +49,12 @@ class JmeRenderEngine : AbstractRenderEngine() {
     }
 
     override fun setCameraTransform(cameraTransform: Matrix4fc) {
-        TODO("Not yet implemented")
+        ctx.invokeLater {
+            val pos = cameraTransform.getTranslation(org.joml.Vector3f())
+            val rot = cameraTransform.getNormalizedRotation(Quaternionf())
+            renderer.camera.location.set(pos)
+            renderer.camera.rotation.set(rot)
+        }
     }
 
     override fun close() {
@@ -232,23 +235,11 @@ class JmeRenderEngine : AbstractRenderEngine() {
             }
 
             override fun onKeyEvent(evt: KeyInputEvent) {
-                /* if (evt.isPressed) {
-                     val keyCode = evt.keyCode
-                     keyListener?.also {
-                         it.onKeyPressed(keyCode.toKeyStoke())
-                     }
-                     when (keyCode) {
-                         KeyInput.KEY_F1 -> {
-                             //showCollisionGeometries = !showCollisionGeometries
-                         }
-                         KeyInput.KEY_E -> engine.registerKeyPress(KeyStroke.KEY_E)
-                         KeyInput.KEY_R -> engine.registerKeyPress(KeyStroke.KEY_R)
-                         KeyInput.KEY_W -> engine.registerKeyPress(KeyStroke.KEY_W)
-                         KeyInput.KEY_A -> engine.registerKeyPress(KeyStroke.KEY_A)
-                         KeyInput.KEY_S -> engine.registerKeyPress(KeyStroke.KEY_S)
-                         KeyInput.KEY_D -> engine.registerKeyPress(KeyStroke.KEY_D)
-                     }
-                 }*/
+                val c = evt.keyChar.toInt()
+                if (c != 0) {
+                    val keyCode = KeyEvent.getExtendedKeyCodeForChar(c)
+                    keyListener?.onKeyPressed(keyCode)
+                }
             }
 
         }

@@ -313,6 +313,7 @@ internal class ThreektCurveProxy(
         )
     ).apply {
         material.side = Side.Double
+        (material as MaterialWithColor).color.set(Color.gray)
     }
 
     init {
@@ -438,12 +439,12 @@ internal class ThreektWaterProxy(
 }
 
 internal class ThreektArrowProxy(
-        ctx: RenderContext,
-        length: Float
-): ThreektProxy(ctx), ArrowProxy {
+    ctx: RenderContext,
+    length: Float
+) : ThreektProxy(ctx), ArrowProxy {
 
     private val arrow = ArrowHelper(
-            length = length
+        length = length
     )
 
     init {

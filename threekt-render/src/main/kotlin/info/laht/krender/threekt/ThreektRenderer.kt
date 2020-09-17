@@ -7,7 +7,6 @@ import info.laht.krender.proxies.*
 import info.laht.krender.util.RenderContext
 import info.laht.threekt.Window
 import info.laht.threekt.WindowClosingCallback
-import info.laht.threekt.cameras.Camera
 import info.laht.threekt.cameras.PerspectiveCamera
 import info.laht.threekt.controls.OrbitControls
 import info.laht.threekt.core.Clock
@@ -19,6 +18,7 @@ import org.joml.Matrix4fc
 import org.joml.Vector3fc
 import java.io.File
 import java.util.concurrent.locks.ReentrantLock
+import kotlin.concurrent.thread
 import kotlin.concurrent.withLock
 
 class ThreektRenderer : AbstractRenderEngine() {
@@ -30,7 +30,7 @@ class ThreektRenderer : AbstractRenderEngine() {
     }
     private val internalRenderer: InternalRenderer
 
-     init {
+    init {
         internalRenderer = InternalRenderer().apply {
             start()
         }
@@ -136,11 +136,11 @@ class ThreektRenderer : AbstractRenderEngine() {
     }
 
     override fun createHeightmap(
-            width: Float,
-            height: Float,
-            widthSegments: Int,
-            heightSegments: Int,
-            heights: FloatArray
+        width: Float,
+        height: Float,
+        widthSegments: Int,
+        heightSegments: Int,
+        heights: FloatArray
     ): HeightmapProxy {
         return ThreektHeightmapProxy(ctx, width, height, widthSegments, heightSegments, heights).also {
             ctx.invokeLater {
@@ -170,7 +170,7 @@ class ThreektRenderer : AbstractRenderEngine() {
         internalRenderer.close()
     }
 
-    private inner class InternalRenderer: Runnable {
+    private inner class InternalRenderer {
 
         private val lock = ReentrantLock()
         private var initialized = lock.newCondition()
@@ -182,7 +182,11 @@ class ThreektRenderer : AbstractRenderEngine() {
         var water: ThreektWaterProxy? = null
 
         fun start() {
-            Thread(this).apply { start() }
+
+            thread(start = true) {
+                run()
+            }
+
             lock.withLock {
                 initialized.await()
             }
@@ -192,11 +196,11 @@ class ThreektRenderer : AbstractRenderEngine() {
             window?.close()
         }
 
-        override fun run() {
+        fun run() {
 
             window = Window(
-                    antialias = 4,
-                    resizeable = true
+                antialias = 4,
+                resizeable = true
             )
 
             window?.use { window ->
