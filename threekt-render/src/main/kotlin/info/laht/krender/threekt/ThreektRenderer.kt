@@ -7,6 +7,7 @@ import info.laht.krender.proxies.*
 import info.laht.krender.util.RenderContext
 import info.laht.threekt.Window
 import info.laht.threekt.WindowClosingCallback
+import info.laht.threekt.cameras.Camera
 import info.laht.threekt.cameras.PerspectiveCamera
 import info.laht.threekt.controls.OrbitControls
 import info.laht.threekt.core.Clock
@@ -27,14 +28,22 @@ class ThreektRenderer : AbstractRenderEngine() {
     private val scene: Scene = Scene().apply {
         setBackground(ColorConstants.aliceblue)
     }
-    private var internalRenderer: InternalRenderer? = null
+    private val internalRenderer: InternalRenderer
 
-    private var water: ThreektWaterProxy? = null
-
-
-    override fun init(cameraTransform: Matrix4fc?) {
-        internalRenderer = InternalRenderer(cameraTransform?.let { Matrix4().set(it) }).apply {
+     init {
+        internalRenderer = InternalRenderer().apply {
             start()
+        }
+    }
+
+    override fun setCameraTransform(cameraTransform: Matrix4fc) {
+        val m = Matrix4().set(cameraTransform)
+        ctx.invokeLater {
+            internalRenderer.apply {
+                camera.position.setFromMatrixPosition(m)
+                camera.quaternion.setFromRotationMatrix(m)
+                controls.update()
+            }
         }
     }
 
@@ -142,7 +151,7 @@ class ThreektRenderer : AbstractRenderEngine() {
 
     override fun createWater(width: Float, height: Float): WaterProxy {
         return ThreektWaterProxy(ctx, width, height).also {
-            water = it
+            internalRenderer.water = it
             ctx.invokeLater {
                 scene.add(it.parentNode)
             }
@@ -158,17 +167,19 @@ class ThreektRenderer : AbstractRenderEngine() {
     }
 
     override fun close() {
-        internalRenderer?.close()
+        internalRenderer.close()
     }
 
-    private inner class InternalRenderer(
-            private val cameraTransform: Matrix4?
-    ) : Runnable {
+    private inner class InternalRenderer: Runnable {
 
         private val lock = ReentrantLock()
         private var initialized = lock.newCondition()
 
         private var window: Window? = null
+        lateinit var camera: PerspectiveCamera
+        lateinit var controls: OrbitControls
+
+        var water: ThreektWaterProxy? = null
 
         fun start() {
             Thread(this).apply { start() }
@@ -186,13 +197,7 @@ class ThreektRenderer : AbstractRenderEngine() {
             window = Window(
                     antialias = 4,
                     resizeable = true
-            ).apply {
-
-                onCloseCallback = WindowClosingCallback {
-                    closeListener?.onClose()
-                }
-
-            }
+            )
 
             window?.use { window ->
 
@@ -200,15 +205,15 @@ class ThreektRenderer : AbstractRenderEngine() {
                     initialized.signalAll()
                 }
 
+                window.onCloseCallback = WindowClosingCallback {
+                    closeListener?.onClose()
+                }
+
                 val renderer = GLRenderer(window.size)
-                val camera = PerspectiveCamera(75, window.aspect, 0.1, 1000).apply {
+                camera = PerspectiveCamera(75, window.aspect, 0.1, 1000).apply {
                     position.set(0f, 0f, 5f)
                 }
-                cameraTransform?.also {
-                    camera.position.setFromMatrixPosition(it)
-                    camera.quaternion.setFromRotationMatrix(it)
-                }
-                OrbitControls(camera, window)
+                controls = OrbitControls(camera, window)
 
                 window.onWindowResize { width, height ->
                     camera.aspect = window.aspect

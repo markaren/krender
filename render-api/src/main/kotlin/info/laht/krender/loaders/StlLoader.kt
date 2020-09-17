@@ -34,7 +34,7 @@ class StlLoader {
         var defaultR = 0f
         var defaultG = 0f
         var defaultB = 0f
-        var alpha: Float
+        //var alpha: Float
         var hasColors = false
         var colors: MutableList<Float>? = null
         for (index in 0 until 80 - 10) {
@@ -47,7 +47,7 @@ class StlLoader {
                 defaultR = reader[index + 6] / 255.toFloat()
                 defaultG = reader[index + 7] / 255.toFloat()
                 defaultB = reader[index + 8] / 255.toFloat()
-                alpha = reader[index + 9] / 255.toFloat()
+                //alpha = reader[index + 9] / 255.toFloat()
             }
         }
         val dataOffset = 84

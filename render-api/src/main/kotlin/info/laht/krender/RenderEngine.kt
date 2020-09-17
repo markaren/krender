@@ -12,9 +12,8 @@ import java.io.File
 
 interface RenderEngine : Closeable {
 
-    fun init(cameraTransform: Matrix4fc? = null)
-
     fun setBackGroundColor(color: Int)
+    fun setCameraTransform(cameraTransform: Matrix4fc)
 
     fun createAxis(size: Float): AxisProxy
     fun createArrow(length: Float): ArrowProxy

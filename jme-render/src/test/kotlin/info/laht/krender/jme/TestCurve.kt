@@ -14,7 +14,6 @@ fun main() {
 
     JmeRenderEngine().apply {
 
-        init()
         val curve = createCurve(0.1f, points)
 
         createArrow(1f).apply {

@@ -8,8 +8,6 @@ fun main() {
 
     JmeRenderEngine().apply {
 
-        init()
-
         createMesh(ConeMesh()).apply {
             setColor(ColorConstants.orange)
             setOpacity(0.5f)

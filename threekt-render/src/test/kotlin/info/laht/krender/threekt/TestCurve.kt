@@ -16,7 +16,7 @@ fun main() {
 
     ThreektRenderer().apply {
 
-        init(Matrix4f().setTranslation(0f, 0f, 5f))
+        setCameraTransform(Matrix4f().setTranslation(0f, 0f, 5f))
         setBackGroundColor(ColorConstants.aliceblue)
 
         val curve = createCurve(0.1f, points)

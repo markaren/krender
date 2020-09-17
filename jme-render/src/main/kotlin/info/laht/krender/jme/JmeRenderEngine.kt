@@ -32,13 +32,13 @@ internal class JmeContext(
 
 class JmeRenderEngine : AbstractRenderEngine() {
 
-    private lateinit var renderer: JmeInternalRenderer
+    private val renderer: JmeInternalRenderer
     private val parent: Node = Node("parent")
 
     private val ctx: JmeContext
         get() = renderer.ctx
 
-    override fun init(cameraTransform: Matrix4fc?) {
+    init {
         renderer = JmeInternalRenderer(parent).apply {
             start()
         }
@@ -48,6 +48,10 @@ class JmeRenderEngine : AbstractRenderEngine() {
         ctx.invokeLater {
             renderer.viewPort.backgroundColor.set(ColorRGBA().fromIntARGB(color))
         }
+    }
+
+    override fun setCameraTransform(cameraTransform: Matrix4fc) {
+        TODO("Not yet implemented")
     }
 
     override fun close() {

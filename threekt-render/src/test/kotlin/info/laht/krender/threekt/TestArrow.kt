@@ -6,7 +6,6 @@ fun main() {
 
     ThreektRenderer().apply {
 
-        init()
         setBackGroundColor(Color.black)
 
         createArrow(1f).apply {

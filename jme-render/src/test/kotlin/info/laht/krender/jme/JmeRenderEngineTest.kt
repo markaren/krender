@@ -10,7 +10,6 @@ fun main() {
 
     JmeRenderEngine().apply {
 
-        init()
         setBackGroundColor(0xF0F8FF)
 
         val sphere = createSphere(0.1f).apply {

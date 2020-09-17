@@ -12,7 +12,7 @@ fun main() {
 
         val tex = File(javaClass.classLoader.getResource("textures/checker.png")!!.file)
 
-        init(Matrix4f().setTranslation(0f, 0f, -5f))
+        setCameraTransform(Matrix4f().setTranslation(0f, 10f, -5f))
         setBackGroundColor(ColorConstants.gray)
 
         val c = createCylinder(0.5f, 1f).apply {

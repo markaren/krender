@@ -12,7 +12,7 @@ fun main() {
 
     ThreektRenderer().apply {
 
-        init(Matrix4f().setTranslation(0f, 0f, 50f))
+        setCameraTransform(Matrix4f().setTranslation(0f, 5f, 50f))
         createMesh(SphereMesh(5f)).apply {
             setColor(Color.red)
             setWireframe(true)

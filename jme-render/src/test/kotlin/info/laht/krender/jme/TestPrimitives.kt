@@ -7,8 +7,6 @@ fun main() {
 
     JmeRenderEngine().apply {
 
-        init()
-
         createBox(1f, 1f, 1f).apply {
             setTranslate(Vector3f(-2f, 0f, 0f))
             setColor(ColorConstants.bisque)
