@@ -15,6 +15,7 @@ import info.laht.threekt.helpers.ArrowHelper
 import info.laht.threekt.loaders.OBJLoader
 import info.laht.threekt.loaders.STLLoader
 import info.laht.threekt.loaders.TextureLoader
+import info.laht.threekt.loaders.load
 import info.laht.threekt.materials.MaterialWithColor
 import info.laht.threekt.materials.MaterialWithWireframe
 import info.laht.threekt.materials.MeshBasicMaterial
@@ -408,13 +409,12 @@ internal class ThreektWaterProxy(
 
     init {
 
-        val texture =
-            TextureLoader.load(
-                ThreektWaterProxy::class.java.classLoader.getResource("textures/waternormals.jpg")!!.file
-            ).apply {
-                wrapS = TextureWrapping.Repeat
-                wrapT = TextureWrapping.Repeat
-            }
+        val waterNormals = javaClass.classLoader.getResource("textures/waternormals.jpg")!!
+
+        val texture = TextureLoader.load(waterNormals).apply {
+            wrapS = TextureWrapping.Repeat
+            wrapT = TextureWrapping.Repeat
+        }
 
         val planeGeometry = PlaneBufferGeometry(width, height)
         water = Water(
